@@ -239,12 +239,12 @@ def signup_validation(email, username, password, confirmPassword):
     if password != confirmPassword:
         raise ValueError("Password and password confirmation do not match.")
 
-    # Ensure username is at least 3 characters long and does not contain punctuation characters
+    # Ensure username is at least 3 characters long and does not contain punctuation characters or whitespaces
     if len(username) < 3:
         raise ValueError("Username must be at least 3 characters long.")
 
-    if any(char in string.punctuation for char in username):
-        raise ValueError("Username cannot contain punctuation characters.")
+    if any(char in string.punctuation or char.isspace() for char in username):
+        raise ValueError("Username cannot contain punctuation characters or whitespaces.")
 
     # # Ensure password is strong
     # if not is_strong_password(password):

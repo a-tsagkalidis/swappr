@@ -11,80 +11,78 @@ function topFunction() {
 }
 
 
-// // ----- SIGN UP VALIDATION FORM ----- //
-// function validateSignUpForm() {
-//     const signupForm = document.querySelector('#signupForm');
-//     var email = signupForm.elements["email"].value;
-//     var username = signupForm.elements["username"].value;
-//     var password = signupForm.elements["password"].value;
-//     var confirmPassword = signupForm.elements["confirmPassword"].value;
+// ----- SIGN UP VALIDATION FORM ----- //
+function validateSignUpForm() {
+    const signupForm = document.querySelector('#signupForm');
+    var email = signupForm.elements["email"].value;
+    var username = signupForm.elements["username"].value;
+    var password = signupForm.elements["password"].value;
+    var confirmPassword = signupForm.elements["confirmPassword"].value;
 
-    
-//     // Ensure form input types are as they should be
-//     formElementsTypes = [
-//         signupForm.elements["email"].type,
-//         signupForm.elements["username"].type,
-//         signupForm.elements["password"].type,
-//         signupForm.elements["confirmPassword"].type,
-//     ];
+    // Ensure form input types are as they should be
+    formElementsTypes = [
+        signupForm.elements["email"].type,
+        signupForm.elements["username"].type,
+        signupForm.elements["password"].type,
+        signupForm.elements["confirmPassword"].type,
+    ];
 
-//     expectedTypes = [
-//         "email",
-//         "text",
-//         "password",
-//         "password",
-//     ];
+    expectedTypes = [
+        "email",
+        "text",
+        "password",
+        "password",
+    ];
 
-//     for (let i = 0; i < formElementsTypes.length; i++) {
-//         if (formElementsTypes[i] !== expectedTypes[i]) {
-//             alert("Unkown error occured!!");
-//             return false;
-//         }
-//     }
+    for (let i = 0; i < formElementsTypes.length; i++) {
+        if (formElementsTypes[i] !== expectedTypes[i]) {
+            alert("Unkown error occured!!");
+            return false;
+        }
+    }
 
+    // Ensure fields are not blank
+    if (email === "" || username === "" || password === "" || confirmPassword === "") {
+        alert("Please fill in all the required fields.");
+        return false;
+    }
 
-//     // Ensure fields are not blank
-//     if (email === "" || username === "" || password === "" || confirmPassword === "") {
-//         alert("Please fill in all the required fields.");
-//         return false;
-//     }
+    // Ensure email adress has valid chars
+    var emailRegexStipulations = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegexStipulations.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+    }
 
-//     // Ensure email adress has valid chars
-//     var emailRegexStipulations = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-//     if (!emailRegexStipulations.test(email)) {
-//         alert('Please enter a valid email address.');
-//         return false;
-//     }
+    // Ensure username is at least 3 characters long
+    if (username.length < 3) {
+        alert('Username must be at least 3 characters long.');
+        return false;
+    }
 
-//     // Ensure username is at least 3 characters long
-//     if (username.length < 3) {
-//         alert('Username must be at least 3 characters long.');
-//         return false;
-//     }
+    // Ensure username does not contain any punctuation characters or whitespaces
+    var invalidCharactersRegex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\s]/;
+    if (invalidCharactersRegex.test(username)) {
+        alert('Username cannot contain punctuation characters or whitespaces.');
+        return false;
+    }
 
-//     // Ensure username does not contain any punctuation characters
-//     var punctuationRegexStipulations = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;
-//     if (punctuationRegexStipulations.test(username)) {
-//         alert('Username cannot contain punctuation characters.');
-//         return false;
-//     }
+    // Ensure password and confirmation match
+    if (password !== confirmPassword) {
+        alert("Password and password confirmation do not match.");
+        return false;
+    }
 
-//     // Ensure password and confirmation match
-//     if (password !== confirmPassword) {
-//         alert("Password and password confirmation do not match.");
-//         return false;
-//     }
+    // // Ensure password is strong
+    // var passwordRegexStipulations = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[\w!@#$%^&*()_+]{8,}$/;
+    // if (!passwordRegexStipulations.test(password)) {
+    //     alert("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.");
+    //     return false;
+    // }
 
-//     // Ensure password is strong
-//     var passwordRegexStipulations = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[\w!@#$%^&*()_+]{8,}$/;
-//     if (!passwordRegexStipulations.test(password)) {
-//         alert("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.");
-//         return false;
-//     }
-
-//     // Validation successfully passed
-//     return true;
-// }
+    // Validation successfully passed
+    return true;
+}
 
 
 // ----- SIGN IN VALIDATION FORM ----- //
@@ -93,23 +91,23 @@ function validateSignInForm() {
     var username = signinForm.elements["username"].value;
     var password = signinForm.elements["password"].value;
 
-    // // Ensure fields are not blank
-    // if (username === "" && password === "") {
-    //     alert("Please fill in your username and password.");
-    //     return false;
-    // }
+    // Ensure fields are not blank
+    if (username === "" && password === "") {
+        alert("Please fill in your username and password.");
+        return false;
+    }
 
-    // // Ensure fields are not blank
-    // if (username === "") {
-    //     alert("Please fill in your username.");
-    //     return false;
-    // }
+    // Ensure fields are not blank
+    if (username === "") {
+        alert("Please fill in your username.");
+        return false;
+    }
 
-    // // Ensure fields are not blank
-    // if (password === "") {
-    //     alert("Please fill in your password.");
-    //     return false;
-    // }
+    // Ensure fields are not blank
+    if (password === "") {
+        alert("Please fill in your password.");
+        return false;
+    }
 
     // Ensure username does not contain any punctuation characters
     var punctuationRegexStipulations = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;

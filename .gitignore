@@ -1,7 +1,3 @@
-.code-workspace
-.venv/
-__pycache__/
-
 # Python
 *.pyc
 *.pyo

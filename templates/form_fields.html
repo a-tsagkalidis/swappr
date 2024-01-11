@@ -1,7 +1,8 @@
 <!-- File extends in both submission.html and edit_submission.html -->
 
 <div class="form-group">
-  <div class="form-check form-check-inline">
+  <div class="form-check form-check-inline mb-4">
+    
     <input type="radio" class="form-check-input" id="publicExposure" name="exposure" value="public" {% if submission.exposure == 'public' %}checked{% endif %} checked>
     <label class="form-check-label" for="publicExposure">Public</label>
   </div>
@@ -11,9 +12,12 @@
   </div>
 </div>
 
-<div class="form-group">
-  <label for="houseType">House Type:</label>
+<div class="form-group mb-4">
+  {% if submission %}
+      <label for="houseType">House Type:</label>
+  {% endif %}
   <select class="form-control" id="houseType" name="houseType" required>
+    <option value="">Select House Type</option>
 		<option value="studio" {% if submission.house_type == 'studio' %}selected{% endif %}>Studio</option>
 		<option value="flat" {% if submission.house_type == 'flat' %}selected{% endif %}>Flat</option>
 		<option value="maisonette" {% if submission.house_type == 'maisonette' %}selected{% endif %}>Maisonette</option>
@@ -24,28 +28,38 @@
   </select>
 </div>
 
-<div class="form-group">
-  <label for="squareMeters">Square Footage (m&#178;):</label>
-  <input type="number" class="form-control" id="squareMeters" name="squareMeters" min="0" max="1000" value="{{ submission.square_meters }}" required>
+<div class="form-group mb-4">
+  {% if submission %}
+    <label for="squareMeters">Square Footage (m&#178;):</label>
+  {% endif %}
+  <input type="number" class="form-control" id="squareMeters" name="squareMeters" min="0" max="1000" value="{{ submission.square_meters }}" placeholder="Enter Square Footage (m&#178;)" required>
 </div>
 
-<div class="form-group">
-  <label for="rental">Rental (&euro;):</label>
-  <input type="number" class="form-control" id="rental" name="rental" min="0" max="10000" value="{{ submission.rental }}" required>
+<div class="form-group mb-4">
+  {% if submission %}
+    <label for="rental">Rental (&euro;):</label>
+  {% endif %}
+  <input type="number" class="form-control" id="rental" name="rental" min="0" max="10000" value="{{ submission.rental }}" placeholder="Enter Rental (&euro;)" required>
 </div>
 
-<div class="form-group">
-  <label for="bedrooms">Bedrooms:</label>
-  <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="0" max="10" value="{{ submission.bedrooms }}" required>
+<div class="form-group mb-4">
+  {% if submission %}
+    <label for="bedrooms">Bedrooms:</label>
+  {% endif %}
+  <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="0" max="10" value="{{ submission.bedrooms }}" placeholder="Enter Bedrooms" required>
 </div>
 
-<div class="form-group">
-  <label for="bathrooms">Bathrooms:</label>
-  <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="0" max="10" value="{{ submission.bathrooms }}" required>
+<div class="form-group mb-4">
+  {% if submission %}
+    <label for="bathrooms">Bathrooms:</label>
+  {% endif %}
+  <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="0" max="10" value="{{ submission.bathrooms }}" placeholder="Enter Bathrooms" required>
 </div>
 
-<div class="form-group">
-  <label for="city">City:</label>
+<div class="form-group mb-4">
+  {% if submission %}
+    <label for="city">City:</label>
+  {% endif %}
   <select class="form-control" id="city" name="city" required>
     <option value="">Select City</option>
     {% for city in cities %}
@@ -54,8 +68,10 @@
   </select>
 </div>
 
-<div class="form-group">
-  <label for="municipality">Municipality:</label>
+<div class="form-group mb-4">
+  {% if submission %}
+    <label for="municipality">Municipality:</label>
+  {% endif %}
   <select class="form-control" id="municipality" name="municipality" required>
     {% if submission.municipality %}
       <option value="{{ submission.municipality }}">{{ whitespace(submission.municipality) }}</option>
@@ -66,8 +82,10 @@
   </select>
 </div>
 
-<div class="form-group">
-  <label for="region">Region:</label>
+<div class="form-group mb-4">
+  {% if submission %}
+    <label for="region">Region:</label>
+  {% endif %}
   <select class="form-control" id="region" name="region" required>
     {% if submission.region %}
       <option value="{{ submission.region }}">{{ whitespace(submission.region) }}</option>
