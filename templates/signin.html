@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign In
+{% endblock %}
+
+{% block main %}
+
+    <form action="/signin" id="signinForm" method="post" onsubmit="return validateSignInForm()">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus type="text" class="form-control mx-auto w-auto" name="username" placeholder="Username">
+        </div>
+        <div class="mb-3">
+            <input autocomplete="off" autofocus type="password" class="form-control mx-auto w-auto" name="password" placeholder="Password">
+        </div>
+        <div class="mb-3">
+            <input type="submit" class="form-control mx-auto w-auto"value="Sign In">
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,381 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:light,regular,bold&subset=Latin);
+
+/* Body related styles */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Trebuchet MS', sans-serif;
+    color: rgb(75, 75, 75);
+    margin-bottom: auto;
+}
+/* Body related styles */
+
+
+
+/* Navigation Bar related styles */
+#nav-bar {
+    background-color: rgb(255, 170, 33);
+}
+/* Navigation Bar related styles */
+
+
+
+/* Header related styles */
+.header-h1 {
+    margin-top: 30px;
+    color: rgb(75, 75, 75);
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 8px;
+    font-size: 40px;
+}
+
+.header-h2 {
+    margin-bottom: 30px;
+    color: rgb(255, 255, 255);
+    font-weight: normal;
+    text-align: center;
+    letter-spacing: 3px;
+    font-size: 30px;
+}
+
+.header-h3 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: white;
+    text-align: center;
+    font-size: 16pt;
+}
+
+.image-header {
+    max-width: 100%;
+    max-height: 100%;
+    width:auto;
+    padding: 40px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.90), rgba(255, 255, 255, 0.40)), url("img/header.jpg");
+}
+
+.initial-header {
+    background-color: rgba(255, 159, 4, 0.83);
+    padding: 40px;
+    width: fit-content;
+    margin: 30px;
+}
+/* Header related styles */
+
+
+
+/* Footer related styles */
+footer {
+    position:relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(255, 170, 33);
+    text-align: center;
+    padding-bottom: 20px;
+    padding-top: 15px;
+}
+
+.footer-img {
+    width: 100px;
+    padding: 25px;
+    opacity: .5;
+    filter: alpha(opacity=40);
+    transition: 1000ms
+}
+
+.footer-img:hover {
+    width: 100px;
+    padding: 25px;
+    opacity: .8;
+    filter: alpha(opacity=80);
+    transition: 1000ms
+}
+
+#copyright-mail {
+    text-decoration: none;
+    color: rgb(75, 75, 75);
+}
+
+.spacer {
+    margin-right: 40px;
+}
+
+#copyright {
+    color: #9f7737
+}
+/* Footer related styles */
+
+
+
+/* Return to top button styles */
+#top-button {
+    position :fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: rgb(67, 67, 67);
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+    opacity: .5;
+    transition: opacity .5s;
+}
+
+#top-button:hover {
+    opacity: 1;
+}
+/* Return to top button styles */
+
+
+
+/* Image related styles */
+img {
+    max-width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; 
+}
+
+#about-me-img {
+    display: block;
+    width: 30%;
+    padding-top: 80px;
+    padding-bottom: 20px;
+}
+
+#services-img {
+    display: block;
+    width: 30%;
+    padding-top: 40px;
+    padding-bottom: 20px;
+
+}
+/* Image related styles */
+
+
+
+/* Contact styles */
+.header-h2 h2 {
+    margin-bottom: 0px;
+    margin-top: 40px;
+    color: rgb(75, 75, 75);;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0px;
+    font-size: 30px;
+}
+
+h4 {
+    font-family: 'Roboto', sans-serif, 'arial';
+    font-weight: 400;
+    font-size: 20px;
+    color: #9b9b9b;
+    line-height: 1.5;
+}
+
+input:focus ~ label, textarea:focus ~ label, input:valid ~ label, textarea:valid ~ label {
+    font-size: 0.75em;
+    color: rgb(110, 110, 110);
+    top: -5px;
+    -webkit-transition: all 0.225s ease;
+    transition: all 0.225s ease;
+}
+
+.styled-input {
+    float: left;
+    width: 293px;
+    margin: 1rem 0;
+    position: relative;
+    border-radius: 4px;
+}
+
+@media only screen and (max-width: 768px){
+    .styled-input {
+        width:100%;
+    }
+}
+
+.styled-input label {
+    color: rgb(110, 110, 110);
+    padding: 1.3rem 30px 1rem 30px;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    -webkit-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+
+.styled-input.wide { 
+    width: 650px;
+    max-width: 100%;
+}
+
+input,
+textarea {
+    padding: 30px;
+    border: 0;
+    width: 100%;
+    font-size: 1rem;
+    background-color: rgb(255, 170, 33);
+    color: rgb(75, 75, 75);
+    border-radius: 4px;
+}
+
+input:focus,
+textarea:focus { outline: 0; }
+
+input:focus ~ span,
+textarea:focus ~ span {
+    width: 100%;
+    -webkit-transition: all 0.075s ease;
+    transition: all 0.075s ease;
+}
+
+textarea {
+    width: 100%;
+    min-height: 15em;
+}
+
+.input-container {
+    width: 650px;
+    max-width: 100%;
+    margin: 20px auto 25px auto;
+}
+
+.submit-btn {
+    float: right;
+    padding: 7px 35px;
+    border-radius: 60px;
+    display: inline-block;
+    background-color: rgb(255, 170, 33);
+    color: rgb(75, 75, 75);
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.06),
+                0 2px 10px 0 rgba(0,0,0,0.07);
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(1px);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.10),
+                0 1px 1px 0 rgba(0,0,0,0.09);
+}
+
+@media (max-width: 768px) {
+    .submit-btn {
+        width:100%;
+        float: none;
+        text-align:center;
+    }
+}
+
+input[type=checkbox] + label {
+    color: #da1b1b;
+    font-style: italic;
+} 
+
+input[type=checkbox]:checked + label {
+    color: #f00;
+    font-style: normal;
+}
+/* Contact styles */
+
+
+
+/* Custom messages */
+.info, .success, .warning, .error, .validation {
+    border-radius: 13px;
+    margin: auto;
+    width: max-content;
+    padding: 15px 10px 15px 3rem;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 30px;
+}
+.info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('https://i.imgur.com/ilgqWuX.png');
+}
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image: url(../static/images/success.svg);
+}
+.warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('https://i.imgur.com/Z8q7ww7.png');
+}
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url(../static/images/error.svg);
+}
+.validation {
+    color: #D63301;
+    background-color: #FFCCBA;
+    background-image: url('https://i.imgur.com/GnyDvKN.png');
+}
+/* Custom message */
+
+
+
+/* Submit page align form */
+.mt-2 {
+    text-align: left;
+}
+/* Submit page align form */
+
+
+
+/* Buttons */
+.btn-dark {
+    width: 85px;
+}
+.btn-outline-danger {
+    width: 85px;
+}
+.btn-primary {
+    background-color: rgb(0, 166, 216);
+    width: 85px;
+}
+.btn-primary:hover {
+    background-color: rgb(0, 143, 186);
+}
+.btn-success {
+    width: 85px;
+}
+.btn-warning {
+    width: 85px;
+}
+.btn-danger {
+    width: 85px;
+}
+.btn-link { 
+    color: red;
+} 
+.btn-link:hover { 
+    text-decoration: none;
+    color: rgb(223, 0, 0);
+    transition: .5s;
+} 

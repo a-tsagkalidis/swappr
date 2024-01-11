@@ -1,0 +1,39 @@
+.code-workspace
+.venv/
+__pycache__/
+
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.pyc
+*.pyo
+
+# Flask
+instance/
+
+# SQLite databases
+*.db
+
+# Virtual Environment
+.venv/
+
+# Frontend dependencies
+node_modules/
+*.log
+
+# Editor/IDE files
+.code-workspace
+.vscode/
+.idea/
+
+# Compiled files
+*.pyc
+*.pyo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment variables file
+.env

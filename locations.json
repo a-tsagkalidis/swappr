@@ -1,0 +1,285 @@
+[
+	{
+		"id": 1,
+		"city": "thessaloniki",
+		"municipality": "thessalonikis",
+		"region": [
+			"ano_poli",
+			"charilaou",
+			"thessaloniki_center",
+			"sfageia",
+			"ichthioskala",
+			"vardaris",
+			"lachanokipoi",
+			"xirokrini",
+			"panagia_faneromeni",
+			"40_ekklisies",
+			"evagelistria",
+			"triandria",
+			"doxa",
+			"toumpa",
+			"faliro",
+			"ippokrateio",
+			"analipsi",
+			"mpotsari",
+			"nea_paralia",
+			"voulgari",
+			"ntepo",
+			"martiou"
+		]
+	},
+	{
+		"id": 2,
+		"city": "thessaloniki",
+		"municipality": "agiou_pavlou",
+		"region": [
+			"agios_pavlos"
+		]
+	},
+	{
+		"id": 3,
+		"city": "thessaloniki",
+		"municipality": "ampelokipon",
+		"region": [
+			"ampelokipoi"
+		]
+	},
+	{
+		"id": 4,
+		"city": "thessaloniki",
+		"municipality": "kordeliou",
+		"region": [
+			"eleftherio",
+			"kordelio"
+		]
+	},
+	{
+		"id": 5,
+		"city": "thessaloniki",
+		"municipality": "efkarpias",
+		"region": [
+			"efkarpia"
+		]
+	},
+	{
+		"id": 6,
+		"city": "thessaloniki",
+		"municipality": "evosmou",
+		"region": [
+			"evosmos"
+		]
+	},
+	{
+		"id": 7,
+		"city": "thessaloniki",
+		"municipality": "thermaikou",
+		"region": [
+			"thermaikos"
+		]
+	},
+	{
+		"id": 8,
+		"city": "thessaloniki",
+		"municipality": "thermis",
+		"region": [
+			"thermi"
+		]
+	},
+	{
+		"id": 9,
+		"city": "thessaloniki",
+		"municipality": "thermis",
+		"region": [
+			"thermi"
+		]
+	},
+	{
+		"id": 10,
+		"city": "thessaloniki",
+		"municipality": "kalamarias",
+		"region": [
+			"kalamaria",
+			"krini"
+		]
+	},
+	{
+		"id": 11,
+		"city": "thessaloniki",
+		"municipality": "menemenis",
+		"region": [
+			"menemeni"
+		]
+	},
+	{
+		"id": 12,
+		"city": "thessaloniki",
+		"municipality": "neapolis",
+		"region": [
+			"neapoli"
+		]
+	},
+	{
+		"id": 13,
+		"city": "thessaloniki",
+		"municipality": "panoramatos",
+		"region": [
+			"panorama"
+		]
+	},
+	{
+		"id": 14,
+		"city": "thessaloniki",
+		"municipality": "pavlou_mela",
+		"region": [
+			"pavlos_melas",
+			"meteora"
+		]
+	},
+	{
+		"id": 15,
+		"city": "thessaloniki",
+		"municipality": "pefkon",
+		"region": [
+			"pefka"
+		]
+	},
+	{
+		"id": 16,
+		"city": "thessaloniki",
+		"municipality": "polichnis",
+		"region": [
+			"polichni"
+		]
+	},
+	{
+		"id": 17,
+		"city": "thessaloniki",
+		"municipality": "pylaias",
+		"region": [
+			"pylaia"
+		]
+	},
+	{
+		"id": 18,
+		"city": "thessaloniki",
+		"municipality": "stavroupoleos",
+		"region": [
+			"stavroupoli"
+		]
+	},
+	{
+		"id": 19,
+		"city": "thessaloniki",
+		"municipality": "sikeon",
+		"region": [
+			"sikies"
+		]
+	},
+	{
+		"id": 20,
+		"city": "thessaloniki",
+		"municipality": "chortiati",
+		"region": [
+			"chortiatis"
+		]
+	},
+	{
+		"id": 21,
+		"city": "thessaloniki",
+		"municipality": "oreokastrou",
+		"region": [
+			"oreokastro"
+		]
+	},
+	{
+		"id": 22,
+		"city": "thessaloniki",
+		"municipality": "axiou",
+		"region": [
+			"axios"
+		]
+	},
+	{
+		"id": 23,
+		"city": "thessaloniki",
+		"municipality": "vasilikon",
+		"region": [
+			"vasilika"
+		]
+	},
+	{
+		"id": 24,
+		"city": "thessaloniki",
+		"municipality": "epanomis",
+		"region": [
+			"epanomi"
+		]
+	},
+	{
+		"id": 25,
+		"city": "thessaloniki",
+		"municipality": "echedorou",
+		"region": [
+			"echedoros"
+		]
+	},
+	{
+		"id": 26,
+		"city": "thessaloniki",
+		"municipality": "kalitheas",
+		"region": [
+			"kalithea"
+		]
+	},
+	{
+		"id": 27,
+		"city": "thessaloniki",
+		"municipality": "michanionas",
+		"region": [
+			"michaniona"
+		]
+	},
+	{
+		"id": 28,
+		"city": "thessaloniki",
+		"municipality": "mikras",
+		"region": [
+			"mikra"
+		]
+	},
+	{
+		"id": 29,
+		"city": "thessaloniki",
+		"municipality": "migdonias",
+		"region": [
+			"migdonia"
+		]
+	},
+	{
+		"id": 30,
+		"city": "thessaloniki",
+		"municipality": "chalastras",
+		"region": [
+			"chalastra"
+		]
+	},
+	{
+		"id": 31,
+		"city": "larissa",
+		"municipality": "larissis",
+		"region": [
+			"nea_politeia",
+			"filipoupoli"
+		]
+	},
+	{
+		"id": 32,
+		"city": "xanthi",
+		"municipality": "xanthis",
+		"region": [
+			"center",
+			"chrysa"
+		]
+	}
+]
+

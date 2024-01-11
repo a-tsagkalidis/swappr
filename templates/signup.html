@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block main %}
+
+	<form action="/signup" id="signupForm" method="post" onsubmit="return validateSignUpForm()">
+		<div class="mb-3">
+			<input autocomplete="off" autofocus type="email" class="form-control mx-auto w-auto" name="email" placeholder="Email" required>
+		</div>
+		<div class="mb-3">
+			<input autocomplete="off" autofocus type="text" class="form-control mx-auto w-auto" name="username" placeholder="Username" required>
+		</div>
+		<div class="mb-3">
+			<input autocomplete="off" autofocus type="password" class="form-control mx-auto w-auto" name="password" placeholder="Password" required>
+		</div>
+		<div class="mb-3">
+			<input autocomplete="off" autofocus type="password" class="form-control mx-auto w-auto" name="confirmPassword" placeholder="Confirm password" required>
+		</div>
+		<div class="mb-3">
+			<input type="submit" class="form-control mx-auto w-auto"value="Sign Up">
+		</div>
+	</form>
+
+{% endblock %}

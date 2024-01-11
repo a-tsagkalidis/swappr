@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Edit Submission
+{% endblock %}
+
+{% block main %}
+  <div class="container mt-2">
+    <h1 class="mb-4">Edit Your Submission</h1>
+    <form action="/edited_submission" method="post" class="submitForm" onsubmit="return validateForm()">
+      <input type="hidden" name="submission_id" value="{{ submission.id }}">
+      {% include "form_fields.html" %}
+      <!-- Add extra fields if needed -->
+
+      <!-- Two buttons for either save the edited submission or delete it -->
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" name="save" value="true">Save</button>
+        <button type="submit" class="btn btn-link" name="delete" value="true">Delete</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

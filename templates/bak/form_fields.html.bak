@@ -1,0 +1,67 @@
+<div class="form-group">
+  <label for="manualAddress">Enter Address:</label>
+  <input type="text" class="form-control" id="manualAddress" placeholder="Type address manually">
+</div>
+
+<!-- Add an empty div for autocomplete suggestions -->
+<div id="geocoder-suggestions"></div>
+
+<!-- Initialize the map -->
+<div id="map" style="width: 600px; height: 400px;"></div>
+<script>
+  // Initialize the map
+  var map = L.map('map').setView([39.6369, 22.4176], 13);
+
+  // Add a map source
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // Initialize Leaflet Control Geocoder
+  var geocoder = L.Control.Geocoder.nominatim();
+
+  // Add a listener to the input field for manual address entry
+  document.getElementById('manualAddress').addEventListener('input', function() {
+    var addressInput = this.value;
+
+    // Clear existing suggestions
+    document.getElementById('geocoder-suggestions').innerHTML = '';
+
+    // Use Leaflet Control Geocoder to provide autocomplete suggestions
+    geocoder.geocode(addressInput, function(results) {
+      if (results && results.length > 0) {
+        results.forEach(function(result) {
+          // Create a suggestion element and append it to the suggestions div
+          var suggestion = document.createElement('div');
+          suggestion.classList.add('geocoder-suggestion');
+          suggestion.innerText = result.name;
+          suggestion.addEventListener('click', function() {
+            // When a suggestion is clicked, update the input field and the map
+            document.getElementById('manualAddress').value = result.name;
+            updateMap(result.center);
+            // Clear the suggestions
+            document.getElementById('geocoder-suggestions').innerHTML = '';
+          });
+          document.getElementById('geocoder-suggestions').appendChild(suggestion);
+        });
+      }
+    });
+  });
+
+  // Function to update the map with a marker at the specified coordinates
+  function updateMap(coordinates) {
+    // Clear existing markers
+    map.eachLayer(function(layer) {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
+
+    // Add a marker with a popup at the specified location
+    L.marker(coordinates).addTo(map)
+      .bindPopup(document.getElementById('manualAddress').value)
+      .openPopup();
+  }
+</script>
+</body>
+</html>

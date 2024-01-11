@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Dashboard
+{% endblock %}    
+
+{% block main %}
+
+  <div class="container mt-2">
+    <h1 class="mb-4">Your Submissions</h1>
+    {% if submissions %}
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Unique ID</th>
+            <th>House Type</th>
+            <th>Sqr. Meters (m&sup2;)</th>
+            <th>Rental (€)</th>
+            <th>Bedrooms</th>
+            <th>Bathrooms</th>
+            <th>Location</th>
+            <th>Exposure is</th>
+            <th>Edit House</th>
+            <!-- Add other columns as needed -->
+          </tr>
+        </thead>
+        <tbody>
+          {% for submission in submissions %}
+            <tr>
+              <td>{{ submission.id }}</td>
+              <td>{{ whitespace(submission.house_type) }}</td>
+              <td>{{ comma(submission.square_meters) }} m&sup2;</td>
+              <td>€{{ comma(submission.rental) }}</td>
+              <td>{{ submission.bedrooms }}</td>
+              <td>{{ submission.bathrooms }}</td>
+              <td>{{ whitespace(submission.city) }}, {{ whitespace(submission.region) }}</td>
+              <td>
+                {% if submission.exposure == 'public' %}
+                  <form method="post" action="/update_exposure">
+                    <input type="hidden" name="submission_id" value="{{ submission.id }}">
+                    <input type="hidden" name="new_exposure" value="private">
+                    <button type="submit" class="btn btn-success">Public</button>
+                  </form>
+                {% else %}
+                  <form method="post" action="/update_exposure">
+                    <input type="hidden" name="submission_id" value="{{ submission.id }}">
+                    <input type="hidden" name="new_exposure" value="public">
+                    <button type="submit" class="btn btn-primary">Private</button>
+                  </form>
+                {% endif %}
+              </td>
+              <td>
+                <form method="post" action="/edit_submission">
+                  <input type="hidden" name="submission_id" value="{{ submission.id }}">
+                  <button type="submit" class="btn btn-warning">Edit</button>
+                </form>
+              </td>
+              <!-- Add other columns as needed -->
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+        <p>No submissions found.</p>
+    {% endif %}
+  </div>
+
+{% endblock %}
