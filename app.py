@@ -210,6 +210,9 @@ def submit():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
     
+    # Flag that segregates submit.html from edit_submission.html and search.html
+    submit = True
+
     # Get user submitted form data
     user_id = session['user_id']
     exposure = request.form.get('exposure')
@@ -282,12 +285,23 @@ def submit():
         except ValueError as err:
             # Update log with ERROR msg
             app.logger.error(f"User with username `{session['username']}` and user_id {user_id} ERROR: Submission failed: {err}")
-            return render_template('/submit.html', submission={}, error=err)
+            return render_template(
+                '/submit.html',
+                submission=None,
+                submit=submit,
+                error=err
+            )
 
     else:
         # Update log with INFO msg
         app.logger.info(f"User with username `{session['username']}` and user_id {user_id} navigation @submit.html")
-        return render_template('/submit.html', cities=cities, submission={}, whitespace=whitespace)
+        return render_template(
+            '/submit.html',
+            cities=cities,
+            submission=None,
+            whitespace=whitespace,
+            submit=submit
+        )
 
 
 @app.route('/update_exposure', methods=['POST'])
@@ -319,6 +333,9 @@ def edit_submission():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
 
+    # Flag that segregates submit.html from edit_submission.html and search.html
+    edit_submission = True
+
     # Retrieve data from the form
     user_id = session['user_id']
     submission_id = request.form.get('submission_id')
@@ -335,7 +352,13 @@ def edit_submission():
     if submission_data:
         # Update log with INFO msg
         app.logger.info(f"User with username `{session['username']}` and user_id {user_id} navigation @edit_submission.html and editing submission with submission_id {submission_id}")
-        return render_template('/edit_submission.html', cities=cities, submission=submission_data[0], whitespace=whitespace)
+        return render_template(
+            '/edit_submission.html',
+            cities=cities,
+            submission=submission_data[0],
+            whitespace=whitespace,
+            edit_submission=edit_submission
+        )
     else:
         # Update log with ERROR msg
         app.logger.error(f"User with username `{session['username']}` and user_id {user_id} ERROR: Submission with submission_id {submission_id} not found")
@@ -349,6 +372,9 @@ def edit_submission():
 def save_edit_submission():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
+
+    # Flag that segregates submit.html from edit_submission.html and search.html
+    edit_submission = True
 
     # Retrieve data from the form
     user_id = session['user_id']
@@ -432,7 +458,14 @@ def save_edit_submission():
                     AND user_id = ?;
                     '''
             submission_data = cursor_fetch(query, submission_id, user_id)
-            return render_template('/edit_submission.html', cities=cities, submission=submission_data[0], error=err, whitespace=whitespace)
+            return render_template(
+                '/edit_submission.html',
+                cities=cities,
+                submission=submission_data[0],
+                error=err,
+                whitespace=whitespace,
+                edit_submission=edit_submission
+            )
     if 'delete' in request.form:
         # Delete the edited submission from database
         query = '''
@@ -486,6 +519,30 @@ def get_regions():
             '''
     regions = cursor_fetch(query, municipality_id)
     return regions
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    # Fetch cities for the initial rendering of the form
+    cities = cursor_fetch('SELECT DISTINCT city FROM cities')
+
+    # Flag that segregates search.html from submit.html and edit_submission.html
+    search = True
+    
+    if request.method == 'POST':
+        return render_template(
+            '/index.html'
+        )
+    else:
+        submit()
+        return render_template(
+            '/search.html',
+            cities=cities,
+            submission={},
+            whitespace=whitespace,
+            search=search,
+        )
 
 
 if __name__ == '__main__':

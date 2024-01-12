@@ -1,60 +1,62 @@
 <!-- File extends in both submission.html and edit_submission.html -->
 
-<div class="form-group">
-  <div class="form-check form-check-inline mb-4">
-    
-    <input type="radio" class="form-check-input" id="publicExposure" name="exposure" value="public" {% if submission.exposure == 'public' %}checked{% endif %} checked>
-    <label class="form-check-label" for="publicExposure">Public</label>
+{% if submit or edit_submission %}
+  <div class="form-group">
+    <div class="form-check form-check-inline mb-4">
+      
+      <input type="radio" class="form-check-input" id="publicExposure" name="exposure" value="public" {% if submission.exposure == 'public' %}checked{% endif %} checked>
+      <label class="form-check-label" for="publicExposure">Public</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" id="privateExposure" name="exposure" value="private" {% if submission.exposure == 'private' %}checked{% endif %}>
+      <label class="form-check-label" for="privateExposure">Private</label>
+    </div>
   </div>
-  <div class="form-check form-check-inline">
-    <input type="radio" class="form-check-input" id="privateExposure" name="exposure" value="private" {% if submission.exposure == 'private' %}checked{% endif %}>
-    <label class="form-check-label" for="privateExposure">Private</label>
+
+  <div class="form-group mb-4">
+    {% if submission %}
+        <label for="houseType">House Type:</label>
+    {% endif %}
+    <select class="form-control" id="houseType" name="houseType" required>
+      <option value="">Select House Type</option>
+      <option value="studio" {% if submission.house_type == 'studio' %}selected{% endif %}>Studio</option>
+      <option value="flat" {% if submission.house_type == 'flat' %}selected{% endif %}>Flat</option>
+      <option value="maisonette" {% if submission.house_type == 'maisonette' %}selected{% endif %}>Maisonette</option>
+      <option value="semi-detached_house" {% if submission.house_type == 'semi-detached_house' %}selected{% endif %}>Semi-Detached House</option>
+      <option value="detached_house" {% if submission.house_type == 'detached_house' %}selected{% endif %}>Detached House</option>
+      <option value="mansion" {% if submission.house_type == 'mansion' %}selected{% endif %}>Mansion</option>
+      <!-- Add other options -->
+    </select>
   </div>
-</div>
 
-<div class="form-group mb-4">
-  {% if submission %}
-      <label for="houseType">House Type:</label>
-  {% endif %}
-  <select class="form-control" id="houseType" name="houseType" required>
-    <option value="">Select House Type</option>
-		<option value="studio" {% if submission.house_type == 'studio' %}selected{% endif %}>Studio</option>
-		<option value="flat" {% if submission.house_type == 'flat' %}selected{% endif %}>Flat</option>
-		<option value="maisonette" {% if submission.house_type == 'maisonette' %}selected{% endif %}>Maisonette</option>
-		<option value="semi-detached_house" {% if submission.house_type == 'semi-detached_house' %}selected{% endif %}>Semi-Detached House</option>
-		<option value="detached_house" {% if submission.house_type == 'detached_house' %}selected{% endif %}>Detached House</option>
-		<option value="mansion" {% if submission.house_type == 'mansion' %}selected{% endif %}>Mansion</option>
-    <!-- Add other options -->
-  </select>
-</div>
+  <div class="form-group mb-4">
+    {% if submission %}
+      <label for="squareMeters">Square Footage (m&#178;):</label>
+    {% endif %}
+    <input type="number" class="form-control" id="squareMeters" name="squareMeters" min="0" max="1000" value="{{ submission.square_meters }}" placeholder="Enter Square Footage (m&#178;)" required>
+  </div>
 
-<div class="form-group mb-4">
-  {% if submission %}
-    <label for="squareMeters">Square Footage (m&#178;):</label>
-  {% endif %}
-  <input type="number" class="form-control" id="squareMeters" name="squareMeters" min="0" max="1000" value="{{ submission.square_meters }}" placeholder="Enter Square Footage (m&#178;)" required>
-</div>
+  <div class="form-group mb-4">
+    {% if submission %}
+      <label for="rental">Rental (&euro;):</label>
+    {% endif %}
+    <input type="number" class="form-control" id="rental" name="rental" min="0" max="10000" value="{{ submission.rental }}" placeholder="Enter Rental (&euro;)" required>
+  </div>
 
-<div class="form-group mb-4">
-  {% if submission %}
-    <label for="rental">Rental (&euro;):</label>
-  {% endif %}
-  <input type="number" class="form-control" id="rental" name="rental" min="0" max="10000" value="{{ submission.rental }}" placeholder="Enter Rental (&euro;)" required>
-</div>
+  <div class="form-group mb-4">
+    {% if submission %}
+      <label for="bedrooms">Bedrooms:</label>
+    {% endif %}
+    <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="0" max="10" value="{{ submission.bedrooms }}" placeholder="Enter Bedrooms" required>
+  </div>
 
-<div class="form-group mb-4">
-  {% if submission %}
-    <label for="bedrooms">Bedrooms:</label>
-  {% endif %}
-  <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="0" max="10" value="{{ submission.bedrooms }}" placeholder="Enter Bedrooms" required>
-</div>
-
-<div class="form-group mb-4">
-  {% if submission %}
-    <label for="bathrooms">Bathrooms:</label>
-  {% endif %}
-  <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="0" max="10" value="{{ submission.bathrooms }}" placeholder="Enter Bathrooms" required>
-</div>
+  <div class="form-group mb-4">
+    {% if submission %}
+      <label for="bathrooms">Bathrooms:</label>
+    {% endif %}
+    <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="0" max="10" value="{{ submission.bathrooms }}" placeholder="Enter Bathrooms" required>
+  </div>
+{% endif %}
 
 <div class="form-group mb-4">
   {% if submission %}

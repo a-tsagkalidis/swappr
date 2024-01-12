@@ -134,7 +134,7 @@ function enforceMinMax(input, min, max) {
 
 // Event listener for handling backspace key special case
 function handleBackspace(input, minValue) {
-    input.addEventListener('keydown', function(event) {
+    input.addEventListener('keydown', function (event) {
         if (event.key === 'Backspace' && parseInt(input.value, 10) === minValue) {
             input.value = '';  // Clear the input
         }
@@ -226,26 +226,27 @@ function validateForm() {
 };
 
 
-// Execute the following code only for submit and edit_submission routes
-if (window.location.pathname === '/submit' || window.location.pathname == '/edit_submission') {
-
+// Execute the following code only for submit, edit_submission, and search routes
+if (window.location.pathname === '/submit' ||
+    window.location.pathname === '/edit_submission'
+) {
     // Event listener for "squareMeters" input
-    document.getElementById('squareMeters').addEventListener('input', function() {
+    document.getElementById('squareMeters').addEventListener('input', function () {
         enforceMinMax(this, 0, 1000);
     });
 
     // Event listener for "rental" input
-    document.getElementById('rental').addEventListener('input', function() {
+    document.getElementById('rental').addEventListener('input', function () {
         enforceMinMax(this, 0, 10000);
     });
 
     // Event listener for "bedrooms" input
-    document.getElementById('bedrooms').addEventListener('input', function() {
+    document.getElementById('bedrooms').addEventListener('input', function () {
         enforceMinMax(this, 0, 10);
     });
 
     // Event listener for "bathrooms" input
-    document.getElementById('bathrooms').addEventListener('input', function() {
+    document.getElementById('bathrooms').addEventListener('input', function () {
         enforceMinMax(this, 0, 10);
     });
 
@@ -254,64 +255,68 @@ if (window.location.pathname === '/submit' || window.location.pathname == '/edit
     handleBackspace(document.getElementById('bathrooms'), 0);
     handleBackspace(document.getElementById('squareMeters'), 0);
     handleBackspace(document.getElementById('rental'), 0);
+}
 
 
+// ----- DYNAMIC SELECT OPTIONS -----//
+if (window.location.pathname === '/submit' ||
+    window.location.pathname === '/edit_submission' ||
+    window.location.pathname === '/search'    
+) {
     // Fetch municipalities based on the selected city
     document.getElementById('city').addEventListener('change', function () {
-    const selectedCity = this.value;
-    
-    // Reset municipality and region selectors
-    document.getElementById('municipality').innerHTML = '<option value="">Select Municipality</option>';
-    document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
-    
-    // If the selected city is the default value, no need to fetch data
-    if (selectedCity === "") {
-        return;
-    }
+        const selectedCity = this.value;
 
+        // Reset municipality and region selectors
+        document.getElementById('municipality').innerHTML = '<option value="">Select Municipality</option>';
+        document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
 
-    // ----- DYNAMIC SELECT OPTIONS -----//
-    // Fetch municipalities based on the selected city
-    fetch(`/get_municipalities?city=${selectedCity}`)
-        .then(response => response.json())
-        .then(data => {
-            const municipalitySelect = document.getElementById('municipality');
-            municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
-            data.forEach(municipalityObject => {
-                const option = document.createElement('option');
-                option.value = municipalityObject.municipality;
-                option.textContent = whitespace(municipalityObject.municipality);
-                municipalitySelect.appendChild(option);
+        // If the selected city is the default value, no need to fetch data
+        if (selectedCity === "") {
+            return;
+        }
+
+        // Fetch municipalities based on the selected city
+        fetch(`/get_municipalities?city=${selectedCity}`)
+            .then(response => response.json())
+            .then(data => {
+                const municipalitySelect = document.getElementById('municipality');
+                municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
+                data.forEach(municipalityObject => {
+                    const option = document.createElement('option');
+                    option.value = municipalityObject.municipality;
+                    option.textContent = whitespace(municipalityObject.municipality);
+                    municipalitySelect.appendChild(option);
+                });
             });
-        });
     });
-    
+
     // Fetch regions based on the selected municipality
     document.getElementById('municipality').addEventListener('change', function () {
-    const selectedMunicipality = this.value;
-    const selectedCity = document.getElementById('city').value;
-    
-    // Reset region selector
-    document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
-    
-    // If the selected municipality is the default value, no need to fetch data
-    if (selectedMunicipality === "") {
-        return;
-    }
-    
-    // Fetch regions based on the selected city and municipality
-    fetch(`/get_regions?city=${selectedCity}&municipality=${selectedMunicipality}`)
-        .then(response => response.json())
-        .then(data => {
-            const regionSelect = document.getElementById('region');
-            regionSelect.innerHTML = '<option value="">Select Region</option>';
-            data.forEach(regionObject => {
-                const option = document.createElement('option');
-                option.value = regionObject.region;
-                option.textContent = whitespace(regionObject.region);
-                regionSelect.appendChild(option);
+        const selectedMunicipality = this.value;
+        const selectedCity = document.getElementById('city').value;
+
+        // Reset region selector
+        document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
+
+        // If the selected municipality is the default value, no need to fetch data
+        if (selectedMunicipality === "") {
+            return;
+        }
+
+        // Fetch regions based on the selected city and municipality
+        fetch(`/get_regions?city=${selectedCity}&municipality=${selectedMunicipality}`)
+            .then(response => response.json())
+            .then(data => {
+                const regionSelect = document.getElementById('region');
+                regionSelect.innerHTML = '<option value="">Select Region</option>';
+                data.forEach(regionObject => {
+                    const option = document.createElement('option');
+                    option.value = regionObject.region;
+                    option.textContent = whitespace(regionObject.region);
+                    regionSelect.appendChild(option);
+                });
             });
-        });
     });
 }
 
