@@ -321,3 +321,41 @@ function whitespace(text) {
         return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
     });
 }
+
+
+if (window.location.pathname === '/search') {
+    var arbitraryValuesSlider = document.getElementById('squareMetersSlider');
+    var arbitraryValuesForSlider = ['100', '200', '300', '400', '500', '600'];
+
+    var format = {
+        to: function(value) {
+            return arbitraryValuesForSlider[Math.round(value)];
+        },
+        from: function (value) {
+            return arbitraryValuesForSlider.indexOf(value);
+        }
+    };
+
+    noUiSlider.create(arbitraryValuesSlider, {
+        // start values are parsed by 'format'
+        start: ['100', '500'],
+        range: { min: 0, max: arbitraryValuesForSlider.length - 1 },
+        step: 1,
+        tooltips: true,
+        format: format,
+        // pips: { mode: 'steps', format: format, density: 50 },
+    });
+
+    var snapValues = [
+        document.getElementById('squareMetersMinimum'),
+        document.getElementById('squareMetersMaximum')
+    ];
+
+    // Update sliders
+    arbitraryValuesSlider.noUiSlider.on('update', function (values, handle) {
+        snapValues[handle].innerHTML = values[handle];
+
+        // Update the hidden input field
+        document.getElementById('squareMeters').value = JSON.stringify({ min: values[0], max: values[1] })
+    });
+}

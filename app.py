@@ -49,7 +49,7 @@ else:
 @app.route('/')
 @login_required
 def index():
-    # Get user_id from the session
+    # Get user data
     user_id = session['user_id']
 
     # Fetch all submissions for the logged user
@@ -136,6 +136,7 @@ def delayed_redirect():
 
     # Check if the registration timestamp is set
     if registration_timestamp:
+
         # Calculate the time elapsed since registration
         elapsed_time = datetime.now() - registration_timestamp
 
@@ -210,20 +211,22 @@ def submit():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
 
-    # Get user submitted form data
+    # Get user data
     user_id = session['user_id']
-    exposure = request.form.get('exposure')
-    house_type = request.form.get('houseType')
-    square_meters = request.form.get('squareMeters')
-    rental = request.form.get('rental')
-    bedrooms = request.form.get('bedrooms')
-    bathrooms = request.form.get('bathrooms')
-    city = request.form.get('city')
-    municipality = request.form.get('municipality')
-    region = request.form.get('region')
-    all_field_values = list(request.form.values())
 
     if request.method == 'POST':
+        # Get user submitted form data
+        exposure = request.form.get('exposure')
+        house_type = request.form.get('houseType')
+        square_meters = request.form.get('squareMeters')
+        rental = request.form.get('rental')
+        bedrooms = request.form.get('bedrooms')
+        bathrooms = request.form.get('bathrooms')
+        city = request.form.get('city')
+        municipality = request.form.get('municipality')
+        region = request.form.get('region')
+        all_field_values = list(request.form.values())
+
         # Check if all form fields are filled and valid, else flash error and reload the route
         try:
             # Ensure user form input for submission is valid
@@ -302,7 +305,10 @@ def submit():
 @app.route('/update_exposure', methods=['POST'])
 @login_required
 def update_exposure():
+    # Get user data
     user_id = session['user_id']
+
+    # Retrieve data from the form
     submission_id = request.form.get('submission_id')
     new_exposure = request.form.get('new_exposure')
 
@@ -328,11 +334,10 @@ def edit_submission():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
 
-    # Flag that segregates submit.html from edit_submission.html and search.html
-    edit_submission = True
+    # Get user data
+    user_id = session['user_id']
 
     # Retrieve data from the form
-    user_id = session['user_id']
     submission_id = request.form.get('submission_id')
 
     # Check if the submission exists by fetchin it
@@ -352,7 +357,6 @@ def edit_submission():
             cities=cities,
             submission=submission_data[0],
             whitespace=whitespace,
-            edit_submission=edit_submission
         )
     else:
         # Update log with ERROR msg
@@ -368,11 +372,10 @@ def save_edit_submission():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
 
-    # Flag that segregates submit.html from edit_submission.html and search.html
-    edit_submission = True
+    # Get user data
+    user_id = session['user_id']
 
     # Retrieve data from the form
-    user_id = session['user_id']
     submission_id = request.form.get('submission_id')
     house_type = request.form.get('houseType')
     square_meters = request.form.get('squareMeters')
@@ -459,7 +462,6 @@ def save_edit_submission():
                 submission=submission_data[0],
                 error=err,
                 whitespace=whitespace,
-                edit_submission=edit_submission
             )
     if 'delete' in request.form:
         # Delete the edited submission from database
@@ -522,25 +524,26 @@ def search():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
 
-    # Get user submitted form data
+    # Get user data
     user_id = session['user_id']
-    house_type = request.form.get('houseType')
-    square_meters = request.form.get('squareMeters')
-    rental = request.form.get('rental')
-    bedrooms = request.form.get('bedrooms')
-    bathrooms = request.form.get('bathrooms')
-    city = request.form.get('city')
-    municipality = request.form.get('municipality')
-    region = request.form.get('region')
-    exposure = 'public'
-    all_field_values = list(request.form.values())
 
+    if request.method == 'POST':
+        # Get user submitted form data
+        house_type = request.form.get('houseType')
+        square_meters = json.loads(request.form.get('squareMeters'))
+        rental = request.form.get('rental')
+        bedrooms = request.form.get('bedrooms')
+        bathrooms = request.form.get('bathrooms')
+        city = request.form.get('city')
+        municipality = request.form.get('municipality')
+        region = request.form.get('region')
+        exposure = 'public'
+        all_field_values = list(request.form.values())
 
-    # Construct the SQL query based on the user's search criteria
-    query = '''
+        query = '''
         SELECT * FROM submissions
         WHERE (house_type = ? OR ? = '')
-        AND (square_meters = ? OR ? = '')
+        AND ((square_meters >= ? AND square_meters <= ?) OR ? IS NULL OR ? = '')
         AND (rental = ? OR ? = '')
         AND (bedrooms = ? OR ? = '')
         AND (bathrooms = ? OR ? = '')
@@ -549,23 +552,23 @@ def search():
         AND (region = ? OR ? = '')
         AND (exposure = ?)
         AND (user_id != ?)
-    '''
+        '''
 
-    # Execute the query with the provided parameters
-    search_results = cursor_fetch(
-        query,
-        house_type, house_type,
-        square_meters, square_meters,
-        rental, rental,
-        bedrooms, bedrooms,
-        bathrooms, bathrooms,
-        city, city,
-        municipality, municipality,
-        region, region,
-        exposure,
-        user_id)
+        # Execute the query with the provided parameters
+        search_results = cursor_fetch(
+            query,
+            house_type, house_type,
+            square_meters['min'], square_meters['max'],
+            square_meters['min'], square_meters['max'],
+            rental, rental,
+            bedrooms, bedrooms,
+            bathrooms, bathrooms,
+            city, city,
+            municipality, municipality,
+            region, region,
+            exposure,
+            user_id)
 
-    if request.method == 'POST':
         return render_template(
             '/search.html',
             cities=cities,

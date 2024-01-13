@@ -24,10 +24,18 @@
             <option value="mansion">Mansion</option>
           </select>
         </div>
+
+
         <div class="col-md-4 mb-3">
-          <label for="squareMeters" class="form-label">Square Footage (m²)</label>
-          <input type="number" class="form-control" id="squareMeters" name="squareMeters" min="0" max="1000" placeholder="Enter Square Footage">
+          <label for="squareMeters" class="form-label">Square Meters (m&#178;)</label>
+          <div id="squareMetersSlider" name="squareMetersSlider"></div>
+          <output for="squareMeters" id="squareMetersMinimum">0</output><span> to </span>
+          <output for="squareMeters" id="squareMetersMaximum">0</output><span> m&#178;</span>
+
+          <input type="hidden" id="squareMeters" name="squareMeters" value="">
         </div>
+        
+        
         <div class="col-md-4 mb-3">
           <label for="rental" class="form-label">Rental (€)</label>
           <input type="number" class="form-control" id="rental" name="rental" min="0" max="10000" placeholder="Enter Rental">
