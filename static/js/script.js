@@ -141,7 +141,7 @@ function handleBackspace(input, minValue) {
     });
 }
 
-function validateForm() {
+function validateSubmitForm() {
     const submitForm = document.querySelector('.submitForm');
     const exposure = submitForm.elements["exposure"].value;
     const houseType = submitForm.elements["houseType"].value;
@@ -228,7 +228,8 @@ function validateForm() {
 
 // Execute the following code only for submit, edit_submission, and search routes
 if (window.location.pathname === '/submit' ||
-    window.location.pathname === '/edit_submission'
+    window.location.pathname === '/edit_submission' ||
+    window.location.pathname === '/search'
 ) {
     // Event listener for "squareMeters" input
     document.getElementById('squareMeters').addEventListener('input', function () {
@@ -255,14 +256,8 @@ if (window.location.pathname === '/submit' ||
     handleBackspace(document.getElementById('bathrooms'), 0);
     handleBackspace(document.getElementById('squareMeters'), 0);
     handleBackspace(document.getElementById('rental'), 0);
-}
 
-
-// ----- DYNAMIC SELECT OPTIONS -----//
-if (window.location.pathname === '/submit' ||
-    window.location.pathname === '/edit_submission' ||
-    window.location.pathname === '/search'    
-) {
+    // ----- DYNAMIC SELECT OPTIONS -----//
     // Fetch municipalities based on the selected city
     document.getElementById('city').addEventListener('change', function () {
         const selectedCity = this.value;

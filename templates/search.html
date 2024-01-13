@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block main %}
+  <div class="container mt-2">
+    <h1 class="mb-4 fw-bold fs-2 text-secondary">Search a House</h1>
+    <form action="/search" method="post" class="submitForm">
+
+      <hr>
+      <h3 class="mb-3 fw-light fs-4 text-secondary">House Characteristics filters</h2>
+      <div class="row g-3 mb-4">
+        <div class="col-md-4 mb-3">
+          <label for="houseType" class="form-label">House Type</label>
+          <select class="form-select" id="houseType" name="houseType">
+            <option value="">Select House Type</option>
+            <option value="studio">Studio</option>
+            <option value="flat">Flat</option>
+            <option value="maisonette">Maisonette</option>
+            <option value="semi-detached_house">Semi-Detached House</option>
+            <option value="detached_house">Detached House</option>
+            <option value="mansion">Mansion</option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="squareMeters" class="form-label">Square Footage (m²)</label>
+          <input type="number" class="form-control" id="squareMeters" name="squareMeters" min="0" max="1000" placeholder="Enter Square Footage">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="rental" class="form-label">Rental (€)</label>
+          <input type="number" class="form-control" id="rental" name="rental" min="0" max="10000" placeholder="Enter Rental">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="bedrooms" class="form-label">Bedrooms</label>
+          <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="0" max="10" placeholder="Enter Bedrooms">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="bathrooms" class="form-label">Bathrooms</label>
+          <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="0" max="10" placeholder="Enter Bathrooms">
+        </div>
+      </div>
+
+      <hr>
+      <h3 class="mb-3 fw-light fs-4 text-secondary">Location filters</h2>
+      <div class="row g-3 mb-4">
+        <div class="col-md-4 mb-3">
+          <label for="city" class="form-label">City</label>
+          <select class="form-select" id="city" name="city">
+            <option value="">Select City</option>
+            {% for city in cities %}
+              <option value="{{ city.city }}">{{ whitespace(city.city) }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+          <label for="municipality" class="form-label">Municipality</label>
+          <select class="form-select" id="municipality" name="municipality">
+
+              <option value="">Select Municipality</option>
+
+            <!-- Options will be populated dynamically using JavaScript -->
+          </select>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+          <label for="municipality" class="form-label">Region</label>
+          <select class="form-select" id="region" name="region">
+
+            <option value="">Select Region</option>
+
+            <!-- Options will be populated dynamically using JavaScript -->
+          </select>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-warning">Search</button>
+    </form>
+  </div>
+
+  {% if search %}
+    <br>
+    <hr>
+    <div class="container mt-2">
+      <h1 class="mb-4 fw-bold fs-2 text-secondary">Search Matches</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Unique ID</th>
+              <th>House Type</th>
+              <th>Sqr. Meters (m&sup2;)</th>
+              <th>Rental (€)</th>
+              <th>Bedrooms</th>
+              <th>Bathrooms</th>
+              <th>Location</th>
+              <!-- Add other columns as needed -->
+            </tr>
+          </thead>
+          <tbody>
+            {% for match in search %}
+              <tr>
+                <td>{{ match.id }}</td>
+                <td>{{ whitespace(match.house_type) }}</td>
+                <td>{{ comma(match.square_meters) }} m&sup2;</td>
+                <td>€{{ comma(match.rental) }}</td>
+                <td>{{ match.bedrooms }}</td>
+                <td>{{ match.bathrooms }}</td>
+                <td>{{ whitespace(match.city) }}, {{ whitespace(match.region) }}</td>
+                <!-- Add other columns as needed -->
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+  
+  {% else %}
+    <p>No matching houses found.</p>
+  {% endif %}
+
+{% endblock %}

@@ -209,9 +209,6 @@ def signout():
 def submit():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
-    
-    # Flag that segregates submit.html from edit_submission.html and search.html
-    submit = True
 
     # Get user submitted form data
     user_id = session['user_id']
@@ -288,7 +285,6 @@ def submit():
             return render_template(
                 '/submit.html',
                 submission=None,
-                submit=submit,
                 error=err
             )
 
@@ -299,8 +295,7 @@ def submit():
             '/submit.html',
             cities=cities,
             submission=None,
-            whitespace=whitespace,
-            submit=submit
+            whitespace=whitespace
         )
 
 
@@ -527,21 +522,65 @@ def search():
     # Fetch cities for the initial rendering of the form
     cities = cursor_fetch('SELECT DISTINCT city FROM cities')
 
-    # Flag that segregates search.html from submit.html and edit_submission.html
-    search = True
-    
+    # Get user submitted form data
+    user_id = session['user_id']
+    house_type = request.form.get('houseType')
+    square_meters = request.form.get('squareMeters')
+    rental = request.form.get('rental')
+    bedrooms = request.form.get('bedrooms')
+    bathrooms = request.form.get('bathrooms')
+    city = request.form.get('city')
+    municipality = request.form.get('municipality')
+    region = request.form.get('region')
+    exposure = 'public'
+    all_field_values = list(request.form.values())
+
+
+    # Construct the SQL query based on the user's search criteria
+    query = '''
+        SELECT * FROM submissions
+        WHERE (house_type = ? OR ? = '')
+        AND (square_meters = ? OR ? = '')
+        AND (rental = ? OR ? = '')
+        AND (bedrooms = ? OR ? = '')
+        AND (bathrooms = ? OR ? = '')
+        AND (city = ? OR ? = '')
+        AND (municipality = ? OR ? = '')
+        AND (region = ? OR ? = '')
+        AND (exposure = ?)
+        AND (user_id != ?)
+    '''
+
+    # Execute the query with the provided parameters
+    search_results = cursor_fetch(
+        query,
+        house_type, house_type,
+        square_meters, square_meters,
+        rental, rental,
+        bedrooms, bedrooms,
+        bathrooms, bathrooms,
+        city, city,
+        municipality, municipality,
+        region, region,
+        exposure,
+        user_id)
+
     if request.method == 'POST':
-        return render_template(
-            '/index.html'
-        )
-    else:
-        submit()
         return render_template(
             '/search.html',
             cities=cities,
-            submission={},
-            whitespace=whitespace,
-            search=search,
+            search=search_results,
+            comma=comma,
+            whitespace=whitespace
+        )
+    else:
+        # Update log with INFO msg
+        app.logger.info(f"User with username `{session['username']}` and user_id {user_id} navigation @search.html")
+        return render_template(
+            '/search.html',
+            cities=cities,
+            search=None,
+            whitespace=whitespace
         )
 
 
