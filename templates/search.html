@@ -9,6 +9,7 @@
     <h1 class="mb-4 fw-bold fs-2 text-secondary">Search a House</h1>
     <form action="/search" method="post" class="submitForm">
 
+      <!-- House characteristics sections -->
       <hr>
       <h3 class="mb-3 fw-light fs-4 text-secondary">House Characteristics filters</h2>
       <div class="row g-3 mb-4">
@@ -27,29 +28,43 @@
 
 
         <div class="col-md-4 mb-3">
-          <label for="squareMeters" class="form-label">Square Meters (m&#178;)</label>
-          <div id="squareMetersSlider" name="squareMetersSlider"></div>
-          <output for="squareMeters" id="squareMetersMinimum">0</output><span> to </span>
-          <output for="squareMeters" id="squareMetersMaximum">0</output><span> m&#178;</span>
-
+          <label for="squareMeters" class="form-label mb-3">Square Meters (m&#178;)</label>
+          <div class="mb-2" id="squareMetersSlider" name="squareMetersSlider"></div>
+          <output id="squareMetersMinimum">0</output><span> to </span>
+          <output id="squareMetersMaximum">0</output><span> m&#178;</span>
           <input type="hidden" id="squareMeters" name="squareMeters" value="">
         </div>
         
         
         <div class="col-md-4 mb-3">
-          <label for="rental" class="form-label">Rental (€)</label>
-          <input type="number" class="form-control" id="rental" name="rental" min="0" max="10000" placeholder="Enter Rental">
+          <label for="rental" class="form-label mb-3">Rental (&euro;)</label>
+          <div class="mb-2" id="rentalSlider" name="rentalSlider"></div>
+          <output id="rentalMinimum">0</output><span> to </span>
+          <output id="rentalMaximum">0</output><span> &euro;</span>
+          <input type="hidden" id="rental" name="rental" value="">
         </div>
+
+
         <div class="col-md-4 mb-3">
-          <label for="bedrooms" class="form-label">Bedrooms</label>
-          <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="0" max="10" placeholder="Enter Bedrooms">
+          <label for="bedrooms" class="form-label mb-3">Bedrooms</label>
+          <div class="mb-2" id="bedroomsSlider" name="bedroomsSlider"></div>
+          <output id="bedroomsMinimum">0</output><span> to </span>
+          <output id="bedroomsMaximum">0</output>
+          <input type="hidden" id="bedrooms" name="bedrooms" value="">
         </div>
+
+
         <div class="col-md-4 mb-3">
-          <label for="bathrooms" class="form-label">Bathrooms</label>
-          <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="0" max="10" placeholder="Enter Bathrooms">
+          <label for="bathrooms" class="form-label mb-3">Bathrooms</label>
+          <div class="mb-2" id="bathroomsSlider" name="bathroomsSlider"></div>
+          <output id="bathroomsMinimum">0</output><span> to </span>
+          <output id="bathroomsMaximum">0</output>
+          <input type="hidden" id="bathrooms" name="bathrooms" value="">
         </div>
       </div>
 
+
+      <!-- Location filters sections -->
       <hr>
       <h3 class="mb-3 fw-light fs-4 text-secondary">Location filters</h2>
       <div class="row g-3 mb-4">
@@ -67,9 +82,7 @@
         <div class="col-md-4 mb-3">
           <label for="municipality" class="form-label">Municipality</label>
           <select class="form-select" id="municipality" name="municipality">
-
               <option value="">Select Municipality</option>
-
             <!-- Options will be populated dynamically using JavaScript -->
           </select>
         </div>
@@ -77,47 +90,47 @@
         <div class="col-md-4 mb-3">
           <label for="municipality" class="form-label">Region</label>
           <select class="form-select" id="region" name="region">
-
             <option value="">Select Region</option>
-
             <!-- Options will be populated dynamically using JavaScript -->
           </select>
         </div>
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="btn btn-warning">Search</button>
+      <div class="text-center">
+        <button type="submit" class="mb-4 btn btn-warning">Search</button>
+      </div>
     </form>
   </div>
 
+  <!-- Search results section -->
   {% if search %}
-    <br>
     <hr>
     <div class="container mt-2">
       <h1 class="mb-4 fw-bold fs-2 text-secondary">Search Matches</h1>
         <table class="table">
           <thead>
             <tr>
-              <th>Unique ID</th>
               <th>House Type</th>
               <th>Sqr. Meters (m&sup2;)</th>
-              <th>Rental (€)</th>
+              <th>Rental (&euro;)</th>
               <th>Bedrooms</th>
               <th>Bathrooms</th>
               <th>Location</th>
+              <th>Contact</th>
               <!-- Add other columns as needed -->
             </tr>
           </thead>
           <tbody>
             {% for match in search %}
               <tr>
-                <td>{{ match.id }}</td>
                 <td>{{ whitespace(match.house_type) }}</td>
                 <td>{{ comma(match.square_meters) }} m&sup2;</td>
                 <td>€{{ comma(match.rental) }}</td>
                 <td>{{ match.bedrooms }}</td>
                 <td>{{ match.bathrooms }}</td>
-                <td>{{ whitespace(match.city) }}, {{ whitespace(match.region) }}</td>
+                <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ whitespace(match.region) }}" target="_blank">{{ whitespace(match.city) }}, {{ whitespace(match.region) }}</a></td>
+                <td><a href="mailto:{{ match.email }}">{{ match.username }}</a></td>
                 <!-- Add other columns as needed -->
               </tr>
             {% endfor %}
@@ -125,8 +138,9 @@
         </table>
     </div>
   
+  {% elif search_initial_page_load %}
   {% else %}
-    <p>No matching houses found.</p>
+    <p class="text-center">No matching houses found.</p>
   {% endif %}
 
 {% endblock %}

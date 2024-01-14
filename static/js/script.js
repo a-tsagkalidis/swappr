@@ -316,6 +316,7 @@ if (window.location.pathname === '/submit' ||
 }
 
 
+// Replaces underscores with whitespaces and lowercased words to titles
 function whitespace(text) {
     return text.replace(/_/g, ' ').replace(/\w\S*/g, function (word) {
         return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
@@ -323,39 +324,134 @@ function whitespace(text) {
 }
 
 
-if (window.location.pathname === '/search') {
-    var arbitraryValuesSlider = document.getElementById('squareMetersSlider');
-    var arbitraryValuesForSlider = ['100', '200', '300', '400', '500', '600'];
-
-    var format = {
+// Called in noUiSliders creations - formats values from 2 decimals (deafault) to 0 decimals
+function createSliderFormat() {
+    return {
         to: function(value) {
-            return arbitraryValuesForSlider[Math.round(value)];
+            return Math.round(value);
         },
         from: function (value) {
-            return arbitraryValuesForSlider.indexOf(value);
+            return parseFloat(value);
         }
     };
+}
 
-    noUiSlider.create(arbitraryValuesSlider, {
-        // start values are parsed by 'format'
-        start: ['100', '500'],
-        range: { min: 0, max: arbitraryValuesForSlider.length - 1 },
-        step: 1,
-        tooltips: true,
-        format: format,
-        // pips: { mode: 'steps', format: format, density: 50 },
+
+// ----- NOUISLIDER CREATIONS -----//
+if (window.location.pathname === '/search') {
+
+    // --- Square Meters noUiSlider ---//
+    // Get square meters slider from DOM
+    var squareMetersSlider = document.getElementById('squareMetersSlider');
+    
+    // Create dual slider for square meters
+    noUiSlider.create(squareMetersSlider, {
+        start: ['0', '1000'],
+        range: { min: 0, max: 1000 },
+        step: 5,
+        tooltips: false,
+        format: createSliderFormat()
     });
 
-    var snapValues = [
+    // Get an array of the minimum and maximum values of square meters from DOM 
+    var squareMetersSnapValues = [
         document.getElementById('squareMetersMinimum'),
         document.getElementById('squareMetersMaximum')
     ];
 
-    // Update sliders
-    arbitraryValuesSlider.noUiSlider.on('update', function (values, handle) {
-        snapValues[handle].innerHTML = values[handle];
+    // Update slider values
+    squareMetersSlider.noUiSlider.on('update', function (values, handle) {
+        squareMetersSnapValues[handle].innerHTML = values[handle];
 
-        // Update the hidden input field
+        // Update the hidden input field that will send the values to backend
         document.getElementById('squareMeters').value = JSON.stringify({ min: values[0], max: values[1] })
     });
+
+
+    // --- Rental noUiSlider ---//
+    // Get rental slider from DOM
+    var rentalSlider = document.getElementById('rentalSlider');
+    
+    // Create dual slider for rental
+    noUiSlider.create(rentalSlider, {
+        start: ['0', '10000'],
+        range: { min: 0, max: 10000 },
+        step: 50,
+        tooltips: false,
+        format: createSliderFormat()
+    });
+
+    // Get an array of the minimum and maximum values of rental from DOM 
+    var rentalSnapValues = [
+        document.getElementById('rentalMinimum'),
+        document.getElementById('rentalMaximum')
+    ];
+
+    // Update slider values
+    rentalSlider.noUiSlider.on('update', function (values, handle) {
+        rentalSnapValues[handle].innerHTML = values[handle];
+
+        // Update the hidden input field that will send the values to backend
+        document.getElementById('rental').value = JSON.stringify({ min: values[0], max: values[1] })
+    });
+
+
+    // --- Bedrooms noUiSlider ---//
+    // Get bedrooms slider from DOM
+    var bedroomsSlider = document.getElementById('bedroomsSlider');
+    
+    // Create dual slider for bedrooms
+    noUiSlider.create(bedroomsSlider, {
+        start: ['0', '10'],
+        range: { min: 0, max: 10 },
+        step: 1,
+        tooltips: false,
+        format: createSliderFormat()
+    });
+
+    // Get an array of the minimum and maximum values of bedrooms from DOM 
+    var bedroomsSnapValues = [
+        document.getElementById('bedroomsMinimum'),
+        document.getElementById('bedroomsMaximum')
+    ];
+
+    // Update slider values
+    bedroomsSlider.noUiSlider.on('update', function (values, handle) {
+        bedroomsSnapValues[handle].innerHTML = values[handle];
+
+        // Update the hidden input field that will send the values to backend
+        document.getElementById('bedrooms').value = JSON.stringify({ min: values[0], max: values[1] })
+    });
+
+
+    // --- Bathrooms noUiSlider ---//
+    // Get bathrooms slider from DOM
+    var bathroomsSlider = document.getElementById('bathroomsSlider');
+    
+    // Create dual slider for bathrooms
+    noUiSlider.create(bathroomsSlider, {
+        start: ['0', '10'],
+        range: { min: 0, max: 10 },
+        step: 1,
+        tooltips: false,
+        format: createSliderFormat()
+    });
+
+    // Get an array of the minimum and maximum values of bathrooms from DOM 
+    var bathroomsSnapValues = [
+        document.getElementById('bathroomsMinimum'),
+        document.getElementById('bathroomsMaximum')
+    ];
+
+    // Update slider values
+    bathroomsSlider.noUiSlider.on('update', function (values, handle) {
+        bathroomsSnapValues[handle].innerHTML = values[handle];
+
+        // Update the hidden input field that will send the values to backend
+        document.getElementById('bathrooms').value = JSON.stringify({ min: values[0], max: values[1] })
+    });
+
+
+
+
 }

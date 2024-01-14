@@ -1,6 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:light,regular,bold&subset=Latin);
 
-/* Body related styles */
+/* Core styles */
 html {
     position: relative;
     min-height: 100%;
@@ -10,7 +10,11 @@ body {
     color: rgb(75, 75, 75);
     margin-bottom: auto;
 }
-/* Body related styles */
+a {
+    text-decoration: none;
+    color: rgb(0, 134, 206);
+}
+/* Core styles */
 
 
 
@@ -149,39 +153,12 @@ td {
 
 
 
-/* Slider */
-.slidecontainer {
-    width: 100%;
+/* Fit handle within the slider */
+#squareMetersSlider,
+#rentalSlider,
+#bedroomsSlider,
+#bathroomsSlider {
+    border-radius: 0;
+    padding: 0 16px;
 }
-
-.slider {
--webkit-appearance: none;
-width: 100%;
-height: 15px;
-background: #d3d3d3;
-outline: none;
-opacity: 0.7;
--webkit-transition: .2s;
-transition: opacity .2s;
-}
-
-.slider:hover {
-opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
--webkit-appearance: none;
-appearance: none;
-width: 25px;
-height: 15px;
-background: #006aac;
-cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-width: 25px;
-height: 15px;
-background: #006aac;
-cursor: pointer;
-}
-/* Slider */
+/* Fit handle within the slider */

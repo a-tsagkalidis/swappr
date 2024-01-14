@@ -531,9 +531,9 @@ def search():
         # Get user submitted form data
         house_type = request.form.get('houseType')
         square_meters = json.loads(request.form.get('squareMeters'))
-        rental = request.form.get('rental')
-        bedrooms = request.form.get('bedrooms')
-        bathrooms = request.form.get('bathrooms')
+        rental = json.loads(request.form.get('rental'))
+        bedrooms = json.loads(request.form.get('bedrooms'))
+        bathrooms = json.loads(request.form.get('bathrooms'))
         city = request.form.get('city')
         municipality = request.form.get('municipality')
         region = request.form.get('region')
@@ -541,18 +541,20 @@ def search():
         all_field_values = list(request.form.values())
 
         query = '''
-        SELECT * FROM submissions
-        WHERE (house_type = ? OR ? = '')
-        AND ((square_meters >= ? AND square_meters <= ?) OR ? IS NULL OR ? = '')
-        AND (rental = ? OR ? = '')
-        AND (bedrooms = ? OR ? = '')
-        AND (bathrooms = ? OR ? = '')
-        AND (city = ? OR ? = '')
-        AND (municipality = ? OR ? = '')
-        AND (region = ? OR ? = '')
-        AND (exposure = ?)
-        AND (user_id != ?)
-        '''
+                SELECT submissions.*, users.email, users.username
+                FROM submissions
+                JOIN users ON submissions.user_id = users.id
+                WHERE (submissions.house_type = ? OR ? = '')
+                AND ((submissions.square_meters >= ? AND submissions.square_meters <= ?) OR ? IS NULL OR ? = '')
+                AND ((submissions.rental >= ? AND submissions.rental <= ?) OR ? IS NULL OR ? = '')
+                AND ((submissions.bedrooms >= ? AND submissions.bedrooms <= ?) OR ? IS NULL OR ? = '')
+                AND ((submissions.bathrooms >= ? AND submissions.bathrooms <= ?) OR ? IS NULL OR ? = '')
+                AND (submissions.city = ? OR ? = '')
+                AND (submissions.municipality = ? OR ? = '')
+                AND (submissions.region = ? OR ? = '')
+                AND submissions.exposure = ?
+                AND submissions.user_id != ?;
+                '''
 
         # Execute the query with the provided parameters
         search_results = cursor_fetch(
@@ -560,14 +562,18 @@ def search():
             house_type, house_type,
             square_meters['min'], square_meters['max'],
             square_meters['min'], square_meters['max'],
-            rental, rental,
-            bedrooms, bedrooms,
-            bathrooms, bathrooms,
+            rental['min'], rental['max'],
+            rental['min'], rental['max'],
+            bedrooms['min'], bedrooms['max'],
+            bedrooms['min'], bedrooms['max'],
+            bathrooms['min'], bathrooms['max'],
+            bathrooms['min'], bathrooms['max'],
             city, city,
             municipality, municipality,
             region, region,
             exposure,
             user_id)
+        print(search_results)
 
         return render_template(
             '/search.html',
@@ -582,6 +588,7 @@ def search():
         return render_template(
             '/search.html',
             cities=cities,
+            search_initial_page_load = True,
             search=None,
             whitespace=whitespace
         )
