@@ -541,9 +541,9 @@ def search():
         all_field_values = list(request.form.values())
 
         query = '''
-                SELECT submissions.*, users.email, users.username
-                FROM submissions
+                SELECT submissions.*, users.email, users.username, regions.postal_code FROM submissions
                 JOIN users ON submissions.user_id = users.id
+                JOIN regions ON submissions.region = regions.region
                 WHERE (submissions.house_type = ? OR ? = '')
                 AND ((submissions.square_meters >= ? AND submissions.square_meters <= ?) OR ? IS NULL OR ? = '')
                 AND ((submissions.rental >= ? AND submissions.rental <= ?) OR ? IS NULL OR ? = '')

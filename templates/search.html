@@ -129,7 +129,7 @@
                 <td>€{{ comma(match.rental) }}</td>
                 <td>{{ match.bedrooms }}</td>
                 <td>{{ match.bathrooms }}</td>
-                <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ whitespace(match.region) }}" target="_blank">{{ whitespace(match.city) }}, {{ whitespace(match.region) }}</a></td>
+                <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ whitespace(match.region) }}, {{ match.postal_code }}" target="_blank">{{ whitespace(match.city) }}, {{ whitespace(match.region) }}</a></td>
                 <td><a href="mailto:{{ match.email }}">{{ match.username }}</a></td>
                 <!-- Add other columns as needed -->
               </tr>

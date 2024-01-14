@@ -91,17 +91,19 @@ def create_database_tables():
         CREATE TABLE IF NOT EXISTS regions (
             id INTEGER PRIMARY KEY,
             region TEXT UNIQUE NOT NULL,
+            postal_code TEXT NOT NULL, -- Added postal_code column
             municipality_id INTEGER,
             FOREIGN KEY (municipality_id) REFERENCES municipalities (id)
         );
     ''')
 
 
+
 def import_locations():
     '''
     Imports any non-existing data from the locations.json in
     the proper relational database tables. Executes when app.py
-    runs. Updates app.log with newly imported location that where
+    runs. Updates app.log with newly imported locations that were
     detected in the JSON file
     '''
     # Declare a variable counter for newly imported locations.
@@ -147,13 +149,13 @@ def import_locations():
     # Insert data into the 'regions' table
     for location in locations:
         municipality_id = cursor.execute('SELECT id FROM municipalities WHERE municipality = ?', (location['municipality'],)).fetchone()[0]
-        for region in location['region']:
-
+        for region, postal_code in location['region'].items():
+            
             # Check if the region already exists in the table
             existing_region = cursor.execute('SELECT id FROM regions WHERE region = ?', (region,)).fetchone()
             if not existing_region:
                 location_update['regions'].append(region)
-                cursor.execute('INSERT INTO regions (region, municipality_id) VALUES (?, ?)', (region, municipality_id))
+                cursor.execute('INSERT INTO regions (region, postal_code, municipality_id) VALUES (?, ?, ?)', (region, postal_code, municipality_id))
 
     # Commit the final changes and close the connection
     conn.commit()
@@ -164,6 +166,7 @@ def import_locations():
         flag = True
 
     return location_update, flag
+
 
 def tuples_to_dict(keys_tuple, values_tuple):
     if values_tuple:
