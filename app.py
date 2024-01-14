@@ -5,7 +5,6 @@ from datetime import datetime
 import logging
 import secrets
 import json
-import os
 
 app = Flask(__name__)
 
@@ -573,7 +572,6 @@ def search():
             region, region,
             exposure,
             user_id)
-        print(search_results)
 
         return render_template(
             '/search.html',

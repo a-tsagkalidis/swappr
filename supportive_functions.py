@@ -110,7 +110,11 @@ def import_locations():
     location_update = {
         'cities': [],
         'municipalities': [],
-        'regions': []
+        'regions': [],
+        'cities count': 0,
+        'municipalities count': 0,
+        'regions count': 0,
+        'total new entries': 0
     }
 
     # Load JSON data from a separate file
@@ -127,6 +131,8 @@ def import_locations():
         existing_city = cursor.execute('SELECT id FROM cities WHERE city = ?', (city,)).fetchone()
         if not existing_city:
             location_update['cities'].append(city)
+            location_update['cities count'] +=1
+            location_update['total new entries'] += 1
             cursor.execute('INSERT INTO cities (city) VALUES (?)', (city,))
     
     # Commit the changes to ensure city IDs are available for foreign key references
@@ -141,6 +147,8 @@ def import_locations():
         existing_municipality = cursor.execute('SELECT id FROM municipalities WHERE municipality = ?', (municipality,)).fetchone()
         if not existing_municipality:
             location_update['municipalities'].append(municipality)
+            location_update['municipalities count'] += 1
+            location_update['total new entries'] += 1
             cursor.execute('INSERT INTO municipalities (municipality, city_id) VALUES (?, ?)', (municipality, city_id))
 
     # Commit the changes to ensure municipality IDs are available for foreign key references
@@ -155,6 +163,8 @@ def import_locations():
             existing_region = cursor.execute('SELECT id FROM regions WHERE region = ?', (region,)).fetchone()
             if not existing_region:
                 location_update['regions'].append(region)
+                location_update['regions count'] += 1
+                location_update['total new entries'] += 1
                 cursor.execute('INSERT INTO regions (region, postal_code, municipality_id) VALUES (?, ?, ?)', (region, postal_code, municipality_id))
 
     # Commit the final changes and close the connection

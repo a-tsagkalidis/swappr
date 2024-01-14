@@ -106,9 +106,9 @@
   <!-- Search results section -->
   {% if search %}
     <hr>
-    <div class="container mt-2">
+    <div class="container mt-2 text-break">
       <h1 class="mb-4 fw-bold fs-2 text-secondary">Search Matches</h1>
-        <table class="table">
+        <table class="table fs-8 fw-light">
           <thead>
             <tr>
               <th>House Type</th>
@@ -129,7 +129,7 @@
                 <td>€{{ comma(match.rental) }}</td>
                 <td>{{ match.bedrooms }}</td>
                 <td>{{ match.bathrooms }}</td>
-                <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ whitespace(match.region) }}, {{ match.postal_code }}" target="_blank">{{ whitespace(match.city) }}, {{ whitespace(match.region) }}</a></td>
+                <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ match.postal_code }}" target="_blank">{{ whitespace(match.city) }}, {{ whitespace(match.region) }}</a></td>
                 <td><a href="mailto:{{ match.email }}">{{ match.username }}</a></td>
                 <!-- Add other columns as needed -->
               </tr>
