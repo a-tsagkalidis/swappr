@@ -4,66 +4,71 @@
 		"city": "thessaloniki",
 		"municipality": "thessalonikis",
 		"region": {
-			"agia_aikaterini": "...",
-			"agia_sofia": "...",
-			"agia_triada": "...",
-			"agioi_anargyroi": "...",
-			"agioi_pantes": "...",
-			"agios_nikolaos_orfanos": "...",
-			"analipsi": "...",
-			"ano_poli": "...",
-			"ano_toumpa": "...",
-			"armenika": "...",
-			"afrodision": "...",
-			"vardaris": "...",
-			"vlatadon": "...",
-			"voulgari": "...",
-			"vrysaki": "...",
-			"galaxias": "...",
-			"gefyrakia": "...",
-			"dioikitirio": "...",
-			"ekklisiastiki_scholi": "...",
-			"ergatikes_katikoies_xirokrinis": "...",
-			"evzonon_-_gallikos_institouto": "...",
-			"efkleidi": "...",
-			"ippokrateio": "...",
-			"ichthioskala_-_sfageia_-_fix": "...",
-			"kalithea": "...",
-			"kastra": "...",
-			"kato_toumpa": "...",
-			"kineziki_agora": "...",
-			"kolomvou_-_palio_dimarcheio": "...",
-			"koule_kafe": "...",
-			"kritis": "...",
-			"kyvelia": "...",
-			"lefkos_pyrgos_-_ippodromos": "...",
-			"limani": "...",
-			"mplata": "...",
-			"nea_elvetia": "...",
-			"nea_paralia": "...",
-			"neos_sidirodromikos_stathmos_-_zografoy": "...",
-			"osios_david": "...",
-			"palia_lachanogora": "...",
-			"palia_salamina": "...",
-			"palios_sidirodromikos_stathmos_-_xiladika": "...",
-			"papafeio": "...",
-			"platanos": "...",
-			"plateia_kaoudi": "...",
-			"plateia_mina_patrikiou": "...",
-			"portara": "...",
-			"poseidonio": "...",
-			"profitis_ilias": "...",
-			"ramona": "...",
-			"rema_yfanet": "...",
-			"saranta_ekklisies": "...",
-			"terpsithea": "...",
-			"toumpa": "...",
-			"trochiodromikon": "...",
-			"tsinari": "...",
-			"tyroloi": "...",
-			"faliro": "...",
-			"fragkomachalas": "...",
-			"charilaou": "..."
+			"agia_aikaterini": "54632",
+			"agia_sofia": "54623",
+			"agia_triada": "54639",
+			"agioi_anargyroi": "54634",
+			"agioi_pantes_-_strofi_eptalofou": "54627",
+			"agios_nikolaos_orfanos": "54634",
+			"analipsi": "54643",
+			"ano_poli": "54633",
+			"ano_toumpa": "54351",
+			"armenika": "54627",
+			"afrodision": "54643",
+			"axios": "56727",
+			"vardaris": "54626",
+			"vlatadon": "54634",
+			"vosporos": "54627",
+			"voulgari": "54248",
+			"vrysaki": "54644",
+			"gefyrakia": "54627",
+			"delfon": "54645",
+			"dioikitirio": "54631",
+			"ekklisiastiki_scholi": "54250",
+			"eptapyrgio": "54634",
+			"ergatikes_katikoies_xirokrinis": "54629",
+			"evzonon_-_gallikos_institouto": "54639",
+			"eukleidis": "54639",
+			"ippokrateio": "54642",
+			"ichthyoskala_-_sfageia_-_fix": "54627",
+			"kaoudi": "54248",
+			"kastra": "54633",
+			"kato_toumpa": "54453",
+			"kineziki_agora": "54629",
+			"kifisia": "54248",
+			"kolomvou_-_palio_dimarcheio": "54626",
+			"koule_kafe": "54634",
+			"kritis": "54646",
+			"kybeleia": "54641",
+			"lachanokipoi": "54627",
+			"lefkos_pyrgos_-_ippodromos": "54621",
+			"limani": "54625",
+			"malakopi": "54454",
+			"mpalta": "54627",
+			"nea_elvetia": "54249",
+			"nea_paralia": "54642",
+			"neos_sidirodromikos_stathmos_-_zografoy": "54627",
+			"ntepo": "54655",
+			"xirokrini": "54629",
+			"osios_david": "54633",
+			"palia_lachanogora": "54632",
+			"palia_salamina": "placeholder",
+			"palios_sidirodromikos_stathmos": "54627",
+			"panagia_faneromeni": "54632",
+			"papafeio": "54638",
+			"platanos": "54634",
+			"plateia_mina_patrikiou": "54248",
+			"portara": "54634",
+			"poseidonio": "54646",
+			"profitis_ilias": "54633",
+			"ramona": "54629",
+			"rema_yphanet": "54639",
+			"saranta_ekklisies": "54636",
+			"trochiodromikon": "54250",
+			"tsinari": "54633",
+			"faliro": "54642",
+			"fragkomachalas": "54625",
+			"charilaou": "54250"
 		}
 	},
 	{
@@ -71,7 +76,7 @@
 		"city": "thessaloniki",
 		"municipality": "agiou_pavlou",
 		"region": {
-			"evagelistria": "..."
+			"evagelistria": "55437"
 		}
 	},
 	{
@@ -79,14 +84,14 @@
 		"city": "thessaloniki",
 		"municipality": "ampelokipon",
 		"region": {
-			"axios": "...",
-			"dimarcheio": "...",
-			"eptalofos_-_filippou": "...",
-			"zoodochos_pigi": "...",
-			"kaistri": "...",
-			"metagogon": "...",
-			"xirokrini": "...",
-			"skeparni": "..."
+			"axios": "56727",
+			"dimarcheio": "56123",
+			"eptalofos_-_filippou": "56121",
+			"zoodochos_pigi": "56121",
+			"kaistri": "56123",
+			"metagogon": "56123",
+			"xirokrini": "56123",
+			"skeparni": "56123"
 		}
 	},
 	{
@@ -94,9 +99,8 @@
 		"city": "thessaloniki",
 		"municipality": "eleftheriou_-_kordeliou",
 		"region": {
-			"viotechniki_periochi": "...",
-			"sidirodromiko_parko": "...",
-			"dialogi": "..."
+			"viotechniki_periochi_-_sidirodromiko_parko": "56334",
+			"dialogi": "56334"
 		}
 	},
 	{
@@ -104,10 +108,10 @@
 		"city": "thessaloniki",
 		"municipality": "efkarpias",
 		"region": {
-			"ergatikes_katoikies_-_makedonia": "...",
-			"efedroupoli_pavlou_mela": "...",
-			"efxinoupoli": "...",
-			"nikopoli": "..."
+			"ergatikes_katoikies_-_makedonia": "56429",
+			"efxinoupoli": "56450",
+			"efedroupoli_pavlou_mela": "56450",
+			"nikopoli": "56429"
 		}
 	},
 	{
@@ -115,15 +119,15 @@
 		"city": "thessaloniki",
 		"municipality": "evosmou",
 		"region": {
-			"agioi_kyrillos_kai_methodios": "00000",
-			"agios_athanasios": "...",
-			"agios_kosmas": "...",
-			"anos_evosmos": "...",
-			"anothen_periferiakou": "...",
-			"evagelismos": "...",
-			"efxinoupoli": "...",
-			"kato_evosmos": "...",
-			"kato_ilioupoli": "..."
+			"agioi_kyrillos_kai_methodios": "56224",
+			"agios_athanasios": "56224",
+			"agios_kosmas": "56225",
+			"anos_evosmos": "56226",
+			"anothen_periferiakou": "56238",
+			"evagelismos_-_neos_koulkoutzas": "56224",
+			"efxinoupoli": "56450",
+			"kato_evosmos": "56225",
+			"kato_ilioupoli": "56224"
 
 
 		}
@@ -131,278 +135,167 @@
 	{
 		"id": 7,
 		"city": "thessaloniki",
-		"municipality": "thermaikou",
+		"municipality": "thermis",
 		"region": {
-			"thermaikos": "00000"
+			"agios_tryfonas": "57001",
+			"triadi": "57001"
 		}
 	},
 	{
 		"id": 8,
 		"city": "thessaloniki",
-		"municipality": "thermis",
+		"municipality": "kalamarias",
 		"region": {
-			"agios_tryfonas": "...",
-			"triadi": "..."
+			"agios_ioannis": "55132",
+			"agios_stylianos": "55134",
+			"aretsou": "55132",
+			"votsi": "55134",
+			"vyzantio": "55133",
+			"derkon": "55132",
+			"ergatikes_katikoies_foinika": "55135",
+			"karampournaki": "55131",
+			"katirli": "55132",
+			"kentro": "55133",
+			"kifisia": "55133",
+			"kouri": "55132",
+			"nea_krini": "55135",
+			"ntepo": "55131"
 		}
 	},
 	{
 		"id": 9,
 		"city": "thessaloniki",
-		"municipality": "thermis",
+		"municipality": "menemenis",
 		"region": {
-			"thermi": "00000"
+			"vosporos": "54628",
+			"dendropotamos": "54628",
+			"lachanagora": "54628",
+			"lachanokipoi": "54628",
+			"paralia_dendropotamou": "54628"
 		}
 	},
 	{
 		"id": 10,
 		"city": "thessaloniki",
-		"municipality": "kalamarias",
+		"municipality": "neapolis",
 		"region": {
-			"agios_ioannis": "...",
-			"agios_stylianos": "...",
-			"aretsou": "...",
-			"votsi": "...",
-			"vyzantio": "...",
-			"derkon": "...",
-			"ergatikes_katikoies_foinika": "...",
-			"karampournaki": "...",
-			"katirli": "...",
-			"kentro": "...",
-			"kifisia": "...",
-			"kouri": "...",
-			"nea_krini": "...",
-			"ntepo": "..."
+			"anagennisi": "56727",
+			"axios": "56727",
+			"valsami": "56728",
+			"kalithea": "56728",
+			"kokkoras": "56728",
+			"kolokotroni": "56728",
+			"nea_varna": "56728",
+			"paraschou": "56728",
+			"proin_stratopedo_strempenioti": "56728",
+			"pyropathon": "56727",
+			"troada_-_agios_georgios": "56728"
 		}
 	},
 	{
 		"id": 11,
 		"city": "thessaloniki",
-		"municipality": "menemenis",
+		"municipality": "sykeon",
 		"region": {
-			"vosporos": "...",
-			"dendropotamos": "...",
-			"lachanagora": "...",
-			"lachanokipoi": "...",
-			"paralia_dendropotamou": "..."
+			"agios_vasileios": "56625",
+			"agios_charalampos": "56626",
+			"akrites": "56625",
+			"dendrofyteia_-_alsos_sykeon": "56626",
+			"eptapyrgio": "56626",
+			"kalithea": "56625",
+			"kastra": "54634",
+			"panagia_faneromeni": "56625",
+			"paraschou": "56626",
+			"rodochori_-_armenochori": "56626",
+			"tzitzifies": "56625"
 		}
 	},
 	{
 		"id": 12,
 		"city": "thessaloniki",
-		"municipality": "neapolis-sykeon",
+		"municipality": "panoramatos",
 		"region": {
-			"agios_vasileios": "...",
-			"agios_charalampos": "...",
-			"akrites": "...",
-			"anagennisi": "...",
-			"axios": "...",
-			"valsami": "...",
-			"dendrofyteia_-_alsos_sykeon": "...",
-			"eptapyrgio": "...",
-			"kalithea": "...",
-			"kastra": "...",
-			"kokkoras": "...",
-			"kolokotroni": "...",
-			"nea_varna": "...",
-			"panagia_faneromeni": "...",
-			"paraschou": "...",
-			"proin_stratopedo_strempenioti": "...",
-			"pyropathon": "...",
-			"rodochori_-_armenochori": "...",
-			"tzitzifies": "...",
-			"troada_-_agios_georgios": "..."
+			"ano_panorama": "55236",
+			"neo_panorama": "55236",
+			"oikismos_efedron_aksiomatikon_makedonia": "55236",
+			"plateia_mpakogianni": "55236",
+			"topografoi": "55236"
 		}
 	},
 	{
 		"id": 13,
 		"city": "thessaloniki",
-		"municipality": "panoramatos",
+		"municipality": "polichnis",
 		"region": {
-			"ano_panorama": "...",
-			"neo_panorama": "...",
-			"oikismos_efedron_aksiomatikon_makedonia": "...",
-			"plateia_mpakogianni": "...",
-			"topografoi": "..."
+			"agios_panteleimonas": "56533",
+			"analipsi_-_ano_polichni": "56533",
+			"anthokipoi": "56429",
+			"ano_meteora_-_agios_rafail": "56532",
+			"elpida": "56533",
+			"kokkoras": "56626",
+			"kountourioti": "56533",
+			"meteora": "56532",
+			"neromyloi": "56532",
+			"nikopoli": "56535",
+			"oikismos_megalou_alexandroy": "56533",
+			"ydragogeio_-_agios_ioannis": "56532"
 		}
 	},
 	{
 		"id": 14,
 		"city": "thessaloniki",
-		"municipality": "pavlou_mela",
+		"municipality": "pylaias",
 		"region": {
-			"pavlos_melas": "00000",
-			"meteora": "00000"
+			"elaiorema": "55534",
+			"elaiones": "55536",
+			"kypseli": "55535",
+			"konstantinoupolitika": "55534",
+			"malakopi": "55534",
+			"patriarchiko": "55535",
+			"pylaiotika": "55535",
+			"rema": "55535",
+			"samarakia": "55535",
+			"stageiriti": "55534",
+			"topografoi": "55536"
 		}
 	},
 	{
 		"id": 15,
 		"city": "thessaloniki",
-		"municipality": "pefkon",
+		"municipality": "stavroupoleos",
 		"region": {
-			"pefka": "00000"
+			"ampelones": "56430",
+			"anthokipoi": "56535",
+			"ano_ilioupoli": "56431",
+			"anothen_asylou": "56436",
+			"kato_ilioupoli": "56431",
+			"neoktista": "56436",
+			"nikopoli": "56437",
+			"omonoia": "56430",
+			"pronoia": "56430",
+			"terpsithea": "56430"
 		}
 	},
 	{
 		"id": 16,
 		"city": "thessaloniki",
-		"municipality": "polichnis",
+		"municipality": "triandrias",
 		"region": {
-			"agios_panteleimonas": "...",
-			"analipsi_-_ano_polichni": "...",
-			"anthokipoi": "...",
-			"ano_meteora": "...",
-			"elpida": "...",
-			"kokkoras": "...",
-			"kountourioti": "...",
-			"meteora": "...",
-			"neromyloi": "...",
-			"nikopoli": "...",
-			"oikismos_megalou_alexandroy": "...",
-			"ydragogeio_-_agios_ioannis": "..."
+			"agioi_anargyroi": "55337",
+			"ano_triandria": "55337",
+			"kato_triandria": "55337"
 		}
 	},
 	{
 		"id": 17,
 		"city": "thessaloniki",
-		"municipality": "pylaias",
+		"municipality": "epanomis",
 		"region": {
-			"elaiorema": "...",
-			"elaiones": "...",
-			"kypseli": "...",
-			"konstantinoupolitika": "...",
-			"malakopi": "...",
-			"patriarchiko": "...",
-			"pylaiotika": "...",
-			"rema": "...",
-			"samarakia": "...",
-			"stageiriti": "...",
-			"topografoi": "..."
+			"pyrgos": "57500"
 		}
 	},
 	{
 		"id": 18,
-		"city": "thessaloniki",
-		"municipality": "stavroupoleos",
-		"region": {
-			"ampelones": "...",
-			"ano_ilioupoli": "...",
-			"anothen_asylou": "...",
-			"kato_ilioupoli": "...",
-			"neoktista": "...",
-			"nikopoli": "...",
-			"omonoia": "...",
-			"pronoia": "...",
-			"terpsithea": "..."
-		}
-	},
-	{
-		"id": 19,
-		"city": "thessaloniki",
-		"municipality": "sikeon",
-		"region": {
-			"sikies": "00000"
-		}
-	},
-	{
-		"id": 19,
-		"city": "thessaloniki",
-		"municipality": "triandrias",
-		"region": {
-			"agioi_anargyroi": "...",
-			"ano_triandria": "...",
-			"kato_triandria": "..."
-		}
-	},
-	{
-		"id": 20,
-		"city": "thessaloniki",
-		"municipality": "chortiati",
-		"region": {
-			"chortiatis": "00000"
-		}
-	},
-	{
-		"id": 21,
-		"city": "thessaloniki",
-		"municipality": "oreokastrou",
-		"region": {
-			"oreokastro": "00000"
-		}
-	},
-	{
-		"id": 22,
-		"city": "thessaloniki",
-		"municipality": "axiou",
-		"region": {
-			"axios": "00000"
-		}
-	},
-	{
-		"id": 23,
-		"city": "thessaloniki",
-		"municipality": "vasilikon",
-		"region": {
-			"vasilika": "00000"
-		}
-	},
-	{
-		"id": 24,
-		"city": "thessaloniki",
-		"municipality": "epanomis",
-		"region": {
-			"pyrgos": "..."
-		}
-	},
-	{
-		"id": 25,
-		"city": "thessaloniki",
-		"municipality": "echedorou",
-		"region": {
-			"echedoros": "00000"
-		}
-	},
-	{
-		"id": 26,
-		"city": "thessaloniki",
-		"municipality": "kalitheas",
-		"region": {
-			"kalithea": "00000"
-		}
-	},
-	{
-		"id": 27,
-		"city": "thessaloniki",
-		"municipality": "michanionas",
-		"region": {
-			"michaniona": "00000"
-		}
-	},
-	{
-		"id": 28,
-		"city": "thessaloniki",
-		"municipality": "mikras",
-		"region": {
-			"mikra": "00000"
-		}
-	},
-	{
-		"id": 29,
-		"city": "thessaloniki",
-		"municipality": "migdonias",
-		"region": {
-			"migdonia": "00000"
-		}
-	},
-	{
-		"id": 30,
-		"city": "thessaloniki",
-		"municipality": "chalastras",
-		"region": {
-			"chalastra": "00000"
-		}
-	},
-	{
-		"id": 31,
 		"city": "larissa",
 		"municipality": "larissas",
 		"region": {
@@ -443,6 +336,4 @@
 			"xaravgi": "41448"
 		}
 	}
-
-
 ]
