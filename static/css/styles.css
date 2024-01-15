@@ -7,8 +7,12 @@ html {
 }
 body {
     /* font-family: 'Trebuchet MS', sans-serif; */
+    font-family: 'Ubuntu', sans-serif;
     color: rgb(75, 75, 75);
     margin-bottom: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 a {
     text-decoration: none;
@@ -17,7 +21,12 @@ a {
 .fs-8 {
     font-size: small;
 }
+main {
+    flex: 1;
+}
 /* Core styles */
+
+
 
 
 
@@ -120,6 +129,16 @@ a {
     color: rgb(223, 0, 0);
     transition: .5s;
 }
+
+.btn-reset {
+    color: #0b71ca;
+    text-decoration: none;
+}
+
+.btn-w-70px {
+    width: 70px;
+}
+
 /* Buttons */
 
 

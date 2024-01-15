@@ -70,7 +70,7 @@ def signup():
         email = request.form.get('email').lower()
         username = request.form.get('username').lower()
         password = request.form.get('password')
-        confirmPassword = request.form.get('confirmPassword')
+        confirm_password = request.form.get('confirmPassword')
 
         # Check if all form fields are filled and valid, else flash error and reload the route
         try:
@@ -79,10 +79,10 @@ def signup():
                 email,
                 username,
                 password,
-                confirmPassword
+                confirm_password
             )
 
-            # Hash the password before storing it
+            # Hash password before storing it
             hashed_password = generate_password_hash(
                 password,
                 method='scrypt',
@@ -177,9 +177,10 @@ def signin():
             session['username'] = user_data[0]['username']
             session['email'] = user_data[0]['email']
 
-            # Redirect user to home page
             # Update log with INFO msg
             app.logger.info(f"User with username `{session['username']}` and user_id {session['user_id']} just signed in.")
+
+            # Redirect user to home page
             return redirect('/')
         
         except ValueError as err:
@@ -311,7 +312,7 @@ def update_exposure():
     submission_id = request.form.get('submission_id')
     new_exposure = request.form.get('new_exposure')
 
-    # Update the exposure value in the database
+    # Update exposure value in the database
     query = '''
             UPDATE submissions
             SET exposure = ?
@@ -590,6 +591,64 @@ def search():
             search=None,
             whitespace=whitespace
         )
+
+
+@app.route('/account', methods = ['GET', 'POST'])
+@login_required
+def account():
+    # Get user data
+    user_id = session['user_id']
+
+    if request.method == 'POST':
+        # Get user submitted form data
+        old_password = request.form.get('oldPassword')
+        new_password = request.form.get('newPassword')
+        confirm_new_password = request.form.get('confirmNewPassword')
+
+        # Fetch user hash
+        query = '''
+                SELECT hash FROM users
+                WHERE id = ?;
+                '''
+        hash = cursor_fetch(query, user_id)
+
+        try:
+            password_reset_validation(
+                old_password,
+                new_password,
+                confirm_new_password,
+                hash
+            )
+            
+            # Hash new password before storing it
+            hashed_new_password = generate_password_hash(
+                new_password,
+                method='scrypt',
+                salt_length=16
+            )
+
+            # Update new hashed password in the database
+            query = '''
+                    UPDATE users
+                    SET hash = ?
+                    WHERE id = ?;
+                    '''
+            cursor_execute(query, hashed_new_password, user_id)
+
+            # Update log with INFO msg
+            app.logger.info(f"User with username `{session['username']}` and user_id {user_id} changed password.")
+
+        except ValueError as err:
+            # Update log with ERROR msg
+            app.logger.error(f'Password reset failed: {err}')
+            return render_template('/account.html', error=err)
+
+        flash('Password successfully changed!')
+        return render_template('/account.html')
+    else:
+        return render_template('/account.html')
+
+
 
 
 if __name__ == '__main__':

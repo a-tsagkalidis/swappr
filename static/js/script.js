@@ -142,7 +142,7 @@ function handleBackspace(input, minValue) {
 }
 
 function validateSubmitForm() {
-    const submitForm = document.querySelector('.submitForm');
+    const submitForm = document.querySelector('#submitForm');
     const exposure = submitForm.elements["exposure"].value;
     const houseType = submitForm.elements["houseType"].value;
     const squareMeters = submitForm.elements["squareMeters"].value;
@@ -450,8 +450,4 @@ if (window.location.pathname === '/search') {
         // Update the hidden input field that will send the values to backend
         document.getElementById('bathrooms').value = JSON.stringify({ min: values[0], max: values[1] })
     });
-
-
-
-
 }

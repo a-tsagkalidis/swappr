@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Account
+{% endblock %}
+
+{% block main %}
+  <div class="container mt-2">
+		<!-- Account information -->
+    <h1 class="mb-4 fw-bold fs-2 text-secondary">Account Settings</h1>
+		<hr>
+
+		<!-- Username -->
+		<h3 class="mb-1 fs-4 fw-bold text-secondary">Username</h2>
+		<div class="form-group mb-4 fw-normal fs-4 px-3">
+			<p class="mb-1">{{ session['username'] }}</p>
+			<p class="mb-1 fs-6 fw-light">The name you sign in to Swappr. You cannot change your username.</p>				
+		</div>
+
+		<!-- Email address -->
+		<h3 class="mb-1 fs-4 fw-bold text-secondary">Email Address</h2>
+		<div class="form-group mb-4 fw-normal fs-4 px-3">
+			<p class="mb-1">{{ session['email'] }}</p>
+			<p class="mb-1 fs-6 fw-light">Your registered email. Other users can contact you at this address.</p>				
+		</div>
+
+		<!-- Password -->
+		<h3 class="mb-1 fs-4 fw-bold text-secondary">Password</h2>
+		<div class="form-group mb-4 fw-normal fs-4 px-3">
+			<form method="post" action="/account" id="...">
+				<!-- <button type="button" class="btn btn-link btn-reset fs-5 fw-3 p-0">Reset Password*</button> -->
+
+				<button type="button" class="btn btn-link btn-reset fs-5 fw-3 p-0" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="Reset Password*">Reset Password*</button>
+				<p class="mb-1 fs-6 fw-light">*Passwords are hashed in Swappr database. Click to change your password.</p>
+
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">Password reset</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="mb-4">
+									<input type="password" class="form-control" name="oldPassword" placeholder="Old password">
+								</div>
+								<div class="mb-4">
+									<input type="password" class="form-control" name="newPassword" placeholder="New password">
+								</div>
+								<div class="mb-3">
+									<input type="password" class="form-control" name="confirmNewPassword" placeholder="Confirm new password">
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary btn-w-70px" data-bs-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-primary btn-w-70px">Save</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+			</form>
+		</div>
+
+
+		<!-- Submit Button
+		<form method="post" action="/account" id="...">
+			<button type="submit" class="mb-4 btn btn-warning">Search</button>
+		</form> -->
+
+  </div>
+{% endblock %}

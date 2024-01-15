@@ -30,7 +30,7 @@
             <li class="nav-item"><a class="nav-link" href="#">About</a></li>
           </ul>
           <ul class="navbar-nav ms-auto mt-2">
-            <div class="nav-item"><a class="nav-link" href="#">{{ session['username'] }}</a></div>
+            <div class="nav-item"><a class="nav-link" href="/account">{{ session['username'] }}</a></div>
             <li class="nav-item"><a class="nav-link" href="/signout">Log Out</a></li>
           </ul>
         {% else %}
@@ -45,31 +45,29 @@
   
 
   <!-- Main Content -->
-  <main class="container-fluid py-5 text-center">
-    
-    {% block main %}{% endblock %}
-    
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="success">
-        {% for message in messages %}
-          {{ message }}
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+  <main class="container-fluid pt-5 text-center">
 
-    {% if error %}
-      <div class="error" role="alert">{{ error }}</div>
-    {% endif %}
-    {% if success %}
-      <div class="success" role="alert">{{ success }}</div>
-    {% endif %}
+      {% block main %}{% endblock %}
+      
+      <div class="pt-5">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="success" role="alert"> {% for message in messages %}{{ message }}{% endfor %}</div>
+          {% endif %}
+        {% endwith %}
+
+        {% if error %}
+          <div class="error" role="alert">{{ error }}</div>
+        {% endif %}
+        {% if success %}
+          <div class="success" role="alert">{{ success }}</div>
+        {% endif %}
+      </div>
 
   </main>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white text-center py-2 mt-4">
+  <footer class="bg-dark text-white text-center py-2">
     <div>&copy; 2023 Swappr</div>
     <div style="font-size: small; font-weight: lighter;">swap your house!</div>
   </footer>

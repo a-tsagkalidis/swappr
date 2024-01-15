@@ -236,12 +236,12 @@ def is_username_exists(username):
     return result is not None
 
 
-def signup_validation(email, username, password, confirmPassword):
+def signup_validation(email, username, password, confirm_password):
     '''
     Checks for valid user input form in signup route.
     '''
     # Ensure fields are not blank
-    if not email or not username or not password or not confirmPassword:
+    if not email or not username or not password or not confirm_password:
         raise ValueError("Please fill in all the required fields.")
     
     email_regex_stipulations = re.compile(r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
@@ -249,7 +249,7 @@ def signup_validation(email, username, password, confirmPassword):
         raise ValueError('Please enter a valid email address.')
 
     # Ensure password and confirmation match
-    if password != confirmPassword:
+    if password != confirm_password:
         raise ValueError("Password and password confirmation do not match.")
 
     # Ensure username is at least 3 characters long and does not contain punctuation characters or whitespaces
@@ -410,7 +410,30 @@ def submission_validation(all_field_values, exposure, house_type, square_meters,
 
     return True
 
-    
 
+
+
+def password_reset_validation(old_password, new_password, confirm_new_password, hash):
+    '''
+    Checks for valid user input form in account route regarding password reset.
+    '''
+    # Ensure fields are not blank
+    if not old_password or not new_password or not confirm_new_password:
+        raise ValueError("Please fill in all the required fields.")
+    
+    # Ensure old password is correct
+    if not check_password_hash(hash[0]['hash'], old_password):
+        raise ValueError('Wrong old password')
+
+    # Ensure password and confirmation match
+    if new_password != confirm_new_password:
+        raise ValueError("New password and new password confirmation do not match.")
+
+    # # Ensure password is strong
+    # if not is_strong_password(new_password):
+    #     raise ValueError("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.")
+
+    # Validation successfully passed
+    return True
 
 
