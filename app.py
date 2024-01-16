@@ -83,6 +83,7 @@ def index():
 
 
 @app.route('/signup', methods=['GET', 'POST'])
+@limiter.limit("50/minute")
 def signup():
     if request.method == 'POST':
         # Get user submitted form data
