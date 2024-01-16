@@ -1,14 +1,20 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash
+from flask_limiter.util import get_remote_address
+from flask_limiter import Limiter
 from supportive_functions import *
 from datetime import datetime
+from argparser import args
 import logging
 import secrets
 import json
+import sys
+import os
 
+# Flask instance to initialize the web application.
 app = Flask(__name__)
+
+# Flask limiter instance for spam request protection
 limiter = Limiter(
     get_remote_address,
     app=app,
@@ -16,6 +22,7 @@ limiter = Limiter(
     storage_uri="memory://",
 )
 
+os.system('bash log.sh')
 
 # Configure logging
 logging.basicConfig(filename='app.log', level=logging.ERROR)
@@ -872,4 +879,4 @@ def delete_account():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True if args.debug else False)

@@ -33,3 +33,7 @@ Thumbs.db
 
 # Environment variables file
 .env
+
+# Backup files
+/baklogs
+/bakdb
