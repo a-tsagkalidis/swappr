@@ -11,6 +11,9 @@ import json
 import sys
 import os
 
+# Run system file backup script - back ups database and logs
+os.system('bash bak.sh')
+
 # Flask instance to initialize the web application.
 app = Flask(__name__)
 
@@ -21,8 +24,6 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"],
     storage_uri="memory://",
 )
-
-os.system('bash log.sh')
 
 # Configure logging
 logging.basicConfig(filename='app.log', level=logging.ERROR)
@@ -876,6 +877,12 @@ def delete_account():
     session.clear()
     flash('Your account and data has been erased. Thanks for using our app!')
     return render_template('/signup.html')
+
+
+@app.route('/about', methods=['GET'])
+@login_required
+def about():
+    return render_template('/about.html')
 
 
 if __name__ == '__main__':

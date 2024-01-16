@@ -1,4 +1,6 @@
 #!/bin/bash
+# System file backup script - back ups application database and logs
+
 DATE=$(date +"%Y%m%d")
 TIME=$(date +"%H%M")
 
