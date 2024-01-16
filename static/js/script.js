@@ -459,7 +459,7 @@ function enableUsernameEdit() {
     document.getElementById('usernameContainer').style.display = 'none';
     document.getElementById('editUsernameForm').style.display = 'block';
 
-    // Focus on the input field - trigger the keyboard cursor automatically in the input field
+    // Focus on the input field - triggers the keyboard cursor automatically in the input field
     document.getElementById('newUsername').focus();
 }
 
@@ -468,8 +468,19 @@ function saveNewUsername() {
     return true;
 }
 
-// Cancels username edit (input text, save and cancel buttons) by hiding it
+// Cancels username edit (input text, save and cancel buttons) by hiding it and erases any input given
 function cancelUsernameEdit() {
     document.getElementById('usernameContainer').style.display = 'block';
     document.getElementById('editUsernameForm').style.display = 'none';
+    document.getElementById('newUsername').value = "";
+}
+
+// Function to focus on the input field when the modal is shown
+function cursorFocus(button) {
+    var modalId = button.getAttribute('data-modal-id');
+    var inputFieldId = button.getAttribute('data-input-field-id');
+
+    document.getElementById(modalId).addEventListener('shown.bs.modal', function () {
+        document.getElementById(inputFieldId).focus();
+    });
 }

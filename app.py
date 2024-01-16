@@ -68,8 +68,18 @@ def index():
     submissions_data = cursor_fetch(query, user_id)
 
     # Update log with INFO msg
-    app.logger.info(f"User with username `{session['username']}` and user_id {session['user_id']} navigation @index.html")
-    return render_template('index.html', submissions=submissions_data, comma=comma, whitespace=whitespace)
+    app.logger.info(
+        f'''
+        User with username `{session['username']}` and user_id 
+        {session['user_id']} navigation @index.html
+        '''
+    )
+    return render_template(
+        'index.html',
+        submissions=submissions_data,
+        comma=comma,
+        whitespace=whitespace
+    )
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -127,7 +137,7 @@ def signup():
             # Inform the user for successful register
             flash('Successfully registered!')
             return redirect(url_for('delayed_redirect'))
-        
+
         except ValueError as err:
             # Update log with ERROR msg
             app.logger.error(f'Signup failed: {err}')
@@ -192,11 +202,16 @@ def signin():
             session['email'] = user_data[0]['email']
 
             # Update log with INFO msg
-            app.logger.info(f"User with username `{session['username']}` and user_id {session['user_id']} just signed in.")
+            app.logger.info(
+                f'''
+                User with username `{session['username']}` and user_id 
+                {session['user_id']} just signed in.
+                '''
+            )
 
             # Redirect user to home page
             return redirect('/')
-        
+
         except ValueError as err:
             # Update log with ERROR msg
             app.logger.error(f'Signin failed: {err}')
@@ -212,7 +227,12 @@ def signin():
 @login_required
 def signout():
     # Update log with INFO msg
-    app.logger.info(f"User with username `{session['username']}` and user_id {session['user_id']} just signed out.")
+    app.logger.info(
+        f'''
+        User with username `{session['username']}` and user_id 
+        {session['user_id']} just signed out.
+        '''
+    )
 
     # Forget any user_id
     session.clear()
@@ -290,15 +310,25 @@ def submit():
             )
 
             # Update log with INFO msg
-            app.logger.info(f"User with username `{session['username']}` and user_id {user_id} successfully saved a new sumbission")
-            
+            app.logger.info(
+                f'''
+                User with username `{session['username']}` and user_id 
+                {user_id} successfully saved a new sumbission
+                '''
+            )
+
             # Inform user for successful submission
             flash('Submission saved successfully!')
             return redirect('/')
-        
+
         except ValueError as err:
             # Update log with ERROR msg
-            app.logger.error(f"User with username `{session['username']}` and user_id {user_id} ERROR: Submission failed: {err}")
+            app.logger.error(
+                f'''
+                User with username `{session['username']}` and user_id 
+                {user_id} ERROR: Submission failed: {err}
+                '''
+            )
             return render_template(
                 '/submit.html',
                 submission=None,
@@ -307,7 +337,13 @@ def submit():
 
     else:
         # Update log with INFO msg
-        app.logger.info(f"User with username `{session['username']}` and user_id {user_id} navigation @submit.html")
+        app.logger.info(
+            f'''
+            User with username `{session['username']}` and user_id 
+            {user_id} navigation @submit.html
+            '''
+        )
+
         return render_template(
             '/submit.html',
             cities=cities,
@@ -341,7 +377,13 @@ def update_exposure():
     )
 
     # Update log with INFO msg
-    app.logger.info(f"User with username `{session['username']}` and user_id {user_id} changed exposure to `{new_exposure}` status for submission with submission_id {submission_id}")
+    app.logger.info(
+        f'''
+        User with username `{session['username']}` and user_id 
+        {user_id} changed exposure to `{new_exposure}` status for 
+        submission with submission_id {submission_id}
+        '''
+    )
 
     flash('Exposure updated successfully!')
     return redirect(url_for('index'))
@@ -370,7 +412,14 @@ def edit_submission():
     # If submission exists pass its data to the edit page, else reload index route
     if submission_data:
         # Update log with INFO msg
-        app.logger.info(f"User with username `{session['username']}` and user_id {user_id} navigation @edit_submission.html and editing submission with submission_id {submission_id}")
+        app.logger.info(
+            f'''
+            User with username `{session['username']}` and user_id {user_id} 
+            navigation @edit_submission.html and editing submission with 
+            submission_id {submission_id}
+            '''
+        )
+
         return render_template(
             '/edit_submission.html',
             cities=cities,
@@ -379,7 +428,12 @@ def edit_submission():
         )
     else:
         # Update log with ERROR msg
-        app.logger.error(f"User with username `{session['username']}` and user_id {user_id} ERROR: Submission with submission_id {submission_id} not found")
+        app.logger.error(
+            f'''
+            User with username `{session['username']}` and user_id {user_id} 
+            ERROR: Submission with submission_id {submission_id} not found
+            '''
+        )
 
         flash('Submission not found.')
         return redirect(url_for('index'))
@@ -425,7 +479,12 @@ def save_edit_submission():
                 region
             )
             # Update log with WARNING msg
-            app.logger.warning(f"User with username `{session['username']}` and user_id {user_id} successfully VALIDATED input for editing submission_id {submission_id}")
+            app.logger.warning(
+                f'''
+                User with username `{session['username']}` and user_id {user_id} 
+                successfully VALIDATED input for editing submission_id {submission_id}
+                '''
+            )
 
             # Update edited submission into user database
             query = '''
@@ -446,7 +505,7 @@ def save_edit_submission():
                 query,
                 house_type,
                 square_meters,
-                rental, 
+                rental,
                 bedrooms,
                 bathrooms,
                 exposure,
@@ -456,9 +515,14 @@ def save_edit_submission():
                 submission_id,
                 user_id
             )
-    
+
             # Update log with INFO msg
-            app.logger.info(f"User with username `{session['username']}` and user_id {user_id} successfully UPDATED submission with submission_id {submission_id}")
+            app.logger.info(
+                f'''
+                User with username `{session['username']}` and user_id {user_id} 
+                successfully UPDATED submission with submission_id {submission_id}
+                '''
+            )
 
             # Inform user for successful submission update
             flash('Submission updated successfully!')
@@ -466,9 +530,14 @@ def save_edit_submission():
 
         except ValueError as err:
             # Update log with ERROR msg
-            app.logger.error(f"User with username `{session['username']}` and user_id {user_id} ERROR: Submission UPDATE failed: {err}")
+            app.logger.error(
+                f'''
+                User with username `{session['username']}` and user_id {user_id} 
+                ERROR: Submission UPDATE failed: {err}
+                '''
+            )
 
-            # Fetch edited submission data to reload route with correct field values
+            # Fetch edited submission data to reload route with correct field valuess
             query = '''
                     SELECT * FROM submissions
                     WHERE id = ?
@@ -492,7 +561,13 @@ def save_edit_submission():
         cursor_execute(query, submission_id, user_id)
 
         # Update log with INFO msg
-        app.logger.info(f"Submission with submission_id {submission_id} that belonged to user with username `{session['username']} and user_id {user_id} has been successfully deleted.")
+        app.logger.info(
+            f'''
+            Submission with submission_id {submission_id} that
+            belonged to user with username `{session['username']} and
+            user_id {user_id} has been successfully deleted.
+            '''
+        )
 
         # Inform user for successful submission deletion
         flash('Submission deleted successfully!')
@@ -528,7 +603,7 @@ def get_regions():
     municipality_data = cursor_fetch(query, municipality)
     municipality_id = municipality_data[0]['id']
 
-    # Fetch regions from the database based on the selected city and municipality
+    # Fetch regions from database based on selected city and municipality
     query = '''
             SELECT region FROM regions
             WHERE municipality_id = ?;
@@ -557,6 +632,7 @@ def search():
         municipality = request.form.get('municipality')
         region = request.form.get('region')
         exposure = 'public'
+        # TODO: Will be used for validation
         all_field_values = list(request.form.values())
 
         query = '''
@@ -602,7 +678,13 @@ def search():
         )
     else:
         # Update log with INFO msg
-        app.logger.info(f"User with username `{session['username']}` and user_id {user_id} navigation @search.html")
+        app.logger.info(
+            f'''
+            User with username `{session['username']}` and user_id
+            {user_id} navigation @search.html
+            '''
+        )
+
         return render_template(
             '/search.html',
             cities=cities,
@@ -615,6 +697,13 @@ def search():
 @app.route('/account', methods = ['GET'])
 @login_required
 def account():
+    # Update log with INFO msg
+    app.logger.info(
+        f'''
+        User with username `{session['username']}` and user_id 
+        {session['user_id']} navigation @account.html
+        '''
+    )
     return render_template('/account.html')
 
 
@@ -643,7 +732,7 @@ def password_reset():
             confirm_new_password,
             hash
         )
-        
+
         # Hash new password before storing it
         hashed_new_password = generate_password_hash(
             new_password,
@@ -660,7 +749,12 @@ def password_reset():
         cursor_execute(query, hashed_new_password, user_id)
 
         # Update log with INFO msg
-        app.logger.info(f"User with username `{session['username']}` and user_id {user_id} changed password.")
+        app.logger.info(
+            f'''
+            User with username `{session['username']}` and user_id
+            {user_id} changed password.
+            '''
+        )
 
     except ValueError as err:
         # Update log with ERROR msg
@@ -702,7 +796,12 @@ def update_username():
         session['username'] = new_username
 
         # Update log with INFO msg
-        app.logger.info(f"User with username `{old_username}` and user_id {user_id} updated username to `{new_username}`.")
+        app.logger.info(
+            f'''
+            User with username `{old_username}` and user_id {user_id}
+            updated username to `{new_username}`.
+            '''
+        )
 
     except (ValueError, NameError) as err:
         # Update log with ERROR msg
@@ -713,7 +812,7 @@ def update_username():
             return render_template('/account.html', warning=err)
 
     flash('Username successfully changed!')
-    return render_template('/account.html')  
+    return render_template('/account.html')
 
 
 @app.route('/delete_account', methods=['POST'])
@@ -753,7 +852,13 @@ def delete_account():
         cursor_execute(query, user_id)
 
         # Update log with INFO msg
-        app.logger.info(f"User with username `{session['username']}` and user_id {user_id} has been deleted from database. All user's sumbissions has been deleted.")
+        app.logger.info(
+            f'''
+            User with username `{session['username']}` and user_id
+            {user_id} has been deleted from database. All user's sumbissions
+            has been deleted.
+            '''
+        )
 
     except ValueError as err:
         # Update log with ERROR msg
@@ -764,6 +869,6 @@ def delete_account():
     flash('Your account and data has been erased. Thanks for using our app!')
     return render_template('/signup.html')
 
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
