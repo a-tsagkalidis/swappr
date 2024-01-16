@@ -47,27 +47,30 @@
   <!-- Main Content -->
   <main class="container-fluid pt-5 text-center">
 
-      {% block main %}{% endblock %}
-      
-      <div class="pt-5">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div class="success" role="alert"> {% for message in messages %}{{ message }}{% endfor %}</div>
-          {% endif %}
-        {% endwith %}
+    {% block main %}{% endblock %}
+    
+    <div class="pt-4">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="success" role="alert"> {% for message in messages %}{{ message }}{% endfor %}</div>
+        {% endif %}
+      {% endwith %}
 
-        {% if error %}
-          <div class="error" role="alert">{{ error }}</div>
-        {% endif %}
-        {% if success %}
-          <div class="success" role="alert">{{ success }}</div>
-        {% endif %}
-      </div>
+      {% if error %}
+        <div class="error" role="alert">{{ error }}</div>
+      {% endif %}
+      {% if warning %}
+        <div class="warning" role="alert">{{ warning }}</div>
+      {% endif %}
+      {% if success %}
+        <div class="success" role="alert">{{ success }}</div>
+      {% endif %}
+    </div>
 
   </main>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white text-center py-2">
+  <footer class="bg-dark text-white text-center mt-5 py-2">
     <div>&copy; 2023 Swappr</div>
     <div style="font-size: small; font-weight: lighter;">swap your house!</div>
   </footer>

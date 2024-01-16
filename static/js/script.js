@@ -451,3 +451,25 @@ if (window.location.pathname === '/search') {
         document.getElementById('bathrooms').value = JSON.stringify({ min: values[0], max: values[1] })
     });
 }
+
+
+// ----- UPDATE USERNAME -----//
+// Makes visible username edit (input text, save and cancel buttons)
+function enableUsernameEdit() {
+    document.getElementById('usernameContainer').style.display = 'none';
+    document.getElementById('editUsernameForm').style.display = 'block';
+
+    // Focus on the input field - trigger the keyboard cursor automatically in the input field
+    document.getElementById('newUsername').focus();
+}
+
+// Triggers form POST for update_usename route so that backend can retrieve newUsername value
+function saveNewUsername() {
+    return true;
+}
+
+// Cancels username edit (input text, save and cancel buttons) by hiding it
+function cancelUsernameEdit() {
+    document.getElementById('usernameContainer').style.display = 'block';
+    document.getElementById('editUsernameForm').style.display = 'none';
+}

@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash
 from supportive_functions import *
 from datetime import datetime
@@ -7,6 +9,13 @@ import secrets
 import json
 
 app = Flask(__name__)
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
+
 
 # Configure logging
 logging.basicConfig(filename='app.log', level=logging.ERROR)
@@ -151,6 +160,7 @@ def delayed_redirect():
 
 
 @app.route("/signin", methods=['GET', 'POST'])
+@limiter.limit("50/minute")
 def signin():
     # Forget any user_id
     session.clear()
@@ -170,7 +180,11 @@ def signin():
         # Check if all form fields are filled and valid, else flash error and reload the route
         try:
             # Ensure user form input for signin is valid
-            signin_validation(username, password, user_data)
+            signin_validation(
+                username,
+                password,
+                user_data
+            )
 
             # Remember user_id and username of the user who has logged in
             session['user_id'] = user_data[0]['id']
@@ -319,7 +333,12 @@ def update_exposure():
             WHERE id = ?
             AND user_id = ?;
             '''
-    cursor_execute(query, new_exposure, submission_id, user_id)
+    cursor_execute(
+        query,
+        new_exposure,
+        submission_id,
+        user_id
+    )
 
     # Update log with INFO msg
     app.logger.info(f"User with username `{session['username']}` and user_id {user_id} changed exposure to `{new_exposure}` status for submission with submission_id {submission_id}")
@@ -464,7 +483,7 @@ def save_edit_submission():
                 whitespace=whitespace,
             )
     if 'delete' in request.form:
-        # Delete the edited submission from database
+        # Delete edited submission from database
         query = '''
                 DELETE FROM submissions
                 WHERE id = ?
@@ -593,63 +612,158 @@ def search():
         )
 
 
-@app.route('/account', methods = ['GET', 'POST'])
+@app.route('/account', methods = ['GET'])
 @login_required
 def account():
+    return render_template('/account.html')
+
+
+@app.route('/password_reset', methods=['POST'])
+@login_required
+def password_reset():
     # Get user data
     user_id = session['user_id']
 
-    if request.method == 'POST':
-        # Get user submitted form data
-        old_password = request.form.get('oldPassword')
-        new_password = request.form.get('newPassword')
-        confirm_new_password = request.form.get('confirmNewPassword')
+    # Get user submitted form data
+    old_password = request.form.get('oldPassword')
+    new_password = request.form.get('newPassword')
+    confirm_new_password = request.form.get('confirmNewPassword')
 
-        # Fetch user hash
+    # Fetch user hash
+    query = '''
+            SELECT hash FROM users
+            WHERE id = ?;
+            '''
+    hash = cursor_fetch(query, user_id)
+
+    try:
+        password_reset_validation(
+            old_password,
+            new_password,
+            confirm_new_password,
+            hash
+        )
+        
+        # Hash new password before storing it
+        hashed_new_password = generate_password_hash(
+            new_password,
+            method='scrypt',
+            salt_length=16
+        )
+
+        # Update new hashed password in the database
         query = '''
-                SELECT hash FROM users
+                UPDATE users
+                SET hash = ?
                 WHERE id = ?;
                 '''
-        hash = cursor_fetch(query, user_id)
+        cursor_execute(query, hashed_new_password, user_id)
 
-        try:
-            password_reset_validation(
-                old_password,
-                new_password,
-                confirm_new_password,
-                hash
-            )
-            
-            # Hash new password before storing it
-            hashed_new_password = generate_password_hash(
-                new_password,
-                method='scrypt',
-                salt_length=16
-            )
+        # Update log with INFO msg
+        app.logger.info(f"User with username `{session['username']}` and user_id {user_id} changed password.")
 
-            # Update new hashed password in the database
-            query = '''
-                    UPDATE users
-                    SET hash = ?
-                    WHERE id = ?;
-                    '''
-            cursor_execute(query, hashed_new_password, user_id)
+    except ValueError as err:
+        # Update log with ERROR msg
+        app.logger.error(f'Password reset failed: {err}')
+        return render_template('/account.html', error=err)
 
-            # Update log with INFO msg
-            app.logger.info(f"User with username `{session['username']}` and user_id {user_id} changed password.")
+    flash('Password successfully changed!')
+    return render_template('/account.html')
 
-        except ValueError as err:
-            # Update log with ERROR msg
-            app.logger.error(f'Password reset failed: {err}')
+
+@app.route('/update_username', methods=['POST'])
+@login_required
+def update_username():
+    # Get user data
+    user_id = session['user_id']
+    old_username = session['username']
+
+    # Get user submitted form data
+    new_username = request.form.get('newUsername').lower()
+
+    try:
+        # Ensure user form input for update password is valid
+        update_username_validation(
+            new_username,
+            user_id
+        )
+
+        # Update exposure value in the database
+        query = '''
+                UPDATE users
+                SET username = ?
+                WHERE id = ?
+                '''
+        cursor_execute(
+            query,
+            new_username,
+            user_id
+        )
+        session['username'] = new_username
+
+        # Update log with INFO msg
+        app.logger.info(f"User with username `{old_username}` and user_id {user_id} updated username to `{new_username}`.")
+
+    except (ValueError, NameError) as err:
+        # Update log with ERROR msg
+        app.logger.error(f'Update username failed: {err}')
+        if isinstance(err, ValueError):
             return render_template('/account.html', error=err)
+        elif isinstance(err, NameError):
+            return render_template('/account.html', warning=err)
 
-        flash('Password successfully changed!')
-        return render_template('/account.html')
-    else:
-        return render_template('/account.html')
-
-
+    flash('Username successfully changed!')
+    return render_template('/account.html')  
 
 
+@app.route('/delete_account', methods=['POST'])
+@login_required
+def delete_account():
+    # Get user data
+    user_id = session['user_id']
+
+    # Get user submitted form data
+    delete_account_confirmation = request.form.get('deleteAccountConfirmation')
+
+    # Fetch user hash
+    query = '''
+            SELECT email FROM users
+            WHERE id = ?;
+            '''
+    email = cursor_fetch(query, user_id)
+
+    try:
+        delete_account_validation(
+            delete_account_confirmation,
+            email,
+        )
+
+        # Delete any user sumbission from database
+        query = '''
+                DELETE FROM submissions
+                WHERE user_id = ?;
+                '''
+        cursor_execute(query, user_id)
+
+        # Delete any user sumbission from database
+        query = '''
+                DELETE FROM users
+                WHERE id = ?;
+                '''
+        cursor_execute(query, user_id)
+
+        # Update log with INFO msg
+        app.logger.info(f"User with username `{session['username']}` and user_id {user_id} has been deleted from database. All user's sumbissions has been deleted.")
+
+    except ValueError as err:
+        # Update log with ERROR msg
+        app.logger.error(f'Account deletion failed: {err}')
+        return render_template('/account.html', error=err)
+
+    session.clear()
+    flash('Your account and data has been erased. Thanks for using our app!')
+    return render_template('/signup.html')
+
+    
 if __name__ == '__main__':
     app.run(debug=True)

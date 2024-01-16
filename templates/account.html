@@ -6,39 +6,50 @@
 
 {% block main %}
   <div class="container mt-2">
-		<!-- Account information -->
+		<!-- Account information section -->
     <h1 class="mb-4 fw-bold fs-2 text-secondary">Account Settings</h1>
 		<hr>
 
-		<!-- Username -->
+		<!-- Username Section -->
 		<h3 class="mb-1 fs-4 fw-bold text-secondary">Username</h2>
-		<div class="form-group mb-4 fw-normal fs-4 px-3">
-			<p class="mb-1">{{ session['username'] }}</p>
-			<p class="mb-1 fs-6 fw-light">The name you sign in to Swappr. You cannot change your username.</p>				
+		<div class="form-group mb-4 fw-normal fs-4 px-3" id="usernameContainer">
+			<button type="button" class="btn btn-link btn-reset fs-4 fw-3 p-0" id="currentUsername" onclick="enableUsernameEdit()">{{ session['username'] }}</button>
+			<p class="mb-1 fs-6 fw-light">The name you sign in to Swappr. Click username to change it.</p>
 		</div>
+			
+		<!-- Edit Username Form (returns newUsername to backend update_username route)-->
+		<div class="form-group mb-4 fw-normal fs-5-custom px-3" id="editUsernameForm">
+			<form method="post" action="/update_username" id="updateUsernameFormPlaceholder" onsubmit="return saveNewUsername()">
+				<input autocomplete="off" autofocus class="form-control w-auto my-3" type="text" id="newUsername" name="newUsername" placeholder="Enter new username" required>
 
-		<!-- Email address -->
+				<div>
+					<button type="submit" class="btn btn-secondary btn-w-70px">Save</button>
+					<button type="submit" class="btn btn-primary btn-w-70px" onclick="cancelUsernameEdit()">Cancel</button>
+				</div>
+				<p class="mb-3 mt-2 fs-6 fw-light">The name you sign in to Swappr. Click your username to change it.</p>
+			</form>	
+		</div>
+		
+		<!-- Email address section -->
 		<h3 class="mb-1 fs-4 fw-bold text-secondary">Email Address</h2>
 		<div class="form-group mb-4 fw-normal fs-4 px-3">
-			<p class="mb-1">{{ session['email'] }}</p>
+			<button type="button" class="btn btn-link btn-reset fs-4 fw-3 p-0" disabled>{{ session['email'] }}</button>
 			<p class="mb-1 fs-6 fw-light">Your registered email. Other users can contact you at this address.</p>				
 		</div>
 
-		<!-- Password -->
+		<!-- Password reset section -->
 		<h3 class="mb-1 fs-4 fw-bold text-secondary">Password</h2>
 		<div class="form-group mb-4 fw-normal fs-4 px-3">
-			<form method="post" action="/account" id="...">
-				<!-- <button type="button" class="btn btn-link btn-reset fs-5 fw-3 p-0">Reset Password*</button> -->
+			<form method="post" action="/password_reset" id="passwordResetPlaceholder">
+				<button type="button" class="btn btn-link btn-reset fs-4 fw-3 p-0" data-bs-toggle="modal" data-bs-target="#passwordResetModal">Reset Password<span class="text-danger">*</span></button>
+				<p class="mb-1 fs-6 fw-light"><span class="text-danger">*</span>Passwords are hashed in Swappr database. Click to change your password.</p>
 
-				<button type="button" class="btn btn-link btn-reset fs-5 fw-3 p-0" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="Reset Password*">Reset Password*</button>
-				<p class="mb-1 fs-6 fw-light">*Passwords are hashed in Swappr database. Click to change your password.</p>
-
-				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="passwordResetModal" tabindex="-1" aria-labelledby="passwordResetModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h1 class="modal-title fs-5" id="exampleModalLabel">Password reset</h1>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								<h1 class="modal-title fs-5" id="passwordResetModalLabel">Password reset</h1>
+								<button type="button" class="btn-close custom-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
 								<div class="mb-4">
@@ -58,17 +69,39 @@
 						</div>
 					</div>
 				</div>
-
-
-
 			</form>
 		</div>
 
 
-		<!-- Submit Button
-		<form method="post" action="/account" id="...">
-			<button type="submit" class="mb-4 btn btn-warning">Search</button>
-		</form> -->
+	<!-- Delete account section -->
+	<h3 class="mb-1 fs-4 fw-bold text-secondary">Unsubscribe</h2>
+		<div class="form-group mb-4 fw-normal fs-4 px-3">
+			<form method="post" action="/delete_account" id="deleteAccountPlaceholder">
+				<button type="button" class="btn btn-link fs-4 fw-3 p-0" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete Account</span></button>
+				<p class="mb-1 fs-6 fw-light">Account deletion. All your data will be wipped out forever.</p>
+
+				<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header mb-4">
+								<h1 class="modal-title fs-5" id="deleteAccountModalLabel">Delete account</h1>
+								<button type="button" class="btn-close custom-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="mb-4">
+									<input type="text" class="form-control" name="deleteAccountConfirmation" placeholder="Enter email address and press Delete button">
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary btn-w-70px" data-bs-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-danger btn-w-70px">Delete</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 
   </div>
+	
 {% endblock %}

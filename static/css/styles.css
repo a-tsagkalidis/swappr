@@ -7,7 +7,7 @@ html {
 }
 body {
     /* font-family: 'Trebuchet MS', sans-serif; */
-    font-family: 'Ubuntu', sans-serif;
+    /* font-family: 'Ubuntu', sans-serif; */
     color: rgb(75, 75, 75);
     margin-bottom: auto;
     display: flex;
@@ -21,13 +21,13 @@ a {
 .fs-8 {
     font-size: small;
 }
+.fs-5-custom {
+    font-size: 18px;
+}
 main {
     flex: 1;
 }
 /* Core styles */
-
-
-
 
 
 /* Return to top button styles */
@@ -77,7 +77,7 @@ main {
 .warning {
     color: #9F6000;
     background-color: #FEEFB3;
-    background-image: url('https://i.imgur.com/Z8q7ww7.png');
+    background-image: url(../images/warning.svg);
 }
 .error {
     color: #D8000C;
@@ -122,6 +122,7 @@ main {
 
 .btn-link { 
     color: red; 
+    text-decoration: none;
 } 
 
 .btn-link:hover { 
@@ -138,7 +139,6 @@ main {
 .btn-w-70px {
     width: 70px;
 }
-
 /* Buttons */
 
 
@@ -185,3 +185,15 @@ td {
 }
 /* Fit handle within the slider */
 
+
+#editUsernameForm {
+    display: none;
+}
+
+
+.custom-close-btn {
+    font-size: 0.75rem;
+    width: 1em;
+    height: 1em; 
+    padding: 0;
+}

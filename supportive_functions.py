@@ -223,14 +223,20 @@ def is_email_exists(email):
     return result is not None
 
 
-def is_username_exists(username):
+def is_username_exists(username, *args):
     '''
     Fetches user input username from the database to validate
-    its existence. In case username is not found, return None.
+    its existence. If username is not found, return None.
+    In case of update_username the function gets user_id in *args
+    so that it can check existent usernames excluding the one
+    of the connected user. 
     '''
     conn = sqlite3.connect('swappr.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE username = ?', (username,))
+    if not args:
+        cursor.execute('SELECT * FROM users WHERE username = ?', (username,))
+    else:
+        cursor.execute('SELECT * FROM users WHERE username = ? AND id != ?', (username, *args,))
     result = cursor.fetchone()
     conn.close()
     return result is not None
@@ -240,10 +246,14 @@ def signup_validation(email, username, password, confirm_password):
     '''
     Checks for valid user input form in signup route.
     '''
+    MIN_USERNAME_LENGTH = 3
+    MAX_USERNAME_LENGTH = 20
+
     # Ensure fields are not blank
     if not email or not username or not password or not confirm_password:
         raise ValueError("Please fill in all the required fields.")
     
+    # Ensure email does not contain invalid email characters and has valid structure
     email_regex_stipulations = re.compile(r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
     if not email_regex_stipulations.match(email):
         raise ValueError('Please enter a valid email address.')
@@ -252,10 +262,15 @@ def signup_validation(email, username, password, confirm_password):
     if password != confirm_password:
         raise ValueError("Password and password confirmation do not match.")
 
-    # Ensure username is at least 3 characters long and does not contain punctuation characters or whitespaces
-    if len(username) < 3:
-        raise ValueError("Username must be at least 3 characters long.")
+    # Ensure new username does not fall short the minimum length
+    if len(username) < MIN_USERNAME_LENGTH:
+        raise ValueError(f"Username must be at least {MIN_USERNAME_LENGTH} characters long.")
+    
+    # Ensure new username does not exceed the maximum length
+    if len(username) > MAX_USERNAME_LENGTH:
+        raise ValueError(f"Username cannot exceed {MAX_USERNAME_LENGTH} characters.")
 
+    # Ensure username does not contain punctuation characters or whitespaces
     if any(char in string.punctuation or char.isspace() for char in username):
         raise ValueError("Username cannot contain punctuation characters or whitespaces.")
 
@@ -263,10 +278,11 @@ def signup_validation(email, username, password, confirm_password):
     # if not is_strong_password(password):
     #     raise ValueError("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.")
 
-    # Ensure email and username do not exist
+    # Ensure email does not exist
     if is_email_exists(email):
         raise ValueError("The provided email address is already in use. Please choose a different one.")
 
+    # Ensure username does not exist
     if is_username_exists(username):
         raise ValueError("The chosen username is already in use. Please choose a different one.")
 
@@ -411,11 +427,9 @@ def submission_validation(all_field_values, exposure, house_type, square_meters,
     return True
 
 
-
-
 def password_reset_validation(old_password, new_password, confirm_new_password, hash):
     '''
-    Checks for valid user input form in account route regarding password reset.
+    Checks password reset input validity in account route.
     '''
     # Ensure fields are not blank
     if not old_password or not new_password or not confirm_new_password:
@@ -437,3 +451,42 @@ def password_reset_validation(old_password, new_password, confirm_new_password, 
     return True
 
 
+def update_username_validation(new_username, user_id):
+    '''
+    Checks password reset input validity in account route.
+    '''
+    MIN_USERNAME_LENGTH = 3
+    MAX_USERNAME_LENGTH = 20
+
+    # Ensure field is not blank
+    if not new_username:
+        raise ValueError("Please fill in all the required field.")
+
+    # Ensure new username does not exist
+    if is_username_exists(new_username, user_id):
+        raise ValueError("The chosen username is already in use. Please choose a different one.")
+    
+    # Ensure new username does not fall short the minimum length
+    if len(new_username) < MIN_USERNAME_LENGTH:
+        raise ValueError(f"Username must be at least {MIN_USERNAME_LENGTH} characters long.")
+    
+    # Ensure new username does not exceed the maximum length
+    if len(new_username) > MAX_USERNAME_LENGTH:
+        raise ValueError(f"Username cannot exceed {MAX_USERNAME_LENGTH} characters.")
+
+    # Ensure new username does not contain punctuation characters or whitespaces
+    if any(char in string.punctuation or char.isspace() for char in new_username):
+        raise ValueError("Username cannot contain punctuation characters or whitespaces.")
+    
+    # Ensure new username is not the same as the previous one
+    if session['username'] == new_username:
+        raise NameError("Current username entered. Changes were not saved.")
+    
+
+def delete_account_validation(delete_account_confirmation, email):
+    '''
+    Checks password reset input validity in account route.
+    '''
+    # Ensure email has provided correctly to procceed to submissions and username deletion
+    if delete_account_confirmation != email[0]['email']:
+        raise ValueError("Wrong email. Account deletion aborted.")
