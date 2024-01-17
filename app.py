@@ -11,8 +11,23 @@ import json
 import sys
 import os
 
+# Declare global variable for POST resquest limits
+SIGNUP_LIMIT = "60/minute"
+SIGNIN_LIMIT = "60/minute"
+SUBMIT_LIMIT = "30/minute"
+UPDATE_EXPOSURE_LIMIT = "30/minute"
+EDIT_SUBMISSION_LIMIT = "60/minute"
+SEARCH_LIMIT = "100/minute"
+PASSWORD_RESET_LIMIT = "30/minute"
+UPDATE_USERNAME_LIMIT = "30/minute"
+DELETE_ACCOUNT_LIMIT = "30/minute"
+
+# Declare global variable for datetime log format
+DATETIME = datetime.now().strftime(f"[%d/%b/%Y %H:%M:%S]")
+
 # Run system file backup script - back ups database and logs
-os.system('bash bak.sh')
+if args.backup:
+    os.system('bash bak.sh')
 
 # Flask instance to initialize the web application.
 app = Flask(__name__)
@@ -21,12 +36,15 @@ app = Flask(__name__)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["200 per day", "50 per hour"],
+    default_limits=["2000 per day", "500 per hour"],
     storage_uri="memory://",
 )
 
 # Configure logging
 logging.basicConfig(filename='app.log', level=logging.ERROR)
+
+# JSON instance to be used in app.logger functions for better readability
+dumps = json.dumps
 
 # Declare a secret key for Flask application - it is needed for flash function
 app.secret_key = secrets.token_hex(32)
@@ -43,10 +61,11 @@ if flag:
     app.logger.setLevel(logging.WARNING)
     app.logger.warning(
         f'''
+        {DATETIME}
         App initialized successfully. Database tables where created
         in case they weren't exist. JSON file with locations has been
         imported to the database - NEWLY IMPORTED LOCATIONS: {
-            json.dumps(location_update, indent=2)
+            dumps(location_update, indent=2)
             }
         '''
     )
@@ -54,7 +73,8 @@ else:
     # Updage log with INFO msg
     app.logger.setLevel(logging.INFO)
     app.logger.info(
-        '''
+        f'''
+        {DATETIME}
         App initialized successfully. Database tables where created
         in case they weren't exist. JSON file with locations has been
         imported to the database - NO NEWLY IMPORTED LOCATIONS FOUND.
@@ -62,6 +82,7 @@ else:
     )
 
 
+# |----- INDEX HTML ROUTE ----|
 @app.route('/')
 @login_required
 def index():
@@ -74,12 +95,13 @@ def index():
             WHERE user_id = ?;
             '''
     submissions_data = cursor_fetch(query, user_id)
-
+    
     # Update log with INFO msg
     app.logger.info(
         f'''
-        User with username `{session['username']}` and user_id 
-        {session['user_id']} navigation @index.html
+        {DATETIME}:{session['ip']}
+        Navigation @index.html
+        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
         '''
     )
     return render_template(
@@ -90,8 +112,9 @@ def index():
     )
 
 
+# |----- SIGN IN HTML AND POST BUTTON ROUTE ----|
 @app.route('/signup', methods=['GET', 'POST'])
-@limiter.limit("50/minute")
+@limiter.limit(f"{SIGNUP_LIMIT}" if args.limiter else None)
 def signup():
     if request.method == 'POST':
         # Get user submitted form data
@@ -119,7 +142,7 @@ def signup():
 
             registration_date = datetime.now()
 
-            # Sign up new user and then sign in
+            # Sign up new user
             query = '''
                     INSERT INTO users (
                         email,
@@ -138,25 +161,45 @@ def signup():
                 registration_date,
                 False
             )
-            signin()
 
             # Update log with INFO msg
-            app.logger.info('New user successfuly registered in database')
+            app.logger.info(
+                f'''
+                {DATETIME}:{request.remote_addr}
+                A New user successfuly registered in database
+                'email': {email}
+                'username': {username}
+                '''
+            )
 
-            # Inform the user for successful register
+            # Sign in new user
+            signin()
+
+            # Inform user for successful register
             flash('Successfully registered!')
             return redirect(url_for('delayed_redirect'))
 
         except ValueError as err:
             # Update log with ERROR msg
-            app.logger.error(f'Signup failed: {err}')
+            app.logger.error(
+                f'''
+                {DATETIME}:{request.remote_addr}
+                ERROR Signup: {err}
+                '''
+            )
             return render_template('/signup.html', error=err)
 
     # Update log with INFO msg
-    app.logger.info('User navigation @signup.html')
+    app.logger.info(
+        f'''
+        {DATETIME}:{request.remote_addr}
+        Navigation @signup.html
+        '''
+    )
     return render_template('/signup.html')
 
 
+# |----- DELAYED REDIRECT HTML ROUTE ----|
 @app.route('/delayed_redirect')
 def delayed_redirect():
     registration_timestamp = session.get('registration_timestamp')
@@ -172,14 +215,21 @@ def delayed_redirect():
             return redirect('/')
 
     # Update log with INFO msg
-    app.logger.info('New user redirected @index.html')
+    app.logger.info(
+        f'''
+        {DATETIME}:{session['ip']}
+        Redirection @index.html
+        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
+        '''
+        )
 
     # Render the delayed redirect template with a JavaScript redirect
     return render_template('delayed_redirect.html')
 
 
+# |----- SIGNIN HTML AND POST BUTTON ROUTE ----|
 @app.route("/signin", methods=['GET', 'POST'])
-@limiter.limit("50/minute")
+@limiter.limit(f"{SIGNIN_LIMIT}" if args.limiter else None)
 def signin():
     # Forget any user_id
     session.clear()
@@ -205,16 +255,23 @@ def signin():
                 user_data
             )
 
-            # Remember user_id and username of the user who has logged in
+            # Store in session dictionary user details to be used later
             session['user_id'] = user_data[0]['id']
             session['username'] = user_data[0]['username']
             session['email'] = user_data[0]['email']
+            session['ip'] = request.remote_addr
+            session['logged_user'] = {
+                'user_id': session['user_id'],
+                'email': session['email'],
+                'username': session['username'],
+            }
 
             # Update log with INFO msg
             app.logger.info(
                 f'''
-                User with username `{session['username']}` and user_id 
-                {session['user_id']} just signed in.
+                {DATETIME}:{session['ip']}
+                A user just signed in
+                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
                 '''
             )
 
@@ -223,23 +280,34 @@ def signin():
 
         except ValueError as err:
             # Update log with ERROR msg
-            app.logger.error(f'Signin failed: {err}')
+            app.logger.error(
+                f'''
+                {DATETIME}:{request.remote_addr}
+                ERROR Signin: {err}
+                '''
+            )
             return render_template('/signin.html', error=err)
 
-
     # Update log with INFO msg
-    app.logger.info('Visitor navidation @signin.html')
+    app.logger.info(
+        f'''
+        {DATETIME}:{request.remote_addr}
+        Navigation @signin.html
+        '''
+    )
     return render_template('/signin.html')
 
 
+# |----- SIGNOUT ROUTE ----|
 @app.route('/signout')
 @login_required
 def signout():
     # Update log with INFO msg
     app.logger.info(
         f'''
-        User with username `{session['username']}` and user_id 
-        {session['user_id']} just signed out.
+        {DATETIME}:{session['ip']}
+        User signed out
+        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
         '''
     )
 
@@ -248,7 +316,9 @@ def signout():
     return redirect('/')
 
 
+# |----- SUBMIT HTML AND POST BUTTON ROUTE ----|
 @app.route('/submit', methods=['GET', 'POST'])
+@limiter.limit(f"{SUBMIT_LIMIT}" if args.limiter else None)
 @login_required
 def submit():
     # Fetch cities for the initial rendering of the form
@@ -285,8 +355,15 @@ def submit():
                 municipality,
                 region
             )
+
             # Update log with WARNING msg
-            app.logger.warning('Submission validated successfully.')
+            app.logger.warning(
+                f'''
+                {DATETIME}:{session['ip']}
+                Submission validated successfully.
+                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
+                '''
+            )
 
             # Save submission into user database
             query = '''
@@ -321,8 +398,9 @@ def submit():
             # Update log with INFO msg
             app.logger.info(
                 f'''
-                User with username `{session['username']}` and user_id 
-                {user_id} successfully saved a new sumbission
+                {DATETIME}:{session['ip']}
+                Submission saved successfully.
+                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
                 '''
             )
 
@@ -334,10 +412,12 @@ def submit():
             # Update log with ERROR msg
             app.logger.error(
                 f'''
-                User with username `{session['username']}` and user_id 
-                {user_id} ERROR: Submission failed: {err}
+                {DATETIME}:{session['ip']}
+                ERROR Submission: {err}
+                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
                 '''
             )
+
             return render_template(
                 '/submit.html',
                 submission=None,
@@ -348,8 +428,9 @@ def submit():
         # Update log with INFO msg
         app.logger.info(
             f'''
-            User with username `{session['username']}` and user_id 
-            {user_id} navigation @submit.html
+            {DATETIME}:{session['ip']}
+            Navigation @submit.html
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
             '''
         )
 
@@ -361,7 +442,9 @@ def submit():
         )
 
 
+# |----- UPDATE EXPOSURE POST BUTTON ROUTE ----|
 @app.route('/update_exposure', methods=['POST'])
+@limiter.limit(f"{UPDATE_EXPOSURE_LIMIT}" if args.limiter else None)
 @login_required
 def update_exposure():
     # Get user data
@@ -388,9 +471,9 @@ def update_exposure():
     # Update log with INFO msg
     app.logger.info(
         f'''
-        User with username `{session['username']}` and user_id 
-        {user_id} changed exposure to `{new_exposure}` status for 
-        submission with submission_id {submission_id}
+        {DATETIME}:{session['ip']}
+        Submission id {submission_id} exposure changed to {new_exposure}
+        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
         '''
     )
 
@@ -398,7 +481,9 @@ def update_exposure():
     return redirect(url_for('index'))
 
 
+# |----- EDIT SUBMISSION HTML AND POST BUTTON ROUTE ----|
 @app.route('/edit_submission', methods=['POST'])
+@limiter.limit(f"{EDIT_SUBMISSION_LIMIT}" if args.limiter else None)
 @login_required
 def edit_submission():
     # Fetch cities for the initial rendering of the form
@@ -423,9 +508,10 @@ def edit_submission():
         # Update log with INFO msg
         app.logger.info(
             f'''
-            User with username `{session['username']}` and user_id {user_id} 
-            navigation @edit_submission.html and editing submission with 
-            submission_id {submission_id}
+            {DATETIME}:{session['ip']}
+            Navigation @edit_submission.html
+            Submission id {submission_id} is being edited
+            {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
             '''
         )
 
@@ -439,8 +525,9 @@ def edit_submission():
         # Update log with ERROR msg
         app.logger.error(
             f'''
-            User with username `{session['username']}` and user_id {user_id} 
-            ERROR: Submission with submission_id {submission_id} not found
+            {DATETIME}:{session['ip']}
+            ERROR: Submission id {submission_id} not found
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
             '''
         )
 
@@ -448,7 +535,9 @@ def edit_submission():
         return redirect(url_for('index'))
 
 
+# |----- EDITED SUBMISSION SAVE AND DELETE POST BUTTON ROUTE ----|
 @app.route('/edited_submission', methods=['POST'])
+@limiter.limit(f"{EDIT_SUBMISSION_LIMIT}" if args.limiter else None)
 @login_required
 def save_edit_submission():
     # Fetch cities for the initial rendering of the form
@@ -490,8 +579,9 @@ def save_edit_submission():
             # Update log with WARNING msg
             app.logger.warning(
                 f'''
-                User with username `{session['username']}` and user_id {user_id} 
-                successfully VALIDATED input for editing submission_id {submission_id}
+                {DATETIME}:{session['ip']}
+                Edited sumbission {submission_id} INPUT successfully VALIDATED
+                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
                 '''
             )
 
@@ -528,8 +618,9 @@ def save_edit_submission():
             # Update log with INFO msg
             app.logger.info(
                 f'''
-                User with username `{session['username']}` and user_id {user_id} 
-                successfully UPDATED submission with submission_id {submission_id}
+                {DATETIME}:{session['ip']}
+                Sumbission {submission_id} successfuly UPDATED
+                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
                 '''
             )
 
@@ -541,8 +632,9 @@ def save_edit_submission():
             # Update log with ERROR msg
             app.logger.error(
                 f'''
-                User with username `{session['username']}` and user_id {user_id} 
-                ERROR: Submission UPDATE failed: {err}
+                {DATETIME}:{session['ip']}
+                ERROR: Submission update: {err}
+                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
                 '''
             )
 
@@ -572,9 +664,9 @@ def save_edit_submission():
         # Update log with INFO msg
         app.logger.info(
             f'''
-            Submission with submission_id {submission_id} that
-            belonged to user with username `{session['username']} and
-            user_id {user_id} has been successfully deleted.
+            {DATETIME}:{session['ip']}
+            Submission {submission_id} successfully DELETED
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
             '''
         )
 
@@ -583,7 +675,8 @@ def save_edit_submission():
         return redirect(url_for('index'))
 
 
-@app.route('/get_municipalities', methods=['GET'])
+# |----- GET MUNICIPALITIES SELECT INPUT ROUTE ----|
+@app.route('/get_municipalities')
 def get_municipalities():
     city = request.args.get('city')
     query = '''
@@ -602,7 +695,8 @@ def get_municipalities():
     return municipalities
 
 
-@app.route('/get_regions', methods=['GET'])
+# |----- GET REGIONS SELECT INPUT ROUTE ----|
+@app.route('/get_regions')
 def get_regions():
     municipality = request.args.get('municipality')
     query = '''
@@ -621,7 +715,9 @@ def get_regions():
     return regions
 
 
+# |----- SEARCH HTML ROUTE ----|
 @app.route('/search', methods=['GET', 'POST'])
+@limiter.limit(f"{SEARCH_LIMIT}" if args.limiter else None)
 @login_required
 def search():
     # Fetch cities for the initial rendering of the form
@@ -689,8 +785,9 @@ def search():
         # Update log with INFO msg
         app.logger.info(
             f'''
-            User with username `{session['username']}` and user_id
-            {user_id} navigation @search.html
+            {DATETIME}:{session['ip']}
+            Navigation @search.html
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
             '''
         )
 
@@ -703,20 +800,24 @@ def search():
         )
 
 
-@app.route('/account', methods = ['GET'])
+# |----- ACCOUNT HTML ROUTE ----|
+@app.route('/account')
 @login_required
 def account():
     # Update log with INFO msg
     app.logger.info(
         f'''
-        User with username `{session['username']}` and user_id 
-        {session['user_id']} navigation @account.html
+        {DATETIME}:{session['ip']}
+        Navigation @account.html
+        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
         '''
     )
     return render_template('/account.html')
 
 
+# |----- PASSWORD RESET POST BUTTON ROUTE ----|
 @app.route('/password_reset', methods=['POST'])
+@limiter.limit(f"{PASSWORD_RESET_LIMIT}" if args.limiter else None)
 @login_required
 def password_reset():
     # Get user data
@@ -760,21 +861,30 @@ def password_reset():
         # Update log with INFO msg
         app.logger.info(
             f'''
-            User with username `{session['username']}` and user_id
-            {user_id} changed password.
+            {DATETIME}:{session['ip']}
+            User password changed
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
             '''
         )
 
     except ValueError as err:
         # Update log with ERROR msg
-        app.logger.error(f'Password reset failed: {err}')
+        app.logger.error(
+            f'''
+            {DATETIME}:{session['ip']}
+            ERROR: Password reset: {err}
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
+            '''
+        )
         return render_template('/account.html', error=err)
 
     flash('Password successfully changed!')
     return render_template('/account.html')
 
 
+# |----- UPDATE USERNAME POST BUTTON ROUTE ----|
 @app.route('/update_username', methods=['POST'])
+@limiter.limit(f"{UPDATE_USERNAME_LIMIT}" if args.limiter else None)
 @login_required
 def update_username():
     # Get user data
@@ -807,14 +917,22 @@ def update_username():
         # Update log with INFO msg
         app.logger.info(
             f'''
-            User with username `{old_username}` and user_id {user_id}
-            updated username to `{new_username}`.
+            {DATETIME}:{session['ip']}
+            Username updated: {old_username} -> {new_username}
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
             '''
         )
 
     except (ValueError, NameError) as err:
         # Update log with ERROR msg
-        app.logger.error(f'Update username failed: {err}')
+        app.logger.error(
+            f'''
+            {DATETIME}:{session['ip']}
+            ERROR: Username update: {err}
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
+            '''
+        )
+
         if isinstance(err, ValueError):
             return render_template('/account.html', error=err)
         elif isinstance(err, NameError):
@@ -824,7 +942,9 @@ def update_username():
     return render_template('/account.html')
 
 
+# |----- DELETE ACCOUNT POST BUTTON ROUTE ----|
 @app.route('/delete_account', methods=['POST'])
+@limiter.limit(f"{DELETE_ACCOUNT_LIMIT}" if args.limiter else None)
 @login_required
 def delete_account():
     # Get user data
@@ -863,15 +983,22 @@ def delete_account():
         # Update log with INFO msg
         app.logger.info(
             f'''
-            User with username `{session['username']}` and user_id
-            {user_id} has been deleted from database. All user's sumbissions
-            has been deleted.
+            {DATETIME}:{session['ip']}
+            User account and submissions deleted
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
             '''
         )
 
     except ValueError as err:
         # Update log with ERROR msg
-        app.logger.error(f'Account deletion failed: {err}')
+        app.logger.error(
+            f'''
+            {DATETIME}:{session['ip']}
+            ERROR: Account deletion: {err}
+            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
+            '''
+            )
+        
         return render_template('/account.html', error=err)
 
     session.clear()
@@ -879,7 +1006,8 @@ def delete_account():
     return render_template('/signup.html')
 
 
-@app.route('/about', methods=['GET'])
+# |----- ABOUT HTML ROUTE ----|
+@app.route('/about')
 @login_required
 def about():
     return render_template('/about.html')

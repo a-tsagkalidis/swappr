@@ -11,6 +11,7 @@ if [ -f app.log ]; then
     else
         echo "backup logs directory exists for today"
     fi
+
     echo "INFO:bash:internal.swappr.com - - [$(date +'%d/%b/%Y %H:%M:%S')]: Swappr server rebooted. app.log log file has been successfully moved to backup drive." >> "app.log"
     mv "app.log" "baklogs/$DATE/$TIME"
 fi
@@ -22,6 +23,12 @@ if [ -f swappr.db ]; then
     else
         echo "backup databases directory exists for today"
     fi
+
     cp "swappr.db" "bakdb/$DATE/$TIME"
-    echo "INFO:bash:internal.swappr.com - - [$(date +'%d/%b/%Y %H:%M:%S')]: Swappr server rebooted. swappr.db database file has been successfully copied to backup drive." >> "baklogs/$DATE/$TIME/app.log"
+
+    if [ -f "baklogs/$DATE/$TIME/app.log" ]; then
+        echo "INFO:bash:internal.swappr.com - - [$(date +'%d/%b/%Y %H:%M:%S')]: Swappr server rebooted. swappr.db database file has been successfully copied to backup drive." >> "baklogs/$DATE/$TIME/app.log"
+    else
+        echo "INFO:bash:internal.swappr.com - - [$(date +'%d/%b/%Y %H:%M:%S')]: Swappr server initial boot. Initial app.log file created. swappr.db database file has been successfully copied to backup drive." > "app.log"
+    fi
 fi

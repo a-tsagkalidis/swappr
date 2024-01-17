@@ -276,7 +276,13 @@ def signup_validation(email, username, password, confirm_password):
 
     # # Ensure password is strong
     # if not is_strong_password(password):
-    #     raise ValueError("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.")
+    #     raise ValueError(
+    #         '''
+    #         Password must be at least 8 characters long, including at least 1
+    #         uppercase letter, 1 lowercase letter, a decimal number, and a
+    #         punctuation character.
+    #         '''
+    #     )
 
     # Ensure email does not exist
     if is_email_exists(email):

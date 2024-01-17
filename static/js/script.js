@@ -6,481 +6,481 @@ let topButton = document.getElementById("top-button");
  * A function that scrolls the webpage at the top
  */
 function topFunction() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+	document.body.scrollTop = 0;
+	document.documentElement.scrollTop = 0;
 }
 
 
 // ----- SIGN UP VALIDATION FORM ----- //
 function validateSignUpForm() {
-    const signupForm = document.querySelector('#signupForm');
-    var email = signupForm.elements["email"].value;
-    var username = signupForm.elements["username"].value;
-    var password = signupForm.elements["password"].value;
-    var confirmPassword = signupForm.elements["confirmPassword"].value;
+	const signupForm = document.querySelector('#signupForm');
+	var email = signupForm.elements["email"].value;
+	var username = signupForm.elements["username"].value;
+	var password = signupForm.elements["password"].value;
+	var confirmPassword = signupForm.elements["confirmPassword"].value;
 
-    // Ensure form input types are as they should be
-    formElementsTypes = [
-        signupForm.elements["email"].type,
-        signupForm.elements["username"].type,
-        signupForm.elements["password"].type,
-        signupForm.elements["confirmPassword"].type,
-    ];
+	// Ensure form input types are as they should be
+	formElementsTypes = [
+		signupForm.elements["email"].type,
+		signupForm.elements["username"].type,
+		signupForm.elements["password"].type,
+		signupForm.elements["confirmPassword"].type,
+	];
 
-    expectedTypes = [
-        "email",
-        "text",
-        "password",
-        "password",
-    ];
+	expectedTypes = [
+		"email",
+		"text",
+		"password",
+		"password",
+	];
 
-    for (let i = 0; i < formElementsTypes.length; i++) {
-        if (formElementsTypes[i] !== expectedTypes[i]) {
-            alert("Unkown error occured!!");
-            return false;
-        }
-    }
+	for (let i = 0; i < formElementsTypes.length; i++) {
+		if (formElementsTypes[i] !== expectedTypes[i]) {
+			alert("Unkown error occured!!");
+			return false;
+		}
+	}
 
-    // Ensure fields are not blank
-    if (email === "" || username === "" || password === "" || confirmPassword === "") {
-        alert("Please fill in all the required fields.");
-        return false;
-    }
+	// Ensure fields are not blank
+	if (email === "" || username === "" || password === "" || confirmPassword === "") {
+		alert("Please fill in all the required fields.");
+		return false;
+	}
 
-    // Ensure email adress has valid chars
-    var emailRegexStipulations = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegexStipulations.test(email)) {
-        alert('Please enter a valid email address.');
-        return false;
-    }
+	// Ensure email adress has valid chars
+	var emailRegexStipulations = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	if (!emailRegexStipulations.test(email)) {
+		alert('Please enter a valid email address.');
+		return false;
+	}
 
-    // Ensure username is at least 3 characters long
-    if (username.length < 3) {
-        alert('Username must be at least 3 characters long.');
-        return false;
-    }
+	// Ensure username is at least 3 characters long
+	if (username.length < 3) {
+		alert('Username must be at least 3 characters long.');
+		return false;
+	}
 
-    // Ensure username does not contain any punctuation characters or whitespaces
-    var invalidCharactersRegex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\s]/;
-    if (invalidCharactersRegex.test(username)) {
-        alert('Username cannot contain punctuation characters or whitespaces.');
-        return false;
-    }
+	// Ensure username does not contain any punctuation characters or whitespaces
+	var invalidCharactersRegex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\s]/;
+	if (invalidCharactersRegex.test(username)) {
+		alert('Username cannot contain punctuation characters or whitespaces.');
+		return false;
+	}
 
-    // Ensure password and confirmation match
-    if (password !== confirmPassword) {
-        alert("Password and password confirmation do not match.");
-        return false;
-    }
+	// Ensure password and confirmation match
+	if (password !== confirmPassword) {
+		alert("Password and password confirmation do not match.");
+		return false;
+	}
 
-    // // Ensure password is strong
-    // var passwordRegexStipulations = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[\w!@#$%^&*()_+]{8,}$/;
-    // if (!passwordRegexStipulations.test(password)) {
-    //     alert("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.");
-    //     return false;
-    // }
+	// // Ensure password is strong
+	// var passwordRegexStipulations = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[\w!@#$%^&*()_+]{8,}$/;
+	// if (!passwordRegexStipulations.test(password)) {
+	//     alert("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.");
+	//     return false;
+	// }
 
-    // Validation successfully passed
-    return true;
+	// Validation successfully passed
+	return true;
 }
 
 
 // ----- SIGN IN VALIDATION FORM ----- //
 function validateSignInForm() {
-    const signinForm = document.querySelector('#signinForm');
-    var username = signinForm.elements["username"].value;
-    var password = signinForm.elements["password"].value;
+	const signinForm = document.querySelector('#signinForm');
+	var username = signinForm.elements["username"].value;
+	var password = signinForm.elements["password"].value;
 
-    // Ensure fields are not blank
-    if (username === "" && password === "") {
-        alert("Please fill in your username and password.");
-        return false;
-    }
+	// Ensure fields are not blank
+	if (username === "" && password === "") {
+		alert("Please fill in your username and password.");
+		return false;
+	}
 
-    // Ensure fields are not blank
-    if (username === "") {
-        alert("Please fill in your username.");
-        return false;
-    }
+	// Ensure fields are not blank
+	if (username === "") {
+		alert("Please fill in your username.");
+		return false;
+	}
 
-    // Ensure fields are not blank
-    if (password === "") {
-        alert("Please fill in your password.");
-        return false;
-    }
+	// Ensure fields are not blank
+	if (password === "") {
+		alert("Please fill in your password.");
+		return false;
+	}
 
-    // Ensure username does not contain any punctuation characters
-    var punctuationRegexStipulations = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;
-    if (punctuationRegexStipulations.test(username)) {
-        alert('Username cannot contain punctuation characters.');
-        return false;
-    }
+	// Ensure username does not contain any punctuation characters
+	var punctuationRegexStipulations = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;
+	if (punctuationRegexStipulations.test(username)) {
+		alert('Username cannot contain punctuation characters.');
+		return false;
+	}
 
-    // Validation successufully passed
-    return true;
+	// Validation successufully passed
+	return true;
 }
 
 
 // ----- SUBMIT AND EDIT_SUBMISSION FIELD HANDLING AND VALIDATION ----- //
 // Function to enforce min and max values
 function enforceMinMax(input, min, max) {
-    var value = parseInt(input.value, 10);
-    if (isNaN(value) || value < min) {
-        input.value = min;
-    } else if (value > max) {
-        input.value = max;
-    }
+	var value = parseInt(input.value, 10);
+	if (isNaN(value) || value < min) {
+		input.value = min;
+	} else if (value > max) {
+		input.value = max;
+	}
 }
 
 // Event listener for handling backspace key special case
 function handleBackspace(input, minValue) {
-    input.addEventListener('keydown', function (event) {
-        if (event.key === 'Backspace' && parseInt(input.value, 10) === minValue) {
-            input.value = '';  // Clear the input
-        }
-    });
+	input.addEventListener('keydown', function (event) {
+		if (event.key === 'Backspace' && parseInt(input.value, 10) === minValue) {
+			input.value = '';  // Clear the input
+		}
+	});
 }
 
 function validateSubmitForm() {
-    const submitForm = document.querySelector('#submitForm');
-    const exposure = submitForm.elements["exposure"].value;
-    const houseType = submitForm.elements["houseType"].value;
-    const squareMeters = submitForm.elements["squareMeters"].value;
-    const rental = submitForm.elements["rental"].value;
-    const bedrooms = submitForm.elements["bedrooms"].value;
-    const bathrooms = submitForm.elements["bathrooms"].value;
-    const inputFormValues = [
-        exposure,
-        houseType,
-        squareMeters,
-        rental,
-        bedrooms,
-        bathrooms,
-    ];
+	const submitForm = document.querySelector('#submitForm');
+	const exposure = submitForm.elements["exposure"].value;
+	const houseType = submitForm.elements["houseType"].value;
+	const squareMeters = submitForm.elements["squareMeters"].value;
+	const rental = submitForm.elements["rental"].value;
+	const bedrooms = submitForm.elements["bedrooms"].value;
+	const bathrooms = submitForm.elements["bathrooms"].value;
+	const inputFormValues = [
+		exposure,
+		houseType,
+		squareMeters,
+		rental,
+		bedrooms,
+		bathrooms,
+	];
 
-    // Ensure input fields are not blank
-    for (let i = 0; i < inputFormValues.length; i++) {
-        if (inputFormValues[i] === '') {
-            alert('Please fill in all the required fields.');
-            return false;
-        }
-    }
+	// Ensure input fields are not blank
+	for (let i = 0; i < inputFormValues.length; i++) {
+		if (inputFormValues[i] === '') {
+			alert('Please fill in all the required fields.');
+			return false;
+		}
+	}
 
-    // Ensure exposure is either 'public' or 'private'
-    if (exposure !== 'public' && exposure !== 'private') {
-        alert('Invalid exposure value.');
-        return false;
-    }
+	// Ensure exposure is either 'public' or 'private'
+	if (exposure !== 'public' && exposure !== 'private') {
+		alert('Invalid exposure value.');
+		return false;
+	}
 
-    // Ensure houseType is a valid option
-    const validHouseTypes = [
-        'studio',
-        'flat',
-        'maisonette',
-        'semi-detached_house',
-        'detached_house',
-        'mansion',
-    ]
-    if (!validHouseTypes.includes(houseType)) {
-        alert('Invalid house type.');
-        return false;
-    }
+	// Ensure houseType is a valid option
+	const validHouseTypes = [
+		'studio',
+		'flat',
+		'maisonette',
+		'semi-detached_house',
+		'detached_house',
+		'mansion',
+	]
+	if (!validHouseTypes.includes(houseType)) {
+		alert('Invalid house type.');
+		return false;
+	}
 
-    // Ensure countable inputs type are numbers
-    const mustBeNumbers = [
-        submitForm.elements["squareMeters"],
-        submitForm.elements["rental"],
-        submitForm.elements["bedrooms"],
-        submitForm.elements["bathrooms"],
-    ]
-    for (let i = 0; i < mustBeNumbers.length; i++) {
-        if (mustBeNumbers[i].type !== 'number') {
-            alert("Invalid number.");
-            return false;
-        }
-    }
+	// Ensure countable inputs type are numbers
+	const mustBeNumbers = [
+		submitForm.elements["squareMeters"],
+		submitForm.elements["rental"],
+		submitForm.elements["bedrooms"],
+		submitForm.elements["bathrooms"],
+	]
+	for (let i = 0; i < mustBeNumbers.length; i++) {
+		if (mustBeNumbers[i].type !== 'number') {
+			alert("Invalid number.");
+			return false;
+		}
+	}
 
-    // Ensure countable inputs are within limits
-    if (squareMeters < 0 || squareMeters > 1000) {
-        alert('Invalid square meters');
-        return false;
-    }
+	// Ensure countable inputs are within limits
+	if (squareMeters < 0 || squareMeters > 1000) {
+		alert('Invalid square meters');
+		return false;
+	}
 
-    if (rental < 0 || rental > 10000) {
-        alert('Invalid rental value');
-        return false;
-    }
+	if (rental < 0 || rental > 10000) {
+		alert('Invalid rental value');
+		return false;
+	}
 
-    if (bedrooms < 0 || bedrooms > 10) {
-        alert('Invalid bedroom quantity');
-        return false;
-    }
+	if (bedrooms < 0 || bedrooms > 10) {
+		alert('Invalid bedroom quantity');
+		return false;
+	}
 
-    if (bathrooms < 0 || bathrooms > 10) {
-        alert('Invalid bathroom quantity');
-        return false;
-    }
+	if (bathrooms < 0 || bathrooms > 10) {
+		alert('Invalid bathroom quantity');
+		return false;
+	}
 
-    // Validation successufully passed
-    return true;
+	// Validation successufully passed
+	return true;
 };
 
 
 // Execute the following code only for submit, edit_submission, and search routes
 if (window.location.pathname === '/submit' ||
-    window.location.pathname === '/edit_submission' ||
-    window.location.pathname === '/search'
+	window.location.pathname === '/edit_submission' ||
+	window.location.pathname === '/search'
 ) {
-    // Event listener for "squareMeters" input
-    document.getElementById('squareMeters').addEventListener('input', function () {
-        enforceMinMax(this, 0, 1000);
-    });
+	// Event listener for "squareMeters" input
+	document.getElementById('squareMeters').addEventListener('input', function () {
+		enforceMinMax(this, 0, 1000);
+	});
 
-    // Event listener for "rental" input
-    document.getElementById('rental').addEventListener('input', function () {
-        enforceMinMax(this, 0, 10000);
-    });
+	// Event listener for "rental" input
+	document.getElementById('rental').addEventListener('input', function () {
+		enforceMinMax(this, 0, 10000);
+	});
 
-    // Event listener for "bedrooms" input
-    document.getElementById('bedrooms').addEventListener('input', function () {
-        enforceMinMax(this, 0, 10);
-    });
+	// Event listener for "bedrooms" input
+	document.getElementById('bedrooms').addEventListener('input', function () {
+		enforceMinMax(this, 0, 10);
+	});
 
-    // Event listener for "bathrooms" input
-    document.getElementById('bathrooms').addEventListener('input', function () {
-        enforceMinMax(this, 0, 10);
-    });
+	// Event listener for "bathrooms" input
+	document.getElementById('bathrooms').addEventListener('input', function () {
+		enforceMinMax(this, 0, 10);
+	});
 
-    // Call the function for each input
-    handleBackspace(document.getElementById('bedrooms'), 0);
-    handleBackspace(document.getElementById('bathrooms'), 0);
-    handleBackspace(document.getElementById('squareMeters'), 0);
-    handleBackspace(document.getElementById('rental'), 0);
+	// Call the function for each input
+	handleBackspace(document.getElementById('bedrooms'), 0);
+	handleBackspace(document.getElementById('bathrooms'), 0);
+	handleBackspace(document.getElementById('squareMeters'), 0);
+	handleBackspace(document.getElementById('rental'), 0);
 
-    // ----- DYNAMIC SELECT OPTIONS -----//
-    // Fetch municipalities based on the selected city
-    document.getElementById('city').addEventListener('change', function () {
-        const selectedCity = this.value;
+	// ----- DYNAMIC SELECT OPTIONS -----//
+	// Fetch municipalities based on the selected city
+	document.getElementById('city').addEventListener('change', function () {
+		const selectedCity = this.value;
 
-        // Reset municipality and region selectors
-        document.getElementById('municipality').innerHTML = '<option value="">Select Municipality</option>';
-        document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
+		// Reset municipality and region selectors
+		document.getElementById('municipality').innerHTML = '<option value="">Select Municipality</option>';
+		document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
 
-        // If the selected city is the default value, no need to fetch data
-        if (selectedCity === "") {
-            return;
-        }
+		// If the selected city is the default value, no need to fetch data
+		if (selectedCity === "") {
+			return;
+		}
 
-        // Fetch municipalities based on the selected city
-        fetch(`/get_municipalities?city=${selectedCity}`)
-            .then(response => response.json())
-            .then(data => {
-                const municipalitySelect = document.getElementById('municipality');
-                municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
-                data.forEach(municipalityObject => {
-                    const option = document.createElement('option');
-                    option.value = municipalityObject.municipality;
-                    option.textContent = whitespace(municipalityObject.municipality);
-                    municipalitySelect.appendChild(option);
-                });
-            });
-    });
+		// Fetch municipalities based on the selected city
+		fetch(`/get_municipalities?city=${selectedCity}`)
+			.then(response => response.json())
+			.then(data => {
+				const municipalitySelect = document.getElementById('municipality');
+				municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
+				data.forEach(municipalityObject => {
+					const option = document.createElement('option');
+					option.value = municipalityObject.municipality;
+					option.textContent = whitespace(municipalityObject.municipality);
+					municipalitySelect.appendChild(option);
+				});
+			});
+	});
 
-    // Fetch regions based on the selected municipality
-    document.getElementById('municipality').addEventListener('change', function () {
-        const selectedMunicipality = this.value;
-        const selectedCity = document.getElementById('city').value;
+	// Fetch regions based on the selected municipality
+	document.getElementById('municipality').addEventListener('change', function () {
+		const selectedMunicipality = this.value;
+		const selectedCity = document.getElementById('city').value;
 
-        // Reset region selector
-        document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
+		// Reset region selector
+		document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
 
-        // If the selected municipality is the default value, no need to fetch data
-        if (selectedMunicipality === "") {
-            return;
-        }
+		// If the selected municipality is the default value, no need to fetch data
+		if (selectedMunicipality === "") {
+			return;
+		}
 
-        // Fetch regions based on the selected city and municipality
-        fetch(`/get_regions?city=${selectedCity}&municipality=${selectedMunicipality}`)
-            .then(response => response.json())
-            .then(data => {
-                const regionSelect = document.getElementById('region');
-                regionSelect.innerHTML = '<option value="">Select Region</option>';
-                data.forEach(regionObject => {
-                    const option = document.createElement('option');
-                    option.value = regionObject.region;
-                    option.textContent = whitespace(regionObject.region);
-                    regionSelect.appendChild(option);
-                });
-            });
-    });
+		// Fetch regions based on the selected city and municipality
+		fetch(`/get_regions?city=${selectedCity}&municipality=${selectedMunicipality}`)
+			.then(response => response.json())
+			.then(data => {
+				const regionSelect = document.getElementById('region');
+				regionSelect.innerHTML = '<option value="">Select Region</option>';
+				data.forEach(regionObject => {
+					const option = document.createElement('option');
+					option.value = regionObject.region;
+					option.textContent = whitespace(regionObject.region);
+					regionSelect.appendChild(option);
+				});
+			});
+	});
 }
 
 
 // Replaces underscores with whitespaces and lowercased words to titles
 function whitespace(text) {
-    return text.replace(/_/g, ' ').replace(/\w\S*/g, function (word) {
-        return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-    });
+	return text.replace(/_/g, ' ').replace(/\w\S*/g, function (word) {
+		return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+	});
 }
 
 
 // Called in noUiSliders creations - formats values from 2 decimals (deafault) to 0 decimals
 function createSliderFormat() {
-    return {
-        to: function(value) {
-            return Math.round(value);
-        },
-        from: function (value) {
-            return parseFloat(value);
-        }
-    };
+	return {
+		to: function (value) {
+			return Math.round(value);
+		},
+		from: function (value) {
+			return parseFloat(value);
+		}
+	};
 }
 
 
 // ----- NOUISLIDER CREATIONS -----//
 if (window.location.pathname === '/search') {
 
-    // --- Square Meters noUiSlider ---//
-    // Get square meters slider from DOM
-    var squareMetersSlider = document.getElementById('squareMetersSlider');
-    
-    // Create dual slider for square meters
-    noUiSlider.create(squareMetersSlider, {
-        start: ['0', '1000'],
-        range: { min: 0, max: 1000 },
-        step: 5,
-        tooltips: false,
-        format: createSliderFormat()
-    });
+	// --- Square Meters noUiSlider ---//
+	// Get square meters slider from DOM
+	var squareMetersSlider = document.getElementById('squareMetersSlider');
 
-    // Get an array of the minimum and maximum values of square meters from DOM 
-    var squareMetersSnapValues = [
-        document.getElementById('squareMetersMinimum'),
-        document.getElementById('squareMetersMaximum')
-    ];
+	// Create dual slider for square meters
+	noUiSlider.create(squareMetersSlider, {
+		start: ['0', '1000'],
+		range: { min: 0, max: 1000 },
+		step: 5,
+		tooltips: false,
+		format: createSliderFormat()
+	});
 
-    // Update slider values
-    squareMetersSlider.noUiSlider.on('update', function (values, handle) {
-        squareMetersSnapValues[handle].innerHTML = values[handle];
+	// Get an array of the minimum and maximum values of square meters from DOM 
+	var squareMetersSnapValues = [
+		document.getElementById('squareMetersMinimum'),
+		document.getElementById('squareMetersMaximum')
+	];
 
-        // Update the hidden input field that will send the values to backend
-        document.getElementById('squareMeters').value = JSON.stringify({ min: values[0], max: values[1] })
-    });
+	// Update slider values
+	squareMetersSlider.noUiSlider.on('update', function (values, handle) {
+		squareMetersSnapValues[handle].innerHTML = values[handle];
 
-
-    // --- Rental noUiSlider ---//
-    // Get rental slider from DOM
-    var rentalSlider = document.getElementById('rentalSlider');
-    
-    // Create dual slider for rental
-    noUiSlider.create(rentalSlider, {
-        start: ['0', '10000'],
-        range: { min: 0, max: 10000 },
-        step: 50,
-        tooltips: false,
-        format: createSliderFormat()
-    });
-
-    // Get an array of the minimum and maximum values of rental from DOM 
-    var rentalSnapValues = [
-        document.getElementById('rentalMinimum'),
-        document.getElementById('rentalMaximum')
-    ];
-
-    // Update slider values
-    rentalSlider.noUiSlider.on('update', function (values, handle) {
-        rentalSnapValues[handle].innerHTML = values[handle];
-
-        // Update the hidden input field that will send the values to backend
-        document.getElementById('rental').value = JSON.stringify({ min: values[0], max: values[1] })
-    });
+		// Update the hidden input field that will send the values to backend
+		document.getElementById('squareMeters').value = JSON.stringify({ min: values[0], max: values[1] })
+	});
 
 
-    // --- Bedrooms noUiSlider ---//
-    // Get bedrooms slider from DOM
-    var bedroomsSlider = document.getElementById('bedroomsSlider');
-    
-    // Create dual slider for bedrooms
-    noUiSlider.create(bedroomsSlider, {
-        start: ['0', '10'],
-        range: { min: 0, max: 10 },
-        step: 1,
-        tooltips: false,
-        format: createSliderFormat()
-    });
+	// --- Rental noUiSlider ---//
+	// Get rental slider from DOM
+	var rentalSlider = document.getElementById('rentalSlider');
 
-    // Get an array of the minimum and maximum values of bedrooms from DOM 
-    var bedroomsSnapValues = [
-        document.getElementById('bedroomsMinimum'),
-        document.getElementById('bedroomsMaximum')
-    ];
+	// Create dual slider for rental
+	noUiSlider.create(rentalSlider, {
+		start: ['0', '10000'],
+		range: { min: 0, max: 10000 },
+		step: 50,
+		tooltips: false,
+		format: createSliderFormat()
+	});
 
-    // Update slider values
-    bedroomsSlider.noUiSlider.on('update', function (values, handle) {
-        bedroomsSnapValues[handle].innerHTML = values[handle];
+	// Get an array of the minimum and maximum values of rental from DOM 
+	var rentalSnapValues = [
+		document.getElementById('rentalMinimum'),
+		document.getElementById('rentalMaximum')
+	];
 
-        // Update the hidden input field that will send the values to backend
-        document.getElementById('bedrooms').value = JSON.stringify({ min: values[0], max: values[1] })
-    });
+	// Update slider values
+	rentalSlider.noUiSlider.on('update', function (values, handle) {
+		rentalSnapValues[handle].innerHTML = values[handle];
+
+		// Update the hidden input field that will send the values to backend
+		document.getElementById('rental').value = JSON.stringify({ min: values[0], max: values[1] })
+	});
 
 
-    // --- Bathrooms noUiSlider ---//
-    // Get bathrooms slider from DOM
-    var bathroomsSlider = document.getElementById('bathroomsSlider');
-    
-    // Create dual slider for bathrooms
-    noUiSlider.create(bathroomsSlider, {
-        start: ['0', '10'],
-        range: { min: 0, max: 10 },
-        step: 1,
-        tooltips: false,
-        format: createSliderFormat()
-    });
+	// --- Bedrooms noUiSlider ---//
+	// Get bedrooms slider from DOM
+	var bedroomsSlider = document.getElementById('bedroomsSlider');
 
-    // Get an array of the minimum and maximum values of bathrooms from DOM 
-    var bathroomsSnapValues = [
-        document.getElementById('bathroomsMinimum'),
-        document.getElementById('bathroomsMaximum')
-    ];
+	// Create dual slider for bedrooms
+	noUiSlider.create(bedroomsSlider, {
+		start: ['0', '10'],
+		range: { min: 0, max: 10 },
+		step: 1,
+		tooltips: false,
+		format: createSliderFormat()
+	});
 
-    // Update slider values
-    bathroomsSlider.noUiSlider.on('update', function (values, handle) {
-        bathroomsSnapValues[handle].innerHTML = values[handle];
+	// Get an array of the minimum and maximum values of bedrooms from DOM 
+	var bedroomsSnapValues = [
+		document.getElementById('bedroomsMinimum'),
+		document.getElementById('bedroomsMaximum')
+	];
 
-        // Update the hidden input field that will send the values to backend
-        document.getElementById('bathrooms').value = JSON.stringify({ min: values[0], max: values[1] })
-    });
+	// Update slider values
+	bedroomsSlider.noUiSlider.on('update', function (values, handle) {
+		bedroomsSnapValues[handle].innerHTML = values[handle];
+
+		// Update the hidden input field that will send the values to backend
+		document.getElementById('bedrooms').value = JSON.stringify({ min: values[0], max: values[1] })
+	});
+
+
+	// --- Bathrooms noUiSlider ---//
+	// Get bathrooms slider from DOM
+	var bathroomsSlider = document.getElementById('bathroomsSlider');
+
+	// Create dual slider for bathrooms
+	noUiSlider.create(bathroomsSlider, {
+		start: ['0', '10'],
+		range: { min: 0, max: 10 },
+		step: 1,
+		tooltips: false,
+		format: createSliderFormat()
+	});
+
+	// Get an array of the minimum and maximum values of bathrooms from DOM 
+	var bathroomsSnapValues = [
+		document.getElementById('bathroomsMinimum'),
+		document.getElementById('bathroomsMaximum')
+	];
+
+	// Update slider values
+	bathroomsSlider.noUiSlider.on('update', function (values, handle) {
+		bathroomsSnapValues[handle].innerHTML = values[handle];
+
+		// Update the hidden input field that will send the values to backend
+		document.getElementById('bathrooms').value = JSON.stringify({ min: values[0], max: values[1] })
+	});
 }
 
 
 // ----- UPDATE USERNAME -----//
 // Makes visible username edit (input text, save and cancel buttons)
 function enableUsernameEdit() {
-    document.getElementById('usernameContainer').style.display = 'none';
-    document.getElementById('editUsernameForm').style.display = 'block';
+	document.getElementById('usernameContainer').style.display = 'none';
+	document.getElementById('editUsernameForm').style.display = 'block';
 
-    // Focus on the input field - triggers the keyboard cursor automatically in the input field
-    document.getElementById('newUsername').focus();
+	// Focus on the input field - triggers the keyboard cursor automatically in the input field
+	document.getElementById('newUsername').focus();
 }
 
 // Triggers form POST for update_usename route so that backend can retrieve newUsername value
 function saveNewUsername() {
-    return true;
+	return true;
 }
 
 // Cancels username edit (input text, save and cancel buttons) by hiding it and erases any input given
 function cancelUsernameEdit() {
-    document.getElementById('usernameContainer').style.display = 'block';
-    document.getElementById('editUsernameForm').style.display = 'none';
-    document.getElementById('newUsername').value = "";
+	document.getElementById('usernameContainer').style.display = 'block';
+	document.getElementById('editUsernameForm').style.display = 'none';
+	document.getElementById('newUsername').value = "";
 }
 
 // Function to focus on the input field when the modal is shown
 function cursorFocus(button) {
-    var modalId = button.getAttribute('data-modal-id');
-    var inputFieldId = button.getAttribute('data-input-field-id');
+	var modalId = button.getAttribute('data-modal-id');
+	var inputFieldId = button.getAttribute('data-input-field-id');
 
-    document.getElementById(modalId).addEventListener('shown.bs.modal', function () {
-        document.getElementById(inputFieldId).focus();
-    });
+	document.getElementById(modalId).addEventListener('shown.bs.modal', function () {
+		document.getElementById(inputFieldId).focus();
+	});
 }
