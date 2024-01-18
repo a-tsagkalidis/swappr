@@ -1,9 +1,10 @@
 import re
-import sqlite3
 import json
 import string
-from flask import redirect, session
+import sqlite3
+from loguru import logger
 from functools import wraps
+from flask import redirect, session
 from werkzeug.security import check_password_hash
 
 
@@ -98,7 +99,6 @@ def create_database_tables():
     ''')
 
 
-
 def import_locations():
     '''
     Imports any non-existing data from the locations.json in
@@ -179,12 +179,23 @@ def import_locations():
 
 
 def tuples_to_dict(keys_tuple, values_tuple):
+    '''
+    Converts two tuples into one dictionary
+    '''
     if values_tuple:
         values = values_tuple
         keys = [key[0] for key in keys_tuple]
         return dict(zip(keys, values))
     else:
         return None
+
+
+def log(message, level='INFO', indent=28):
+    message = '\n'.join([' ' * indent + line for line in message.splitlines()])
+    logger.log(
+        level,
+        message,
+    )
 
 
 def login_required(f):

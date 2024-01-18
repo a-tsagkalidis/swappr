@@ -1,15 +1,15 @@
-from flask import Flask, render_template, request, session, redirect, url_for, flash
-from werkzeug.security import generate_password_hash
-from flask_limiter.util import get_remote_address
-from flask_limiter import Limiter
-from supportive_functions import *
-from datetime import datetime
-from argparser import args
-import logging
-import secrets
-import json
-import sys
 import os
+import sys
+import json
+import secrets
+from loguru import logger
+from argparser import args
+from datetime import datetime
+from supportive_functions import *
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from werkzeug.security import generate_password_hash
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 
 # Declare global variable for POST resquest limits
 SIGNUP_LIMIT = "60/minute"
@@ -40,10 +40,17 @@ limiter = Limiter(
     storage_uri="memory://",
 )
 
-# Configure logging
-logging.basicConfig(filename='app.log', level=logging.ERROR)
+# Configure loguru
+logger.remove(0)
+logger.add(
+    'app.log',
+    format="{level}:swappr:[{time:DD/MMM/YYYY HH:mm:ss}]: {message}",
+    colorize=True,
+    backtrace=True,
+    diagnose=True
+)
 
-# JSON instance to be used in app.logger functions for better readability
+# JSON instance to be used in log function for better readability
 dumps = json.dumps
 
 # Declare a secret key for Flask application - it is needed for flash function
@@ -58,23 +65,18 @@ location_update, flag = import_locations()
 # In case of newly imported locations in the database inform properly the log
 if flag:
     # Updage log with WARNING msg
-    app.logger.setLevel(logging.WARNING)
-    app.logger.warning(
+    log(
         f'''
-        {DATETIME}
         App initialized successfully. Database tables where created
         in case they weren't exist. JSON file with locations has been
-        imported to the database - NEWLY IMPORTED LOCATIONS: {
-            dumps(location_update, indent=2)
-            }
-        '''
+        imported to the database - NEWLY IMPORTED LOCATIONS: {dumps(location_update, indent=8)}
+        ''',
+        level='WARNING'
     )
 else:
     # Updage log with INFO msg
-    app.logger.setLevel(logging.INFO)
-    app.logger.info(
+    log(
         f'''
-        {DATETIME}
         App initialized successfully. Database tables where created
         in case they weren't exist. JSON file with locations has been
         imported to the database - NO NEWLY IMPORTED LOCATIONS FOUND.
@@ -97,11 +99,10 @@ def index():
     submissions_data = cursor_fetch(query, user_id)
     
     # Update log with INFO msg
-    app.logger.info(
+    log(
         f'''
-        {DATETIME}:{session['ip']}
-        Navigation @index.html
-        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
+        {session['ip']}
+        USER[{session['username']}]: NAVIGATION: @index.html
         '''
     )
     return render_template(
@@ -163,13 +164,14 @@ def signup():
             )
 
             # Update log with INFO msg
-            app.logger.info(
+            log(
                 f'''
-                {DATETIME}:{request.remote_addr}
-                A New user successfuly registered in database
+                {request.remote_addr}
+                SUCCESS: New user 'registered'
                 'email': {email}
                 'username': {username}
-                '''
+                ''',
+                indent=20
             )
 
             # Sign in new user
@@ -181,21 +183,25 @@ def signup():
 
         except ValueError as err:
             # Update log with ERROR msg
-            app.logger.error(
+            log(
                 f'''
-                {DATETIME}:{request.remote_addr}
-                ERROR Signup: {err}
-                '''
+                [{request.remote_addr}]
+                USER[unregistered]: FAILED: Sign up: {err}
+                ''',
+                level='WARNING',
+                indent=24
             )
+            
             return render_template('/signup.html', error=err)
 
     # Update log with INFO msg
-    app.logger.info(
+    log(
         f'''
-        {DATETIME}:{request.remote_addr}
-        Navigation @signup.html
+        {request.remote_addr}
+        USER[unregistered]: NAVIGATION: @signup.html
         '''
     )
+
     return render_template('/signup.html')
 
 
@@ -215,11 +221,10 @@ def delayed_redirect():
             return redirect('/')
 
     # Update log with INFO msg
-    app.logger.info(
+    log(
         f'''
-        {DATETIME}:{session['ip']}
-        Redirection @index.html
-        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
+        {session['ip']}
+        USER[{session['username']}]: Redirection @index.html
         '''
         )
 
@@ -267,12 +272,12 @@ def signin():
             }
 
             # Update log with INFO msg
-            app.logger.info(
+            log(
                 f'''
-                {DATETIME}:{session['ip']}
-                A user just signed in
-                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
-                '''
+                {session['ip']}
+                USER[{session['username']}]: Signed in
+                ''',
+                indent=20
             )
 
             # Redirect user to home page
@@ -280,19 +285,21 @@ def signin():
 
         except ValueError as err:
             # Update log with ERROR msg
-            app.logger.error(
+            log(
                 f'''
-                {DATETIME}:{request.remote_addr}
-                ERROR Signin: {err}
-                '''
+                {request.remote_addr}
+                USER[{'unregistered'}]: FAILED: Signin: {err}
+                ''',
+                indent=20
             )
+
             return render_template('/signin.html', error=err)
 
     # Update log with INFO msg
-    app.logger.info(
+    log(
         f'''
-        {DATETIME}:{request.remote_addr}
-        Navigation @signin.html
+        {request.remote_addr}
+        USER[unregistered]: NAVIGATION: @signin.html
         '''
     )
     return render_template('/signin.html')
@@ -303,11 +310,10 @@ def signin():
 @login_required
 def signout():
     # Update log with INFO msg
-    app.logger.info(
+    log(
         f'''
-        {DATETIME}:{session['ip']}
-        User signed out
-        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
+        {session['ip']}
+        USER[{session['username']}]: Signed out
         '''
     )
 
@@ -357,12 +363,13 @@ def submit():
             )
 
             # Update log with WARNING msg
-            app.logger.warning(
+            log(
                 f'''
-                {DATETIME}:{session['ip']}
-                Submission validated successfully.
-                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
-                '''
+                {session['ip']}
+                USER[{session['username']}]: SUCCESS: Submission 'validated'
+                ''',
+                level='SUCCESS',
+                indent=20
             )
 
             # Save submission into user database
@@ -396,12 +403,13 @@ def submit():
             )
 
             # Update log with INFO msg
-            app.logger.info(
+            log(
                 f'''
-                {DATETIME}:{session['ip']}
-                Submission saved successfully.
-                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
-                '''
+                {session['ip']}
+                USER[{session['username']}]: SUCCESS: Submission 'saved'
+                ''',
+                level='SUCCESS',
+                indent=20
             )
 
             # Inform user for successful submission
@@ -410,12 +418,13 @@ def submit():
 
         except ValueError as err:
             # Update log with ERROR msg
-            app.logger.error(
+            log(
                 f'''
-                {DATETIME}:{session['ip']}
-                ERROR Submission: {err}
-                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
-                '''
+                {session['ip']}
+                USER[{session['username']}]: FAILED: Submission 'aborted': {err}
+                ''',
+                level='WARNING',
+                indent=20
             )
 
             return render_template(
@@ -426,12 +435,12 @@ def submit():
 
     else:
         # Update log with INFO msg
-        app.logger.info(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            Navigation @submit.html
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: NAVIGATION: @submit.html
+            ''',
+            indent=24
         )
 
         return render_template(
@@ -469,11 +478,10 @@ def update_exposure():
     )
 
     # Update log with INFO msg
-    app.logger.info(
+    log(
         f'''
-        {DATETIME}:{session['ip']}
-        Submission id {submission_id} exposure changed to {new_exposure}
-        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
+        {session['ip']}
+        USER[{session['username']}]: SUCCESS: Submission id {submission_id} changed exposure -> '{new_exposure}'
         '''
     )
 
@@ -506,13 +514,13 @@ def edit_submission():
     # If submission exists pass its data to the edit page, else reload index route
     if submission_data:
         # Update log with INFO msg
-        app.logger.info(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            Navigation @edit_submission.html
-            Submission id {submission_id} is being edited
-            {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: NAVIGATION: @edit_submission.html
+            USER[{session['username']}]: SUCCESS: Submission id {submission_id} 'edit'
+            ''',
+            indent=24
         )
 
         return render_template(
@@ -523,12 +531,13 @@ def edit_submission():
         )
     else:
         # Update log with ERROR msg
-        app.logger.error(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            ERROR: Submission id {submission_id} not found
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: FAILED: Submission id {submission_id} 'not found'
+            ''',
+            level='WARNING',
+            indent=24
         )
 
         flash('Submission not found.')
@@ -577,12 +586,13 @@ def save_edit_submission():
                 region
             )
             # Update log with WARNING msg
-            app.logger.warning(
+            log(
                 f'''
-                {DATETIME}:{session['ip']}
-                Edited sumbission {submission_id} INPUT successfully VALIDATED
-                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
-                '''
+                {session['ip']}
+                USER[{session['username']}]: SUCCESS: Edited submission {submission_id} 'validated'
+                ''',
+                level='WARNING',
+                indent=20
             )
 
             # Update edited submission into user database
@@ -616,12 +626,12 @@ def save_edit_submission():
             )
 
             # Update log with INFO msg
-            app.logger.info(
+            log(
                 f'''
-                {DATETIME}:{session['ip']}
-                Sumbission {submission_id} successfuly UPDATED
-                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
-                '''
+                {session['ip']}
+                USER[{session['username']}]: SUCCESS: Sumbission {submission_id} 'updated'
+                ''',
+                indent=20
             )
 
             # Inform user for successful submission update
@@ -630,12 +640,13 @@ def save_edit_submission():
 
         except ValueError as err:
             # Update log with ERROR msg
-            app.logger.error(
+            log(
                 f'''
-                {DATETIME}:{session['ip']}
-                ERROR: Submission update: {err}
-                {dumps(session.get('logged_user'), indent=16, separators=("", ": "))}
-                '''
+                {session['ip']}
+                USER[{session['username']}]: FAILED: Submission update 'aborted': {err}
+                ''',
+                level='WARNING',
+                indent=20
             )
 
             # Fetch edited submission data to reload route with correct field valuess
@@ -652,6 +663,7 @@ def save_edit_submission():
                 error=err,
                 whitespace=whitespace,
             )
+        
     if 'delete' in request.form:
         # Delete edited submission from database
         query = '''
@@ -662,12 +674,12 @@ def save_edit_submission():
         cursor_execute(query, submission_id, user_id)
 
         # Update log with INFO msg
-        app.logger.info(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            Submission {submission_id} successfully DELETED
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: SUCCESS: Submission {submission_id} 'deleted'
+            ''',
+            indent=24
         )
 
         # Inform user for successful submission deletion
@@ -783,12 +795,12 @@ def search():
         )
     else:
         # Update log with INFO msg
-        app.logger.info(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            Navigation @search.html
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: NAVIGATION: @search.html
+            ''',
+            indent=24
         )
 
         return render_template(
@@ -805,11 +817,10 @@ def search():
 @login_required
 def account():
     # Update log with INFO msg
-    app.logger.info(
+    log(
         f'''
-        {DATETIME}:{session['ip']}
-        Navigation @account.html
-        {dumps(session.get('logged_user'), indent=8, separators=("", ": "))}
+        {session['ip']}
+        USER[{session['username']}]: NAVIGATION: @account.html
         '''
     )
     return render_template('/account.html')
@@ -859,23 +870,25 @@ def password_reset():
         cursor_execute(query, hashed_new_password, user_id)
 
         # Update log with INFO msg
-        app.logger.info(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            User password changed
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: SUCCESS: Password 'changed'
+            ''',
+            indent=24
         )
 
     except ValueError as err:
         # Update log with ERROR msg
-        app.logger.error(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            ERROR: Password reset: {err}
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: FAILED: Password 'reset': {err}
+            ''',
+            level='WARNING',
+            indent=24
         )
+
         return render_template('/account.html', error=err)
 
     flash('Password successfully changed!')
@@ -915,22 +928,23 @@ def update_username():
         session['username'] = new_username
 
         # Update log with INFO msg
-        app.logger.info(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            Username updated: {old_username} -> {new_username}
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: SUCCESS: Username 'updated': '{old_username}' -> '{new_username}'
+            ''',
+            indent=24
         )
 
     except (ValueError, NameError) as err:
         # Update log with ERROR msg
-        app.logger.error(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            ERROR: Username update: {err}
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: FAILED: Username update 'aborted': {err}
+            ''',
+            level='WARNING',
+            indent=24
         )
 
         if isinstance(err, ValueError):
@@ -981,22 +995,23 @@ def delete_account():
         cursor_execute(query, user_id)
 
         # Update log with INFO msg
-        app.logger.info(
+        log(
             f'''
-            {DATETIME}:{session['ip']}
-            User account and submissions deleted
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            {session['ip']}
+            USER[{session['username']}]: SUCCESS: User account and submissions 'deleted'
+            ''',
+            indent=24
         )
 
     except ValueError as err:
         # Update log with ERROR msg
-        app.logger.error(
+        log(
             f'''
             {DATETIME}:{session['ip']}
-            ERROR: Account deletion: {err}
-            {dumps(session.get('logged_user'), indent=12, separators=("", ": "))}
-            '''
+            USER[{session['username']}]: FAILED: Account deletion 'aborted': {err}
+            ''',
+            level='WARNING',
+            indent=24
             )
         
         return render_template('/account.html', error=err)
