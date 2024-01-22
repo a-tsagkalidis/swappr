@@ -649,7 +649,7 @@ def save_edit_submission():
                 indent=20
             )
 
-            # Fetch edited submission data to reload route with correct field valuess
+            # Fetch edited submission data to reload route with correct field values
             query = '''
                     SELECT * FROM submissions
                     WHERE id = ?
@@ -749,50 +749,83 @@ def search():
         municipality = request.form.get('municipality')
         region = request.form.get('region')
         exposure = 'public'
-        # TODO: Will be used for validation
-        all_field_values = list(request.form.values())
 
-        query = '''
-                SELECT submissions.*, users.email, users.username, regions.postal_code FROM submissions
-                JOIN users ON submissions.user_id = users.id
-                JOIN regions ON submissions.region = regions.region
-                WHERE (submissions.house_type = ? OR ? = '')
-                AND ((submissions.square_meters >= ? AND submissions.square_meters <= ?) OR ? IS NULL OR ? = '')
-                AND ((submissions.rental >= ? AND submissions.rental <= ?) OR ? IS NULL OR ? = '')
-                AND ((submissions.bedrooms >= ? AND submissions.bedrooms <= ?) OR ? IS NULL OR ? = '')
-                AND ((submissions.bathrooms >= ? AND submissions.bathrooms <= ?) OR ? IS NULL OR ? = '')
-                AND (submissions.city = ? OR ? = '')
-                AND (submissions.municipality = ? OR ? = '')
-                AND (submissions.region = ? OR ? = '')
-                AND submissions.exposure = ?
-                AND submissions.user_id != ?;
-                '''
+        try:
+            # Ensure user form input for search submissions is valid
+            search_validation(
+                exposure,
+                house_type,
+                square_meters,
+                rental,
+                bedrooms,
+                bathrooms,
+                city,
+                municipality,
+                region
+            )
 
-        # Execute the query with the provided parameters
-        search_results = cursor_fetch(
-            query,
-            house_type, house_type,
-            square_meters['min'], square_meters['max'],
-            square_meters['min'], square_meters['max'],
-            rental['min'], rental['max'],
-            rental['min'], rental['max'],
-            bedrooms['min'], bedrooms['max'],
-            bedrooms['min'], bedrooms['max'],
-            bathrooms['min'], bathrooms['max'],
-            bathrooms['min'], bathrooms['max'],
-            city, city,
-            municipality, municipality,
-            region, region,
-            exposure,
-            user_id)
+            # Fetch all submissions from database according to search filters
+            query = '''
+                    SELECT submissions.*, users.email, users.username, regions.postal_code FROM submissions
+                    JOIN users ON submissions.user_id = users.id
+                    JOIN regions ON submissions.region = regions.region
+                    WHERE (submissions.house_type = ? OR ? = '')
+                    AND ((submissions.square_meters >= ? AND submissions.square_meters <= ?) OR ? IS NULL OR ? = '')
+                    AND ((submissions.rental >= ? AND submissions.rental <= ?) OR ? IS NULL OR ? = '')
+                    AND ((submissions.bedrooms >= ? AND submissions.bedrooms <= ?) OR ? IS NULL OR ? = '')
+                    AND ((submissions.bathrooms >= ? AND submissions.bathrooms <= ?) OR ? IS NULL OR ? = '')
+                    AND (submissions.city = ? OR ? = '')
+                    AND (submissions.municipality = ? OR ? = '')
+                    AND (submissions.region = ? OR ? = '')
+                    AND submissions.exposure = ?
+                    AND submissions.user_id != ?;
+                    '''
 
-        return render_template(
-            '/search.html',
-            cities=cities,
-            search=search_results,
-            comma=comma,
-            whitespace=whitespace
-        )
+            # Execute the query with the provided parameters
+            search_results = cursor_fetch(
+                query,
+                house_type, house_type,
+                square_meters['min'], square_meters['max'],
+                square_meters['min'], square_meters['max'],
+                rental['min'], rental['max'],
+                rental['min'], rental['max'],
+                bedrooms['min'], bedrooms['max'],
+                bedrooms['min'], bedrooms['max'],
+                bathrooms['min'], bathrooms['max'],
+                bathrooms['min'], bathrooms['max'],
+                city, city,
+                municipality, municipality,
+                region, region,
+                exposure,
+                user_id)
+
+            return render_template(
+                '/search.html',
+                cities=cities,
+                search=search_results,
+                comma=comma,
+                whitespace=whitespace
+            )
+        except ValueError as err:
+            # Update log with ERROR msg
+            log(
+                f'''
+                {session['ip']}
+                USER[{session['username']}]: FAILED: Search submissions 'aborted': {err}
+                ''',
+                level='WARNING',
+                indent=20
+            )
+
+            # Reload search page with default options selected
+            return render_template(
+                '/search.html',
+                cities=cities,
+                search_initial_page_load = True,
+                search=None,
+                error=err,
+                whitespace=whitespace
+            )
     else:
         # Update log with INFO msg
         log(

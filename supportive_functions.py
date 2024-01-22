@@ -340,6 +340,61 @@ def get_list_of_values(json_data, column_name):
     return [item[column_name] for item in json_data]
 
 
+def validate_submitted_digits(square_meters, rental, bedrooms, bathrooms):
+    '''
+    Checks if user has input valid digits in the digit-required fields or ranged fields
+    '''
+    must_be_numbers = [
+        {
+            "form_data": square_meters,
+            "min": 0,
+            "max": 1000,
+            "field_name": "Square Meters"
+        },
+        {
+            "form_data": rental,
+            "min": 0,
+            "max": 10000,
+            "field_name": "Rental"
+        },
+        {
+            "form_data": bedrooms,
+            "min": 0,
+            "max": 10,
+            "field_name": "Bedrooms"
+        },
+        {
+            "form_data": bathrooms,
+            "min": 0,
+            "max": 10,
+            "field_name": "Bathrooms"
+        },
+    ]
+
+    # Iterate through all must-be-numbers to validate them
+    for number in must_be_numbers:
+        form_data = number["form_data"]
+        field_name = number["field_name"]
+
+        # Ensure the digit value is not blank or None
+        if not bool(form_data):
+            raise ValueError(f'Invalid input for {field_name}. Please enter valid numbers.')
+
+        # In case the request comes from sumbit.html or edit_submission.html the value should be a string
+        elif isinstance(form_data, str):
+            # Ensure the value is a digit
+            if not form_data.isdigit():
+                raise ValueError(f'Invalid input for {field_name}. Please enter a valid number.')
+
+            # Validate the range of each number if its within proper range
+            form_data = int(form_data)
+            if form_data < number['min'] or form_data > number['max']:
+                raise ValueError(f'Invalid {field_name}. Number must be between {number["min"]} and {number["max"]}.')
+            
+        else:
+            raise ValueError(f'Invalid input type for {field_name}. Please enter a valid number or range.')
+
+        
 def check_submitted_location(submitted_value, valid_values, error_message):
     '''
     Checks if a user's submitted value is actually
@@ -371,72 +426,53 @@ def validate_submitted_location(city, municipality, region):
     check_submitted_location(region, regions, "Invalid region value. Not found in the database")
 
 
-def submission_validation(all_field_values, exposure, house_type, square_meters, rental, bedrooms, bathrooms, city, municipality, region):
+def submission_validation(
+        all_field_values,
+        exposure,
+        house_type,
+        square_meters,
+        rental,
+        bedrooms,
+        bathrooms,
+        city,
+        municipality,
+        region,
+    ):
     '''
     Checks for valid input form in submit/edited_submission routes.
     If any new input form will be available in the future add here
     conditionals for backend validation check
     '''
-    
-    # Ensure all required fields are not empty
-    if not all(field for field in all_field_values):
-        raise ValueError('Some required fields wheren\'t filled in.')
 
-    # Ensure exposure and house_type values are valid
-    if exposure not in (
+    # Ensure that all required fields are not blank
+    if not all(field for field in all_field_values):
+        raise ValueError('Some required fields weren\'t filled in.')
+
+    # Declare a list of valid options for exposure value
+    exposure_valid_options = [
         'public',
         'private',
-    ) or house_type not in (
+    ]
+
+    # Declare a list of valid options for house_type value
+    house_type_options = [
         'studio',
         'flat',
         'maisonette',
         'semi-detached_house',
         'detached_house',
         'mansion',
+    ]
+
+    # Ensure exposure and house_type values are valid
+    if (
+        exposure not in exposure_valid_options or
+        house_type not in house_type_options
     ):
         raise ValueError('Invalid exposure and/or house type.')
 
-    # Ensure input numbers are of the correct data type
-    must_be_numbers = [
-        {
-            "form_data": square_meters,
-            "min": 0,
-            "max": 1000,
-            "field_name": "Square Meters"
-        },
-        {
-            "form_data": rental,
-            "min": 0,
-            "max": 10000,
-            "field_name": "Rental"
-        },
-        {
-            "form_data": bedrooms,
-            "min": 0,
-            "max": 10,
-            "field_name": "Bedrooms"
-        },
-        {
-            "form_data": bathrooms,
-            "min": 0,
-            "max": 10,
-            "field_name": "Bathrooms"
-        },
-        # Add more form data if needed...
-    ]
-
-    # Ensure input numbers are within proper limits
-    for number in must_be_numbers:
-        form_data = number["form_data"]
-        field_name = number["field_name"]
-
-        # Check if the field is not blank before attempting conversion
-        if form_data and not form_data.isdigit():
-            raise ValueError(f'Invalid input for {field_name}. Please enter a valid number.')
-
-        form_data = int(form_data)
-        if form_data < number['min'] or form_data > number['max']:
-            raise ValueError(f'Invalid {field_name}. Number must be between {number["min"]} and {number["max"]}.')
+    # Ensure submitted digit-required values or value ranges are valid
+    validate_submitted_digits(square_meters, rental, bedrooms, bathrooms)
 
     # Ensure submitted location values are valid
     validate_submitted_location(city, municipality, region)
@@ -461,8 +497,8 @@ def password_reset_validation(old_password, new_password, confirm_new_password, 
         raise ValueError("New password and new password confirmation do not match.")
 
     # # Ensure password is strong
-    # if not is_strong_password(new_password):
-    #     raise ValueError("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.")
+    if not is_strong_password(new_password):
+        raise ValueError("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.")
 
     # Validation successfully passed
     return True
@@ -507,3 +543,138 @@ def delete_account_validation(delete_account_confirmation, email):
     # Ensure email has provided correctly to procceed to submissions and username deletion
     if delete_account_confirmation != email[0]['email']:
         raise ValueError("Wrong email. Account deletion aborted.")
+    
+
+def validate_searched_digits(square_meters, rental, bedrooms, bathrooms):
+    '''
+    Checks if user has input valid digits in the digit-required fields or ranged fields
+    '''
+    must_be_numbers = [
+        {
+            "form_data": square_meters,
+            "min": 0,
+            "max": 1000,
+            "field_name": "Square Meters"
+        },
+        {
+            "form_data": rental,
+            "min": 0,
+            "max": 10000,
+            "field_name": "Rental"
+        },
+        {
+            "form_data": bedrooms,
+            "min": 0,
+            "max": 10,
+            "field_name": "Bedrooms"
+        },
+        {
+            "form_data": bathrooms,
+            "min": 0,
+            "max": 10,
+            "field_name": "Bathrooms"
+        },
+    ]
+
+    # Iterate through all must-be-numbers to validate them
+    for number in must_be_numbers:
+        form_data = number["form_data"]
+        field_name = number["field_name"]
+
+        # Ensure the digit value is not blank or None
+        if not bool(form_data):
+            raise ValueError(f'Invalid input for {field_name}. Please enter valid numbers.')
+
+        # In case the request comes from search.html the range values should be a dict
+        if isinstance(form_data, dict):
+            # Check if the values are digits
+            if not isinstance(form_data['min'], int) or not isinstance(form_data['max'], int):
+                raise ValueError (f'Invalid input for {field_name}. Please enter valid numbers.')
+
+            # Validate the range of each number if its within proper range
+            if form_data['min'] < number['min'] or form_data['min'] > number['max']:
+                raise ValueError(f'Invalid {field_name}. Number must be between {number["min"]} and {number["max"]}.')
+            
+            if form_data['max'] < number['min'] or form_data['max'] > number['max']:
+                raise ValueError(f'Invalid {field_name}. Number must be between {number["min"]} and {number["max"]}.')
+                        
+        else:
+            raise ValueError(f'Invalid input type for {field_name}. Please enter a valid number or range.')
+
+    
+def validate_searched_location(city, municipality, region):
+    '''
+    Regarding location data, this function checks if the select
+    option values are actually valid by comparing them with the
+    valid values that are stored in the database
+    '''
+    # Fetch location data from the database
+    cities_json = cursor_fetch('SELECT DISTINCT city FROM cities')
+    municipalities_json = cursor_fetch('SELECT DISTINCT municipality FROM municipalities')
+    regions_json = cursor_fetch('SELECT DISTINCT region FROM regions')
+
+    # Extract location values into lists
+    cities = get_list_of_values(cities_json, 'city')
+    municipalities = get_list_of_values(municipalities_json, 'municipality')
+    regions = get_list_of_values(regions_json, 'region')
+
+    # In case the request is from search.html then set blank value as valid
+    cities.append('')
+    municipalities.append('')
+    regions.append('')
+
+    # Validate submitted location values
+    check_submitted_location(city, cities, "Invalid city value. Not found in the database")
+    check_submitted_location(municipality, municipalities, "Invalid municipality value. Not found in the database")
+    check_submitted_location(region, regions, "Invalid region value. Not found in the database")
+
+
+def search_validation(
+        exposure,
+        house_type,
+        square_meters,
+        rental,
+        bedrooms,
+        bathrooms,
+        city,
+        municipality,
+        region,
+    ):
+    '''
+    Checks for valid input form in submit/edited_submission routes.
+    If any new input form will be available in the future add here
+    conditionals for backend validation check
+    '''
+
+    # Declare a list of valid options for exposure value
+    exposure_valid_options = [
+        'public',
+        'private',
+        ''
+    ]
+
+    # Declare a list of valid options for house_type value
+    house_type_options = [
+        'studio',
+        'flat',
+        'maisonette',
+        'semi-detached_house',
+        'detached_house',
+        'mansion',
+        ''
+    ]
+
+    # Ensure exposure and house_type values are valid
+    if (
+        exposure not in exposure_valid_options or
+        house_type not in house_type_options
+    ):
+        raise ValueError('Invalid exposure and/or house type.')
+
+    # Ensure submitted digit-required values or value ranges are valid
+    validate_searched_digits(square_meters, rental, bedrooms, bathrooms)
+
+    # Ensure submitted location values are valid
+    validate_searched_location(city, municipality, region)
+
+    return True
