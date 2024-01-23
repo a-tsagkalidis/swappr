@@ -4,8 +4,8 @@ import json
 import secrets
 from loguru import logger
 from argparser import args
+from swapprfunctions import *
 from datetime import datetime
-from supportive_functions import *
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash
@@ -69,7 +69,8 @@ if flag:
         f'''
         App initialized successfully. Database tables where created
         in case they weren't exist. JSON file with locations has been
-        imported to the database - NEWLY IMPORTED LOCATIONS: {dumps(location_update, indent=8)}
+        imported to the database - NEWLY IMPORTED LOCATIONS: 
+        {dumps(location_update, indent=8)}
         ''',
         level='WARNING'
     )
@@ -124,7 +125,7 @@ def signup():
         password = request.form.get('password')
         confirm_password = request.form.get('confirmPassword')
 
-        # Check if all form fields are filled and valid, else flash error and reload the route
+        # Check if all form fields are filled and valid
         try:
             # Ensure user form input for signup is valid
             signup_validation(
@@ -251,7 +252,7 @@ def signin():
                 '''
         user_data = cursor_fetch(query, username)
 
-        # Check if all form fields are filled and valid, else flash error and reload the route
+        # Check if all form fields are filled and valid
         try:
             # Ensure user form input for signin is valid
             signin_validation(
@@ -346,7 +347,7 @@ def submit():
         region = request.form.get('region')
         all_field_values = list(request.form.values())
 
-        # Check if all form fields are filled and valid, else flash error and reload the route
+        # Check if all form fields are filled and valid
         try:
             # Ensure user form input for submission is valid
             submission_validation(
@@ -766,14 +767,26 @@ def search():
 
             # Fetch all submissions from database according to search filters
             query = '''
-                    SELECT submissions.*, users.email, users.username, regions.postal_code FROM submissions
+                    SELECT submissions.*,
+                        users.email,
+                        users.username,
+                        regions.postal_code
+                    FROM submissions
                     JOIN users ON submissions.user_id = users.id
                     JOIN regions ON submissions.region = regions.region
                     WHERE (submissions.house_type = ? OR ? = '')
-                    AND ((submissions.square_meters >= ? AND submissions.square_meters <= ?) OR ? IS NULL OR ? = '')
-                    AND ((submissions.rental >= ? AND submissions.rental <= ?) OR ? IS NULL OR ? = '')
-                    AND ((submissions.bedrooms >= ? AND submissions.bedrooms <= ?) OR ? IS NULL OR ? = '')
-                    AND ((submissions.bathrooms >= ? AND submissions.bathrooms <= ?) OR ? IS NULL OR ? = '')
+                    AND ((submissions.square_meters >= ?
+                        AND submissions.square_meters <= ?)
+                        OR ? IS NULL OR ? = '')
+                    AND ((submissions.rental >= ? 
+                        AND submissions.rental <= ?)
+                        OR ? IS NULL OR ? = '')
+                    AND ((submissions.bedrooms >= ? 
+                        AND submissions.bedrooms <= ?)
+                        OR ? IS NULL OR ? = '')
+                    AND ((submissions.bathrooms >= ?
+                        AND submissions.bathrooms <= ?)
+                        OR ? IS NULL OR ? = '')
                     AND (submissions.city = ? OR ? = '')
                     AND (submissions.municipality = ? OR ? = '')
                     AND (submissions.region = ? OR ? = '')

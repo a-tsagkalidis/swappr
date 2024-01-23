@@ -7,7 +7,7 @@
 {% block main %}
   <div class="container mt-2">
     <h1 class="mb-4 fw-bold fs-2 text-secondary">Edit Your Submission</h1>
-    <form action="/edited_submission" method="post" id="submitForm" onsubmit="return validateForm()">
+    <form action="/edited_submission" method="post" id="submitForm" onsubmit="return validateSubmitForm()">
       <input type="hidden" name="submission_id" value="{{ submission.id }}">
       {% include "form_fields.html" %}
       <!-- Add extra fields if needed -->

@@ -1,17 +1,27 @@
-// ----- BACK-TO-TOP BUTTON ----- //
-// Asign a variable with the top-button id
-let topButton = document.getElementById("top-button");
-
+/** ||||| [0.0] @all ROUTES COMMON HELPERS ||||| */
+// ----- [0.1] BACK-TO-TOP BUTTON ----- //
 /**
- * A function that scrolls the webpage at the top
+ * A function that scrolls the webpage at the top. It is called whenever the
+ * button `Back to top` us pressed (onclick). This button is present in every
+ * route, because it is implemented in `layout.html`
  */
 function topFunction() {
 	document.body.scrollTop = 0;
 	document.documentElement.scrollTop = 0;
 }
 
+// Asign a variable with the top-button id from `layout.html`
+let topButton = document.getElementById("top-button");
 
-// ----- SIGN UP VALIDATION FORM ----- //
+
+
+/** ||||| [1.0] @signup ROUTE ||||| */
+// ----- [1.1] SIGN UP FORM VALIDATION ----- //
+/**
+ * A function that fetches all the user input from the filled input fields and
+ * ensures they are of proper and valid values.
+ * It is called when `Sign Up` button is clicked (onsubmit) in signup.html forms.
+ */
 function validateSignUpForm() {
 	const signupForm = document.querySelector('#signupForm');
 	var email = signupForm.elements["email"].value;
@@ -85,7 +95,14 @@ function validateSignUpForm() {
 }
 
 
-// ----- SIGN IN VALIDATION FORM ----- //
+
+/** ||||| [2.0] @signin ROUTE ||||| */
+// ----- [2.1] SIGN IN FORM VALIDATION ----- //
+/**
+ * A function that fetches all the user input from the filled input fields and
+ * ensures they are of proper and valid values.
+ * It is called when `Sign In` button is clicked (onsubmit) in signin.html form.
+ */
 function validateSignInForm() {
 	const signinForm = document.querySelector('#signinForm');
 	var username = signinForm.elements["username"].value;
@@ -121,26 +138,15 @@ function validateSignInForm() {
 }
 
 
-// ----- SUBMIT AND EDIT_SUBMISSION FIELD HANDLING AND VALIDATION ----- //
-// Function to enforce min and max values
-function enforceMinMax(input, min, max) {
-	var value = parseInt(input.value, 10);
-	if (isNaN(value) || value < min) {
-		input.value = min;
-	} else if (value > max) {
-		input.value = max;
-	}
-}
 
-// Event listener for handling backspace key special case
-function handleBackspace(input, minValue) {
-	input.addEventListener('keydown', function (event) {
-		if (event.key === 'Backspace' && parseInt(input.value, 10) === minValue) {
-			input.value = '';  // Clear the input
-		}
-	});
-}
-
+/** ||||| [3.0] @submit and @edit_submission ROUTES ||||| */
+// ----- [3.1] SUBMIT/EDIT_SUBMISSION FORM VALIDATION ----- //
+/**
+ * A function that fetches all the user input from the filled input fields and
+ * ensures they are of proper and valid values.
+ * It is called when `Submit` or `Save` buttons are clicked (onsubmit) in
+ * submit.html and edit_submission.html forms.
+ */
 function validateSubmitForm() {
 	const submitForm = document.querySelector('#submitForm');
 	const exposure = submitForm.elements["exposure"].value;
@@ -226,10 +232,36 @@ function validateSubmitForm() {
 };
 
 
-// Execute the following code only for submit, edit_submission, and search routes
-if (window.location.pathname === '/submit' ||
-	window.location.pathname === '/edit_submission' ||
-	window.location.pathname === '/search'
+// ----- [3.2] QUANTITY LIMITER VALIDATOR ----- //
+/**
+ * Function to enforce min and max values. It is called in the code later in
+ * in this section.
+ */
+function enforceMinMax(input, min, max) {
+	var value = parseInt(input.value, 10);
+	if (isNaN(value) || value < min) {
+		input.value = min;
+	} else if (value > max) {
+		input.value = max;
+	}
+}
+
+/**
+ * Function for handling backspace key for input fields. It is called in the
+ * code later in this section. 
+ */
+function handleBackspace(input, minValue) {
+	input.addEventListener('keydown', function (event) {
+		if (event.key === 'Backspace' && parseInt(input.value, 10) === minValue) {
+			input.value = '';  // Clear the input
+		}
+	});
+}
+
+// Execute the following code only for submit and edit_submission routes
+if (
+	window.location.pathname === '/submit' ||
+	window.location.pathname === '/edit_submission'
 ) {
 	// Event listener for "squareMeters" input
 	document.getElementById('squareMeters').addEventListener('input', function () {
@@ -251,13 +283,31 @@ if (window.location.pathname === '/submit' ||
 		enforceMinMax(this, 0, 10);
 	});
 
-	// Call the function for each input
+	// Call handleBackspace funct to check current value and min value for each input
 	handleBackspace(document.getElementById('bedrooms'), 0);
 	handleBackspace(document.getElementById('bathrooms'), 0);
 	handleBackspace(document.getElementById('squareMeters'), 0);
 	handleBackspace(document.getElementById('rental'), 0);
+}
 
-	// ----- DYNAMIC SELECT OPTIONS -----//
+
+// ----- [3.3] DYNAMIC SELECT OPTIONS -----//
+/**
+ * A function that replaces underscores with whitespaces and lowercased words 
+ * to titles. It is called in the code later in this section.
+ */
+function whitespace(text) {
+	return text.replace(/_/g, ' ').replace(/\w\S*/g, function (word) {
+		return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+	});
+}
+
+// Execute the following code only for submit, edit_submission, and search routes
+if (
+	window.location.pathname === '/submit' ||
+	window.location.pathname === '/edit_submission' ||
+	window.location.pathname === '/search' // Most part of the code for search route is in [4.0]
+) {
 	// Fetch municipalities based on the selected city
 	document.getElementById('city').addEventListener('change', function () {
 		const selectedCity = this.value;
@@ -316,15 +366,14 @@ if (window.location.pathname === '/submit' ||
 }
 
 
-// Replaces underscores with whitespaces and lowercased words to titles
-function whitespace(text) {
-	return text.replace(/_/g, ' ').replace(/\w\S*/g, function (word) {
-		return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-	});
-}
 
-
-// Called in noUiSliders creations - formats values from 2 decimals (deafault) to 0 decimals
+/** ||||| [4.0] @search ROUTE ||||| */
+// ----- !there is also partial code also in [3.3]! ----- //
+// ----- [4.1] NOUISLIDER CREATIONS ----- //
+/**
+ * Function that is being called in noUiSliders creations. Formats values from 2
+ * decimals (default) to 0 decimals.
+ */
 function createSliderFormat() {
 	return {
 		to: function (value) {
@@ -336,11 +385,10 @@ function createSliderFormat() {
 	};
 }
 
-
-// ----- NOUISLIDER CREATIONS -----//
+// Execute the following code only for search route
 if (window.location.pathname === '/search') {
 
-	// --- Square Meters noUiSlider ---//
+	// --- [4.1.1] Square Meters noUiSlider ---//
 	// Get square meters slider from DOM
 	var squareMetersSlider = document.getElementById('squareMetersSlider');
 
@@ -368,7 +416,7 @@ if (window.location.pathname === '/search') {
 	});
 
 
-	// --- Rental noUiSlider ---//
+	// --- [4.1.2] Rental noUiSlider ---//
 	// Get rental slider from DOM
 	var rentalSlider = document.getElementById('rentalSlider');
 
@@ -396,7 +444,7 @@ if (window.location.pathname === '/search') {
 	});
 
 
-	// --- Bedrooms noUiSlider ---//
+	// --- [4.1.3] Bedrooms noUiSlider ---//
 	// Get bedrooms slider from DOM
 	var bedroomsSlider = document.getElementById('bedroomsSlider');
 
@@ -424,7 +472,7 @@ if (window.location.pathname === '/search') {
 	});
 
 
-	// --- Bathrooms noUiSlider ---//
+	// --- [4.1.4] Bathrooms noUiSlider ---//
 	// Get bathrooms slider from DOM
 	var bathroomsSlider = document.getElementById('bathroomsSlider');
 
@@ -453,8 +501,14 @@ if (window.location.pathname === '/search') {
 }
 
 
-// ----- UPDATE USERNAME -----//
-// Makes visible username edit (input text, save and cancel buttons)
+
+/** ||||| [5.0] @account ROUTE ||||| */
+// ----- [5.1] UPDATE USERNAME -----//
+/**
+ * A function that makes visible username edit. It is called when the user's
+ * username is clicked (onclick) and shows the text field for the new username
+ * (placeholder='Enter new username'), `Save` and `Cancel` buttons.
+ */
 function enableUsernameEdit() {
 	document.getElementById('usernameContainer').style.display = 'none';
 	document.getElementById('editUsernameForm').style.display = 'block';
@@ -463,19 +517,35 @@ function enableUsernameEdit() {
 	document.getElementById('newUsername').focus();
 }
 
-// Triggers form POST for update_usename route so that backend can retrieve newUsername value
+
+/**
+ * A function that is called when the `Save` button is clicked (onclick) and
+ * triggers POST form for @update_username route so that backend can retrieve
+ * `newUsername` value and store it (or abort it) in the SQL database
+ */
 function saveNewUsername() {
 	return true;
 }
 
-// Cancels username edit (input text, save and cancel buttons) by hiding it and erases any input given
+
+/**
+ * A function that is called when the `Cancel` button is clicked (onclick) and
+ * hides the text field for the new username (placeholder='Enter new username'),
+ * `Save` and `Cancel` buttons. It also erases any given input for the
+ * `newUserName` value.
+ */
 function cancelUsernameEdit() {
 	document.getElementById('usernameContainer').style.display = 'block';
 	document.getElementById('editUsernameForm').style.display = 'none';
 	document.getElementById('newUsername').value = "";
 }
 
-// Function to focus on the input field when the modal is shown
+
+/**
+ * A function that is called when `Reset Password` or `Delete Account` buttons are
+ * pressed (onclick). It focus the keyboard cursor on the input field when the
+ * bootstrap modal is shown to the user.
+ */
 function cursorFocus(button) {
 	var modalId = button.getAttribute('data-modal-id');
 	var inputFieldId = button.getAttribute('data-input-field-id');
