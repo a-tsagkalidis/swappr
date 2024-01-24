@@ -18,14 +18,13 @@ instance/
 # Frontend dependencies
 node_modules/
 *.log
-package-lock.json
-package.json
-
 
 # Editor/IDE files
 .code-workspace
 .vscode/
 .idea/
+.code-workspace
+swappr.code-workspace
 
 # Compiled files
 *.pyc
