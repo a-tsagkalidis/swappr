@@ -7,3 +7,13 @@ def log(message, level='INFO', indent=28):
         level,
         message,
     )
+
+
+def initialize_logger():
+    logger.add(
+        'app.log',
+        format="{level}:swappr:[{time:DD/MMM/YYYY HH:mm:ss}]: {message}",
+        colorize=True,
+        backtrace=True,
+        diagnose=True
+    )

@@ -18,6 +18,9 @@ instance/
 # Frontend dependencies
 node_modules/
 *.log
+package-lock.json
+package.json
+
 
 # Editor/IDE files
 .code-workspace

@@ -302,19 +302,18 @@ function whitespace(text) {
 	});
 }
 
-// Execute the following code only for submit, edit_submission, and search routes
-if (
-	window.location.pathname === '/submit' ||
-	window.location.pathname === '/edit_submission' ||
-	window.location.pathname === '/search' // Most part of the code for search route is in [4.0]
-) {
-	// Fetch municipalities based on the selected city
-	document.getElementById('city').addEventListener('change', function () {
+/**
+ * This functions sets a triplet of selectors to work dynamically based on the
+ * user's previous selections. It is called in the code later in this section.
+ */
+function initializeLocationSelectors(cityId, municipalityId, regionId) {
+	// Check if city selector has changed and populate municipalities selector
+	document.getElementById(cityId).addEventListener('change', function () {
 		const selectedCity = this.value;
 
 		// Reset municipality and region selectors
-		document.getElementById('municipality').innerHTML = '<option value="">Select Municipality</option>';
-		document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
+		document.getElementById(municipalityId).innerHTML = '<option value="">Select Municipality</option>';
+		document.getElementById(regionId).innerHTML = '<option value="">Select Region</option>';
 
 		// If the selected city is the default value, no need to fetch data
 		if (selectedCity === "") {
@@ -325,7 +324,7 @@ if (
 		fetch(`/get_municipalities?city=${selectedCity}`)
 			.then(response => response.json())
 			.then(data => {
-				const municipalitySelect = document.getElementById('municipality');
+				const municipalitySelect = document.getElementById(municipalityId);
 				municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
 				data.forEach(municipalityObject => {
 					const option = document.createElement('option');
@@ -336,13 +335,13 @@ if (
 			});
 	});
 
-	// Fetch regions based on the selected municipality
-	document.getElementById('municipality').addEventListener('change', function () {
+	// Check if municipality selector has changed and populate regions selector
+	document.getElementById(municipalityId).addEventListener('change', function () {
 		const selectedMunicipality = this.value;
-		const selectedCity = document.getElementById('city').value;
+		const selectedCity = document.getElementById(cityId).value;
 
 		// Reset region selector
-		document.getElementById('region').innerHTML = '<option value="">Select Region</option>';
+		document.getElementById(regionId).innerHTML = '<option value="">Select Region</option>';
 
 		// If the selected municipality is the default value, no need to fetch data
 		if (selectedMunicipality === "") {
@@ -353,7 +352,7 @@ if (
 		fetch(`/get_regions?city=${selectedCity}&municipality=${selectedMunicipality}`)
 			.then(response => response.json())
 			.then(data => {
-				const regionSelect = document.getElementById('region');
+				const regionSelect = document.getElementById(regionId);
 				regionSelect.innerHTML = '<option value="">Select Region</option>';
 				data.forEach(regionObject => {
 					const option = document.createElement('option');
@@ -363,6 +362,17 @@ if (
 				});
 			});
 	});
+}
+
+// Execute the following code only for submit, edit_submission, and search routes
+if (
+	window.location.pathname === '/submit' ||
+	window.location.pathname === '/edit_submission' ||
+	window.location.pathname === '/search' // Most part of the code for search route is in [4.0]
+) {
+	// Initialize location selectors
+	initializeLocationSelectors('city', 'municipality', 'region');
+	initializeLocationSelectors('swapCity', 'swapMunicipality', 'swapRegion');
 }
 
 

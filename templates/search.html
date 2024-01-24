@@ -11,9 +11,9 @@
 
       <!-- House characteristics sections -->
       <hr>
-      <h3 class="mb-3 fw-light fs-4 text-secondary">House Characteristics filters</h2>
-      <div class="row g-3 mb-4">
-        <div class="col-md-4 mb-3">
+      <h3 class="mb-3 fw-light fs-4 text-secondary">House characteristics filtering</h2>
+      <div class="row g-4 mb-4">
+        <div class="col-md-3 mb-2">
           <label for="houseType" class="form-label">House Type</label>
           <select class="form-select" id="houseType" name="houseType">
             <option value="">Select House Type</option>
@@ -25,9 +25,10 @@
             <option value="mansion">Mansion</option>
           </select>
         </div>
+      </div>
 
-
-        <div class="col-md-4 mb-3">
+      <div class="row g-4 mb-4">
+        <div class="col-md-3 mb-1">
           <label for="squareMeters" class="form-label mb-3">Square Meters (m&#178;)</label>
           <div class="mb-2" id="squareMetersSlider" name="squareMetersSlider"></div>
           <output id="squareMetersMinimum">0</output><span> to </span>
@@ -36,7 +37,7 @@
         </div>
         
         
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-1">
           <label for="rental" class="form-label mb-3">Rental (&euro;)</label>
           <div class="mb-2" id="rentalSlider" name="rentalSlider"></div>
           <output id="rentalMinimum">0</output><span> to </span>
@@ -45,7 +46,7 @@
         </div>
 
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-1">
           <label for="bedrooms" class="form-label mb-3">Bedrooms</label>
           <div class="mb-2" id="bedroomsSlider" name="bedroomsSlider"></div>
           <output id="bedroomsMinimum">0</output><span> to </span>
@@ -54,7 +55,7 @@
         </div>
 
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-1">
           <label for="bathrooms" class="form-label mb-3">Bathrooms</label>
           <div class="mb-2" id="bathroomsSlider" name="bathroomsSlider"></div>
           <output id="bathroomsMinimum">0</output><span> to </span>
@@ -65,10 +66,10 @@
 
 
       <!-- Location filters sections -->
-      <hr>
-      <h3 class="mb-3 fw-light fs-4 text-secondary">Location filters</h2>
+      <hr class="mt-5">
+      <h3 class="mb-3 fw-light fs-4 text-secondary">Location filtering</h2>
       <div class="row g-3 mb-4">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-1">
           <label for="city" class="form-label">City</label>
           <select class="form-select" id="city" name="city">
             <option value="">Select City</option>
@@ -79,7 +80,7 @@
         </div>
 
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-1">
           <label for="municipality" class="form-label">Municipality</label>
           <select class="form-select" id="municipality" name="municipality">
               <option value="">Select Municipality</option>
@@ -87,7 +88,7 @@
           </select>
         </div>
         
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-1">
           <label for="municipality" class="form-label">Region</label>
           <select class="form-select" id="region" name="region">
             <option value="">Select Region</option>
@@ -97,7 +98,7 @@
       </div>
 
       <!-- Submit Button -->
-      <div class="text-center">
+      <div class="text-center mt-5">
         <button type="submit" class="mb-4 btn btn-warning">Search</button>
       </div>
     </form>
