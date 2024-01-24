@@ -371,6 +371,9 @@ def submit():
         city = request.form.get('city')
         municipality = request.form.get('municipality')
         region = request.form.get('region')
+        city_destination = request.form.get('cityDestination')
+        municipality_destination = request.form.get('municipalityDestination')
+        region_destination = request.form.get('regionDestination')
         all_field_values = list(request.form.values())
 
         # Check if all form fields are filled and valid
@@ -387,6 +390,7 @@ def submit():
                 city,
                 municipality,
                 region
+                #TODO add destination location details for validation
             )
 
             # Update log with WARNING msg
@@ -408,12 +412,15 @@ def submit():
                         rental,
                         bedrooms,
                         bathrooms,
-                        exposure,
                         city,
                         municipality,
-                        region
+                        region,
+                        city_destination,
+                        municipality_destination,
+                        region_destination,
+                        exposure
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                     '''
             cursor_execute(
                 query,
@@ -423,10 +430,13 @@ def submit():
                 rental,
                 bedrooms,
                 bathrooms,
-                exposure,
                 city,
                 municipality,
-                region
+                region,
+                city_destination,
+                municipality_destination,
+                region_destination,
+                exposure
             )
 
             # Update log with INFO msg
@@ -530,38 +540,40 @@ def edit_submission():
     # Retrieve data from the form
     submission_id = request.form.get('submission_id')
 
-    # Check if the submission exists by fetchin it
-    query = '''
-            SELECT * FROM submissions
-            WHERE id = ?
-            AND user_id = ?;
-            '''
-    submission_data = cursor_fetch(query, submission_id, user_id)
+    try:
+        # Ensure submission existance
+        query = '''
+                SELECT * FROM submissions
+                WHERE id = ?
+                AND user_id = ?;
+                '''
+        submission_data = cursor_fetch(query, submission_id, user_id)
 
-    # If submission exists pass its data to the edit page, else reload index route
-    if submission_data:
-        # Update log with INFO msg
-        log(
-            f'''
-            {session['ip']}
-            USER[{session['username']}]: NAVIGATION: @edit_submission.html
-            USER[{session['username']}]: SUCCESS: Submission id {submission_id} 'edit'
-            ''',
-            indent=24
-        )
+        # If submission exists pass its data to the edit page, else reload index route
+        if submission_data:
+            # Update log with INFO msg
+            log(
+                f'''
+                {session['ip']}
+                USER[{session['username']}]: NAVIGATION: @edit_submission.html
+                USER[{session['username']}]: SUCCESS: Submission id {submission_id} 'edit'
+                ''',
+                indent=20
+            )
 
-        return render_template(
-            '/edit_submission.html',
-            cities=cities,
-            submission=submission_data[0],
-            whitespace=whitespace,
-        )
-    else:
+            return render_template(
+                '/edit_submission.html',
+                cities=cities,
+                submission=submission_data[0],
+                whitespace=whitespace,
+            )
+        
+    except Exception as err:
         # Update log with ERROR msg
         log(
             f'''
             {session['ip']}
-            USER[{session['username']}]: FAILED: Submission id {submission_id} 'not found'
+            USER[{session['username']}]: FAILED: Submission id {submission_id} 'not found': {err}
             ''',
             level='WARNING',
             indent=24
@@ -593,6 +605,9 @@ def save_edit_submission():
     city = request.form.get('city')
     municipality = request.form.get('municipality')
     region = request.form.get('region')
+    city_destination = request.form.get('cityDestination')
+    municipality_destination = request.form.get('municipalityDestination')
+    region_destination = request.form.get('regionDestination')
     all_field_values = list(request.form.values())
 
     # Save edited house or delete it
@@ -611,6 +626,7 @@ def save_edit_submission():
                 city,
                 municipality,
                 region
+                #TODO add destination location details for validation
             )
             # Update log with WARNING msg
             log(
@@ -630,10 +646,13 @@ def save_edit_submission():
                         rental = ?,
                         bedrooms = ?,
                         bathrooms = ?,
-                        exposure = ?,
                         city = ?,
                         municipality = ?,
-                        region = ?
+                        region = ?,
+                        city_destination = ?,
+                        municipality_destination = ?,
+                        region_destination = ?,
+                        exposure = ?
                     WHERE id = ?
                     AND user_id = ?;
                     '''
@@ -644,10 +663,13 @@ def save_edit_submission():
                 rental,
                 bedrooms,
                 bathrooms,
-                exposure,
                 city,
                 municipality,
                 region,
+                city_destination,
+                municipality_destination,
+                region_destination,
+                exposure,
                 submission_id,
                 user_id
             )

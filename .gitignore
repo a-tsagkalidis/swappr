@@ -23,8 +23,7 @@ node_modules/
 .code-workspace
 .vscode/
 .idea/
-.code-workspace
-swappr.code-workspace
+*.code-workspace
 
 # Compiled files
 *.pyc

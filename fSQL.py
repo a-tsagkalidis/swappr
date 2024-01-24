@@ -32,6 +32,9 @@ def create_database_tables():
             city TEXT NOT NULL,
             municipality TEXT NOT NULL,
             region TEXT NOT NULL,
+            city_destination TEXT NOT NULL,
+            municipality_destination TEXT NOT NULL,
+            region_destination TEXT NOT NULL,
             exposure TEXT NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users (id)
         );

@@ -371,8 +371,17 @@ if (
 	window.location.pathname === '/search' // Most part of the code for search route is in [4.0]
 ) {
 	// Initialize location selectors
-	initializeLocationSelectors('city', 'municipality', 'region');
-	initializeLocationSelectors('swapCity', 'swapMunicipality', 'swapRegion');
+	initializeLocationSelectors(
+		'city',
+		'municipality',
+		'region'
+	);
+	
+	initializeLocationSelectors(
+		'cityDestination',
+		'municipalityDestination',
+		'regionDestination'
+	);
 }
 
 

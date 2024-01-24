@@ -335,5 +335,16 @@
 			"filippoupoli": "41334",
 			"xaravgi": "41448"
 		}
+	},
+	{
+		"id": 19,
+		"city": "xanthi",
+		"municipality": "xanthis",
+		"region": {
+			"mexicana": "41335",
+			"plateia": "41336",
+			"chrysa": "41334",
+			"ektenopol": "41221"
+		}
 	}
 ]

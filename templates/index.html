@@ -20,6 +20,7 @@
             <th>Bedrooms</th>
             <th>Bathrooms</th>
             <th>Location</th>
+            <th>Desired Destination</th>
             <th>Exposure is</th>
             <th>Edit House</th>
             <!-- Add other columns as needed -->
@@ -35,6 +36,7 @@
               <td>{{ submission.bedrooms }}</td>
               <td>{{ submission.bathrooms }}</td>
               <td>{{ whitespace(submission.city) }}, {{ whitespace(submission.region) }}</td>
+              <td>{{ whitespace(submission.city_destination) }}, {{ whitespace(submission.region_destination) }}</td>
               <td>
                 {% if submission.exposure == 'public' %}
                   <form method="post" action="/update_exposure">
