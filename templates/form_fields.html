@@ -86,8 +86,8 @@
 <div class="row g-3 mb-4">
   <div class="col-md-4 mb-4">
     <label for="city" class="form-label">City</label>
-    <select class="form-control" id="cityDestination" name="cityDestination" required>
-      <option value="">Select City</option>
+    <select class="form-control" id="cityDestination" name="cityDestination">
+      <option value="any">Any</option>
       {% for city in cities %}
         <option value="{{ city.city }}" {% if submission.city_destination == city.city %}selected{% endif %}>{{ whitespace(city.city) }}</option>
       {% endfor %}
@@ -96,11 +96,11 @@
 
   <div class="col-md-4 mb-4">
     <label for="municipality" class="form-label">Municipality</label>
-    <select class="form-control" id="municipalityDestination" name="municipalityDestination" required>
-      {% if submission.municipality %}
-        <option value="{{ submission.municipality }}">{{ whitespace(submission.municipality_destination) }}</option>
+    <select class="form-control" id="municipalityDestination" name="municipalityDestination">
+      {% if submission.municipality_destination %}
+        <option value="{{ submission.municipality_destination }}">{{ whitespace(submission.municipality_destination) }}</option>
       {% else %}
-        <option value="">Select Municipality</option>
+        <option value="any">Any</option>
       {% endif %}
       <!-- Options will be populated dynamically using JavaScript -->
     </select>
@@ -108,11 +108,11 @@
 
   <div class="col-md-4 mb-4">
     <label for="region" class="form-label">Region</label>
-    <select class="form-control" id="regionDestination" name="regionDestination" required>
-      {% if submission.region %}
-        <option value="{{ submission.region }}">{{ whitespace(submission.region_destination) }}</option>
+    <select class="form-control" id="regionDestination" name="regionDestination">
+      {% if submission.region_destination %}
+        <option value="{{ submission.region_destination }}">{{ whitespace(submission.region_destination) }}</option>
       {% else %}
-        <option value="">Select Region</option>
+        <option value="any">Any</option>
       {% endif %}
       <!-- Options will be populated dynamically using JavaScript -->
     </select>

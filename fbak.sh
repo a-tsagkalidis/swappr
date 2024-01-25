@@ -25,6 +25,7 @@ if [ -f swappr.db ]; then
     fi
 
     cp "swappr.db" "bakdb/$DATE/$TIME"
+    cp "locations.json" "bakdb/$DATE/$TIME"
 
     if [ -f "baklogs/$DATE/$TIME/app.log" ]; then
         echo "INFO:bash:internal.swappr.com - - [$(date +'%d/%b/%Y %H:%M:%S')]: Swappr server rebooted. swappr.db database file has been successfully copied to backup drive." >> "baklogs/$DATE/$TIME/app.log"

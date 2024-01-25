@@ -20,10 +20,9 @@ node_modules/
 *.log
 
 # Editor/IDE files
-.code-workspace
+*.code-workspace
 .vscode/
 .idea/
-*.code-workspace
 
 # Compiled files
 *.pyc

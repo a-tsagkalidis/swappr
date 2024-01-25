@@ -2,7 +2,7 @@
 	{
 		"id": 1,
 		"city": "thessaloniki",
-		"municipality": "thessalonikis",
+		"municipality": "thessaloniki",
 		"region": {
 			"agia_aikaterini": "54632",
 			"agia_sofia": "54623",
@@ -74,7 +74,7 @@
 	{
 		"id": 2,
 		"city": "thessaloniki",
-		"municipality": "agiou_pavlou",
+		"municipality": "agios_pavlos",
 		"region": {
 			"evagelistria": "55437"
 		}
@@ -82,7 +82,7 @@
 	{
 		"id": 3,
 		"city": "thessaloniki",
-		"municipality": "ampelokipon",
+		"municipality": "ampelokipoi",
 		"region": {
 			"axios": "56727",
 			"dimarcheio": "56123",
@@ -97,7 +97,7 @@
 	{
 		"id": 4,
 		"city": "thessaloniki",
-		"municipality": "eleftheriou_-_kordeliou",
+		"municipality": "eleftherio_-_kordelio",
 		"region": {
 			"viotechniki_periochi_-_sidirodromiko_parko": "56334",
 			"dialogi": "56334"
@@ -106,7 +106,7 @@
 	{
 		"id": 5,
 		"city": "thessaloniki",
-		"municipality": "efkarpias",
+		"municipality": "efkarpia",
 		"region": {
 			"ergatikes_katoikies_-_makedonia": "56429",
 			"efxinoupoli": "56450",
@@ -117,7 +117,7 @@
 	{
 		"id": 6,
 		"city": "thessaloniki",
-		"municipality": "evosmou",
+		"municipality": "evosmos",
 		"region": {
 			"agioi_kyrillos_kai_methodios": "56224",
 			"agios_athanasios": "56224",
@@ -135,7 +135,7 @@
 	{
 		"id": 7,
 		"city": "thessaloniki",
-		"municipality": "thermis",
+		"municipality": "thermi",
 		"region": {
 			"agios_tryfonas": "57001",
 			"triadi": "57001"
@@ -144,7 +144,7 @@
 	{
 		"id": 8,
 		"city": "thessaloniki",
-		"municipality": "kalamarias",
+		"municipality": "kalamaria",
 		"region": {
 			"agios_ioannis": "55132",
 			"agios_stylianos": "55134",
@@ -165,7 +165,7 @@
 	{
 		"id": 9,
 		"city": "thessaloniki",
-		"municipality": "menemenis",
+		"municipality": "menemeni",
 		"region": {
 			"vosporos": "54628",
 			"dendropotamos": "54628",
@@ -177,7 +177,7 @@
 	{
 		"id": 10,
 		"city": "thessaloniki",
-		"municipality": "neapolis",
+		"municipality": "neapoli",
 		"region": {
 			"anagennisi": "56727",
 			"axios": "56727",
@@ -195,7 +195,7 @@
 	{
 		"id": 11,
 		"city": "thessaloniki",
-		"municipality": "sykeon",
+		"municipality": "sykies",
 		"region": {
 			"agios_vasileios": "56625",
 			"agios_charalampos": "56626",
@@ -213,7 +213,7 @@
 	{
 		"id": 12,
 		"city": "thessaloniki",
-		"municipality": "panoramatos",
+		"municipality": "panorama",
 		"region": {
 			"ano_panorama": "55236",
 			"neo_panorama": "55236",
@@ -225,7 +225,7 @@
 	{
 		"id": 13,
 		"city": "thessaloniki",
-		"municipality": "polichnis",
+		"municipality": "polichni",
 		"region": {
 			"agios_panteleimonas": "56533",
 			"analipsi_-_ano_polichni": "56533",
@@ -244,7 +244,7 @@
 	{
 		"id": 14,
 		"city": "thessaloniki",
-		"municipality": "pylaias",
+		"municipality": "pylaia",
 		"region": {
 			"elaiorema": "55534",
 			"elaiones": "55536",
@@ -262,7 +262,7 @@
 	{
 		"id": 15,
 		"city": "thessaloniki",
-		"municipality": "stavroupoleos",
+		"municipality": "stavroupoli",
 		"region": {
 			"ampelones": "56430",
 			"anthokipoi": "56535",
@@ -279,7 +279,7 @@
 	{
 		"id": 16,
 		"city": "thessaloniki",
-		"municipality": "triandrias",
+		"municipality": "triandria",
 		"region": {
 			"agioi_anargyroi": "55337",
 			"ano_triandria": "55337",
@@ -289,7 +289,7 @@
 	{
 		"id": 17,
 		"city": "thessaloniki",
-		"municipality": "epanomis",
+		"municipality": "epanomi",
 		"region": {
 			"pyrgos": "57500"
 		}
@@ -297,7 +297,7 @@
 	{
 		"id": 18,
 		"city": "larissa",
-		"municipality": "larissas",
+		"municipality": "larissa",
 		"region": {
 			"averof": "41335",
 			"agia_marina": "41336",
@@ -339,7 +339,7 @@
 	{
 		"id": 19,
 		"city": "xanthi",
-		"municipality": "xanthis",
+		"municipality": "xanthi",
 		"region": {
 			"mexicana": "41335",
 			"plateia": "41336",

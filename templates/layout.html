@@ -52,7 +52,15 @@
     <div class="pt-4">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
-          <div class="success" role="alert"> {% for message in messages %}{{ message }}{% endfor %}</div>
+          
+            {% for message in messages %}
+              {% if message != 'Submission not found.' %}
+                <div class="success" role="alert">{{ message }}</div>
+              {% else %}
+                <div class="error" role="alert">{{ message }}</div>
+              {% endif %}
+            {% endfor %}
+          
         {% endif %}
       {% endwith %}
 

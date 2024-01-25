@@ -19,7 +19,7 @@
             <th>Rental (€)</th>
             <th>Bedrooms</th>
             <th>Bathrooms</th>
-            <th>Location</th>
+            <th>Location (C/M/R)</th>
             <th>Desired Destination</th>
             <th>Exposure is</th>
             <th>Edit House</th>
@@ -35,8 +35,21 @@
               <td>€{{ comma(submission.rental) }}</td>
               <td>{{ submission.bedrooms }}</td>
               <td>{{ submission.bathrooms }}</td>
-              <td>{{ whitespace(submission.city) }}, {{ whitespace(submission.region) }}</td>
-              <td>{{ whitespace(submission.city_destination) }}, {{ whitespace(submission.region_destination) }}</td>
+
+              {% if submission.city == submission.municipality %}
+                <td>{{ whitespace(submission.city) }},<br>{{ whitespace(submission.region) }}</td>
+              {% else %}
+                <td>{{ whitespace(submission.city) }},<br>{{ whitespace(submission.municipality) }},<br>{{ whitespace(submission.region) }}</td>
+              {% endif %}
+              
+              {% if submission.city_destination == 'any' %}
+                <td>{{ whitespace(submission.city_destination) }}</td>
+              {% elif (submission.city_destination == submission.municipality_destination) or (submission.municipality_destination == 'any' and submission.region_destination == 'any' )%}
+                <td>{{ whitespace(submission.city_destination) }},<br>{{ whitespace(submission.region_destination) }}</td>
+              {% else %}
+                <td>{{ whitespace(submission.city_destination) }},<br>{{ whitespace(submission.municipality_destination) }},<br>{{ whitespace(submission.region_destination) }}</td>
+              {% endif %}
+
               <td>
                 {% if submission.exposure == 'public' %}
                   <form method="post" action="/update_exposure">

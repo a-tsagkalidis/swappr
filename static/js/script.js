@@ -312,8 +312,13 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 		const selectedCity = this.value;
 
 		// Reset municipality and region selectors
-		document.getElementById(municipalityId).innerHTML = '<option value="">Select Municipality</option>';
-		document.getElementById(regionId).innerHTML = '<option value="">Select Region</option>';
+		if (cityId === "cityDestination") {
+			document.getElementById(municipalityId).innerHTML = '<option value="any">Any</option>';
+			document.getElementById(regionId).innerHTML = '<option value="any">Any</option>';
+		} else {
+			document.getElementById(municipalityId).innerHTML = '<option value="">Select Municipality</option>';
+			document.getElementById(regionId).innerHTML = '<option value="">Select Region</option>';
+		}
 
 		// If the selected city is the default value, no need to fetch data
 		if (selectedCity === "") {
@@ -325,7 +330,11 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 			.then(response => response.json())
 			.then(data => {
 				const municipalitySelect = document.getElementById(municipalityId);
-				municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
+				if (municipalityId === "municipalityDestination") {
+					municipalitySelect.innerHTML = '<option value="any">Any</option>';
+				} else {
+					municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
+				}
 				data.forEach(municipalityObject => {
 					const option = document.createElement('option');
 					option.value = municipalityObject.municipality;
@@ -341,7 +350,11 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 		const selectedCity = document.getElementById(cityId).value;
 
 		// Reset region selector
-		document.getElementById(regionId).innerHTML = '<option value="">Select Region</option>';
+		if (municipalityId === "municipalityDestination") {
+			document.getElementById(regionId).innerHTML = '<option value="any">Any</option>';
+		} else {
+			document.getElementById(regionId).innerHTML = '<option value="">Select Region</option>';
+		}
 
 		// If the selected municipality is the default value, no need to fetch data
 		if (selectedMunicipality === "") {
@@ -353,7 +366,11 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 			.then(response => response.json())
 			.then(data => {
 				const regionSelect = document.getElementById(regionId);
-				regionSelect.innerHTML = '<option value="">Select Region</option>';
+				if (regionId === "regionDestination") {
+					regionSelect.innerHTML = '<option value="any">Any</option>';
+				} else {
+					regionSelect.innerHTML = '<option value="">Select Region</option>';
+				}
 				data.forEach(regionObject => {
 					const option = document.createElement('option');
 					option.value = regionObject.region;
