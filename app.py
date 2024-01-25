@@ -12,6 +12,9 @@ from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
+
 # Configure loguru
 try:
     logger.remove(0)
@@ -205,7 +208,10 @@ def signup():
             signin()
 
             # Inform user for successful register
-            flash('Successfully registered!')
+            message = {
+                'success': 'Successfully registered!'
+            }
+            flash(message)
             return redirect(url_for('delayed_redirect'))
 
         except ValueError as err:
@@ -450,7 +456,10 @@ def submit():
             )
 
             # Inform user for successful submission
-            flash('Submission saved successfully!')
+            message = {
+                'success': 'Submission saved successfully!'
+            }
+            flash(message)
             return redirect('/')
 
         except ValueError as err:
@@ -522,7 +531,11 @@ def update_exposure():
         '''
     )
 
-    flash('Exposure updated successfully!')
+    # Inform user for successful exposure update
+    message = {
+        'success': 'Exposure updated successfully!'
+    }
+    flash(message)
     return redirect(url_for('index'))
 
 
@@ -578,8 +591,12 @@ def edit_submission():
             level='WARNING',
             indent=24
         )
-
-        flash('Submission not found.')
+        
+        # Inform user for submission search error
+        message = {
+            'error': 'Submission not found.'
+        }
+        flash(message)
         return redirect(url_for('index'))
 
 
@@ -612,7 +629,7 @@ def save_edit_submission():
 
     # Save edited house or delete it
     if 'save' in request.form:
-        # Check if all form fields are filled and valid, else flash error and reload the route
+        # Check if all form fields are filled and valid
         try:
             # Ensure user form input for edit submission is valid
             submission_validation(
@@ -684,7 +701,10 @@ def save_edit_submission():
             )
 
             # Inform user for successful submission update
-            flash('Submission updated successfully!')
+            message = {
+                'success': 'Submission updated successfully!'
+            }
+            flash(message)
             return redirect(url_for('index'))
 
         except ValueError as err:
@@ -732,7 +752,10 @@ def save_edit_submission():
         )
 
         # Inform user for successful submission deletion
-        flash('Submission deleted successfully!')
+        message = {
+            'success': 'Submission deleted successfully!'
+        }
+        flash(message)
         return redirect(url_for('index'))
 
 
@@ -813,6 +836,22 @@ def search():
                 region
             )
 
+            # Fetch desired destination according to user's submissions
+            query = '''
+                    SELECT submissions.city_destination,
+                        submissions.municipality_destination,
+                        submissions.region_destination,
+                        submissions.city,
+                        submissions.municipality,
+                        submissions.region
+                    FROM submissions
+                    WHERE user_id = ?;
+                    '''
+            prsubmission = cursor_fetch(
+                query,
+                user_id
+            )
+
             # Fetch all submissions from database according to search filters
             query = '''
                     SELECT submissions.*,
@@ -859,6 +898,56 @@ def search():
                 region, region,
                 exposure,
                 user_id)
+
+            for result in search_results:
+                if (
+                    result['city'] == prsubmission[0]['city_destination']
+                ) and (
+                    result['municipality'] == prsubmission[0]['municipality_destination']
+                ) and (
+                    result['region'] == prsubmission[0]['region_destination']
+                ) and (
+                    result['city_destination'] == prsubmission[0]['city']
+                ) and (
+                    result['municipality_destination'] == prsubmission[0]['municipality']
+                ) and (
+                    result['region_destination'] == prsubmission[0]['region']
+                ):
+                    result['match'] = 'true_match'
+
+
+                elif (
+                    result['city'] == prsubmission[0]['city_destination']
+                ) and (
+                    result['municipality'] == prsubmission[0]['municipality_destination']
+                ) and (
+                    result['region_destination'] == 'any'
+                ):
+                    result['match'] = 'high_match'
+
+
+                elif (
+                    result['city'] == prsubmission[0]['city_destination']
+                ) and (
+                    result['municipality'] == 'any'
+                ) and (
+                    result['region_destination'] == 'any'
+                ):
+                    result['match'] = 'mid_match'
+
+
+                elif (
+                    result['city_destination'] == 'any'
+                ) and (
+                    result['municipality_destination'] == 'any'
+                ) and (
+                    result['region_destination'] == 'any'
+                ):
+                    result['match'] = 'low_match'
+
+
+
+
 
             return render_template(
                 '/search.html',
@@ -985,7 +1074,11 @@ def password_reset():
 
         return render_template('/account.html', error=err)
 
-    flash('Password successfully changed!')
+    # Inform user for successful password change
+    message = {
+        'success': 'Password successfully changed!'
+    }
+    flash(message)
     return render_template('/account.html')
 
 
@@ -1046,7 +1139,11 @@ def update_username():
         elif isinstance(err, NameError):
             return render_template('/account.html', warning=err)
 
-    flash('Username successfully changed!')
+    # Inform user for successful username update
+    message = {
+        'success': 'Username successfully changed!'
+    }
+    flash(message)
     return render_template('/account.html')
 
 
@@ -1111,7 +1208,12 @@ def delete_account():
         return render_template('/account.html', error=err)
 
     session.clear()
-    flash('Your account and data has been erased. Thanks for using our app!')
+
+    # Inform user for successful account deletion
+    message = {
+        'success': 'Your account and data has been erased. Thanks for using our app!'
+    }
+    flash(message)
     return render_template('/signup.html')
 
 

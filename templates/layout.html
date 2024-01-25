@@ -54,10 +54,10 @@
         {% if messages %}
           
             {% for message in messages %}
-              {% if message != 'Submission not found.' %}
-                <div class="success" role="alert">{{ message }}</div>
-              {% else %}
-                <div class="error" role="alert">{{ message }}</div>
+              {% if message.success %}
+                <div class="success" role="alert">{{ message.success }}</div>
+              {% elif message.error %}
+                <div class="error" role="alert">{{ message.error }}</div>
               {% endif %}
             {% endfor %}
           

@@ -13,14 +13,14 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Unique ID</th>
+            <th>Primary</th>
             <th>House Type</th>
             <th>Sqr. Meters (m&sup2;)</th>
             <th>Rental (€)</th>
             <th>Bedrooms</th>
             <th>Bathrooms</th>
             <th>Location (C/M/R)</th>
-            <th>Desired Destination</th>
+            <th>Looking for (C/M/R)</th>
             <th>Exposure is</th>
             <th>Edit House</th>
             <!-- Add other columns as needed -->
@@ -29,7 +29,7 @@
         <tbody>
           {% for submission in submissions %}
             <tr>
-              <td>{{ submission.id }}</td>
+              <td><input type="checkbox"></td>
               <td>{{ whitespace(submission.house_type) }}</td>
               <td>{{ comma(submission.square_meters) }} m&sup2;</td>
               <td>€{{ comma(submission.rental) }}</td>

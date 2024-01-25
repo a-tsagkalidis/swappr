@@ -82,11 +82,11 @@
 
 <!-- Desired Destination: City, Municipality, Region 3-rows -->
 <hr class="mt-5">
-<h3 class="mb-3 fw-light fs-4 text-secondary">Swap Destination (required)</h2>
+<h3 class="mb-3 fw-light fs-4 text-secondary">Desired swap location (optional)</h2>
 <div class="row g-3 mb-4">
   <div class="col-md-4 mb-4">
     <label for="city" class="form-label">City</label>
-    <select class="form-control" id="cityDestination" name="cityDestination">
+    <select class="form-control" id="cityDestination" name="cityDestination" required>
       <option value="any">Any</option>
       {% for city in cities %}
         <option value="{{ city.city }}" {% if submission.city_destination == city.city %}selected{% endif %}>{{ whitespace(city.city) }}</option>
@@ -96,7 +96,7 @@
 
   <div class="col-md-4 mb-4">
     <label for="municipality" class="form-label">Municipality</label>
-    <select class="form-control" id="municipalityDestination" name="municipalityDestination">
+    <select class="form-control" id="municipalityDestination" name="municipalityDestination" required>
       {% if submission.municipality_destination %}
         <option value="{{ submission.municipality_destination }}">{{ whitespace(submission.municipality_destination) }}</option>
       {% else %}
@@ -108,7 +108,7 @@
 
   <div class="col-md-4 mb-4">
     <label for="region" class="form-label">Region</label>
-    <select class="form-control" id="regionDestination" name="regionDestination">
+    <select class="form-control" id="regionDestination" name="regionDestination" required>
       {% if submission.region_destination %}
         <option value="{{ submission.region_destination }}">{{ whitespace(submission.region_destination) }}</option>
       {% else %}

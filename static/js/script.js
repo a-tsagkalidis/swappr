@@ -1,6 +1,6 @@
 /** ||||| [0.0] @all ROUTES COMMON HELPERS ||||| */
 // ----- [0.1] BACK-TO-TOP BUTTON ----- //
-/**
+/** [0.1.1]
  * A function that scrolls the webpage at the top. It is called whenever the
  * button `Back to top` us pressed (onclick). This button is present in every
  * route, because it is implemented in `layout.html`
@@ -17,7 +17,7 @@ let topButton = document.getElementById("top-button");
 
 /** ||||| [1.0] @signup ROUTE ||||| */
 // ----- [1.1] SIGN UP FORM VALIDATION ----- //
-/**
+/** [1.1.1]
  * A function that fetches all the user input from the filled input fields and
  * ensures they are of proper and valid values.
  * It is called when `Sign Up` button is clicked (onsubmit) in signup.html forms.
@@ -98,7 +98,7 @@ function validateSignUpForm() {
 
 /** ||||| [2.0] @signin ROUTE ||||| */
 // ----- [2.1] SIGN IN FORM VALIDATION ----- //
-/**
+/** [2.1.1]
  * A function that fetches all the user input from the filled input fields and
  * ensures they are of proper and valid values.
  * It is called when `Sign In` button is clicked (onsubmit) in signin.html form.
@@ -141,7 +141,7 @@ function validateSignInForm() {
 
 /** ||||| [3.0] @submit and @edit_submission ROUTES ||||| */
 // ----- [3.1] SUBMIT/EDIT_SUBMISSION FORM VALIDATION ----- //
-/**
+/** [3.1.1]
  * A function that fetches all the user input from the filled input fields and
  * ensures they are of proper and valid values.
  * It is called when `Submit` or `Save` buttons are clicked (onsubmit) in
@@ -233,9 +233,9 @@ function validateSubmitForm() {
 
 
 // ----- [3.2] QUANTITY LIMITER VALIDATOR ----- //
-/**
+/** [3.2.1]
  * Function to enforce min and max values. It is called in the code later in
- * in this section.
+ * in function [3.2.3].
  */
 function enforceMinMax(input, min, max) {
 	var value = parseInt(input.value, 10);
@@ -246,9 +246,9 @@ function enforceMinMax(input, min, max) {
 	}
 }
 
-/**
- * Function for handling backspace key for input fields. It is called in the
- * code later in this section. 
+
+/** [3.2.2]
+ * Function for handling backspace key for input fields. It is called in [3.4]. 
  */
 function handleBackspace(input, minValue) {
 	input.addEventListener('keydown', function (event) {
@@ -258,11 +258,12 @@ function handleBackspace(input, minValue) {
 	});
 }
 
-// Execute the following code only for submit and edit_submission routes
-if (
-	window.location.pathname === '/submit' ||
-	window.location.pathname === '/edit_submission'
-) {
+
+/** [3.2.3]
+ * Function setting limit boundries for input fields that require digits.
+ * It is called in [3.4] 
+ */
+function limitFormFields() {
 	// Event listener for "squareMeters" input
 	document.getElementById('squareMeters').addEventListener('input', function () {
 		enforceMinMax(this, 0, 1000);
@@ -282,19 +283,13 @@ if (
 	document.getElementById('bathrooms').addEventListener('input', function () {
 		enforceMinMax(this, 0, 10);
 	});
-
-	// Call handleBackspace funct to check current value and min value for each input
-	handleBackspace(document.getElementById('bedrooms'), 0);
-	handleBackspace(document.getElementById('bathrooms'), 0);
-	handleBackspace(document.getElementById('squareMeters'), 0);
-	handleBackspace(document.getElementById('rental'), 0);
 }
 
 
 // ----- [3.3] DYNAMIC SELECT OPTIONS -----//
-/**
+/** [3.3.1]
  * A function that replaces underscores with whitespaces and lowercased words 
- * to titles. It is called in the code later in this section.
+ * to titles. It is called in function [3.3.2].
  */
 function whitespace(text) {
 	return text.replace(/_/g, ' ').replace(/\w\S*/g, function (word) {
@@ -302,9 +297,10 @@ function whitespace(text) {
 	});
 }
 
-/**
+
+/** [3.3.2]
  * This functions sets a triplet of selectors to work dynamically based on the
- * user's previous selections. It is called in the code later in this section.
+ * user's previous selections. It is called in [3.4].
  */
 function initializeLocationSelectors(cityId, municipalityId, regionId) {
 	// Check if city selector has changed and populate municipalities selector
@@ -321,7 +317,7 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 		}
 
 		// If the selected city is the default value, no need to fetch data
-		if (selectedCity === "") {
+		if (selectedCity === "" || selectedCity === "any") {
 			return;
 		}
 
@@ -357,7 +353,7 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 		}
 
 		// If the selected municipality is the default value, no need to fetch data
-		if (selectedMunicipality === "") {
+		if (selectedMunicipality === "" || selectedMunicipality === "any") {
 			return;
 		}
 
@@ -381,12 +377,22 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 	});
 }
 
-// Execute the following code only for submit, edit_submission, and search routes
+
+// ----- [3.4] EXECUTES WHEN SUBMIT OR EDIT_SUBMISSION ROUTES LOAD -----//
+// Execute the following code only for submit and edit_submission routes
 if (
 	window.location.pathname === '/submit' ||
-	window.location.pathname === '/edit_submission' ||
-	window.location.pathname === '/search' // Most part of the code for search route is in [4.0]
+	window.location.pathname === '/edit_submission'
 ) {
+	// Ensure input fields are within limits
+	limitFormFields()
+
+	// Ensure backspace for the input fields that will work properly
+	handleBackspace(document.getElementById('bedrooms'), 0);
+	handleBackspace(document.getElementById('bathrooms'), 0);
+	handleBackspace(document.getElementById('squareMeters'), 0);
+	handleBackspace(document.getElementById('rental'), 0);
+
 	// Initialize location selectors
 	initializeLocationSelectors(
 		'city',
@@ -394,6 +400,7 @@ if (
 		'region'
 	);
 	
+	// Initialize location destination selectors
 	initializeLocationSelectors(
 		'cityDestination',
 		'municipalityDestination',
@@ -404,11 +411,10 @@ if (
 
 
 /** ||||| [4.0] @search ROUTE ||||| */
-// ----- !there is also partial code also in [3.3]! ----- //
 // ----- [4.1] NOUISLIDER CREATIONS ----- //
-/**
- * Function that is being called in noUiSliders creations. Formats values from 2
- * decimals (default) to 0 decimals.
+/** [4.1.1]
+ * Function that is being called in noUiSliders creations [4.1.2]. Formats
+ * values from 2 decimals (default) to 0 decimals.
  */
 function createSliderFormat() {
 	return {
@@ -421,10 +427,13 @@ function createSliderFormat() {
 	};
 }
 
-// Execute the following code only for search route
-if (window.location.pathname === '/search') {
 
-	// --- [4.1.1] Square Meters noUiSlider ---//
+/** [4.1.2]
+ * Function to create noUiSliders. It is called in [4.2] to be loaded
+ * in @search route
+ */
+function loadNoUiSliders() {
+	// --- [4.1.2.a] Square Meters noUiSlider ---//
 	// Get square meters slider from DOM
 	var squareMetersSlider = document.getElementById('squareMetersSlider');
 
@@ -452,7 +461,7 @@ if (window.location.pathname === '/search') {
 	});
 
 
-	// --- [4.1.2] Rental noUiSlider ---//
+	// --- [4.1.2.b] Rental noUiSlider ---//
 	// Get rental slider from DOM
 	var rentalSlider = document.getElementById('rentalSlider');
 
@@ -480,7 +489,7 @@ if (window.location.pathname === '/search') {
 	});
 
 
-	// --- [4.1.3] Bedrooms noUiSlider ---//
+	// --- [4.1.2.c] Bedrooms noUiSlider ---//
 	// Get bedrooms slider from DOM
 	var bedroomsSlider = document.getElementById('bedroomsSlider');
 
@@ -508,7 +517,7 @@ if (window.location.pathname === '/search') {
 	});
 
 
-	// --- [4.1.4] Bathrooms noUiSlider ---//
+	// --- [4.1.2.d] Bathrooms noUiSlider ---//
 	// Get bathrooms slider from DOM
 	var bathroomsSlider = document.getElementById('bathroomsSlider');
 
@@ -537,10 +546,26 @@ if (window.location.pathname === '/search') {
 }
 
 
+// ----- [4.2] EXECUTES WHEN SEARCH ROUTE LOADS -----//
+// Execute the following code only for search route
+if (window.location.pathname === '/search') {
+	// Load noUiSliders
+	loadNoUiSliders()
+
+	// Initialize location selectors
+	initializeLocationSelectors(
+		'city',
+		'municipality',
+		'region'
+	);
+
+}
+
+
 
 /** ||||| [5.0] @account ROUTE ||||| */
 // ----- [5.1] UPDATE USERNAME -----//
-/**
+/** [5.1.1]
  * A function that makes visible username edit. It is called when the user's
  * username is clicked (onclick) and shows the text field for the new username
  * (placeholder='Enter new username'), `Save` and `Cancel` buttons.
@@ -554,7 +579,7 @@ function enableUsernameEdit() {
 }
 
 
-/**
+/** [5.1.2]
  * A function that is called when the `Save` button is clicked (onclick) and
  * triggers POST form for @update_username route so that backend can retrieve
  * `newUsername` value and store it (or abort it) in the SQL database
@@ -564,7 +589,7 @@ function saveNewUsername() {
 }
 
 
-/**
+/** [5.1.3]
  * A function that is called when the `Cancel` button is clicked (onclick) and
  * hides the text field for the new username (placeholder='Enter new username'),
  * `Save` and `Cancel` buttons. It also erases any given input for the
@@ -577,7 +602,7 @@ function cancelUsernameEdit() {
 }
 
 
-/**
+/** [5.1.4]
  * A function that is called when `Reset Password` or `Delete Account` buttons are
  * pressed (onclick). It focus the keyboard cursor on the input field when the
  * bootstrap modal is shown to the user.
