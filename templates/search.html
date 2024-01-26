@@ -125,7 +125,7 @@
           </thead>
           <tbody>
             {% for match in search %}
-              <tr {% if match.match == 'true_match' %}class="table-success"
+              <tr {% if match.match == 'perfect_match' %}class="table-success"
               {% elif match.match == 'high_match' %}class="table-primary"
               {% elif match.match == 'mid_match' %}class="table-warning"
               {% elif match.match == 'low_match' %}class="table-secondary"

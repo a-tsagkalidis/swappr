@@ -11,7 +11,7 @@ def cursor_execute(query, *args):
     '''
     conn = sqlite3.connect('swappr.db')
     cursor = conn.cursor()
-    cursor.execute(query, (args))
+    cursor.execute(query, args)
     conn.commit()
     conn.close()
 

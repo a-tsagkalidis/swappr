@@ -338,6 +338,15 @@
 	},
 	{
 		"id": 19,
+		"city": "larissa",
+		"municipality": "tyrnavos",
+		"region": {
+			"ampelonas": "41335",
+			"vriotopos": "41336"
+		}
+	},
+	{
+		"id": 20,
 		"city": "xanthi",
 		"municipality": "xanthi",
 		"region": {

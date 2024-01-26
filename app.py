@@ -838,16 +838,11 @@ def search():
 
             # Fetch desired destination according to user's submissions
             query = '''
-                    SELECT submissions.city_destination,
-                        submissions.municipality_destination,
-                        submissions.region_destination,
-                        submissions.city,
-                        submissions.municipality,
-                        submissions.region
+                    SELECT *
                     FROM submissions
                     WHERE user_id = ?;
                     '''
-            prsubmission = cursor_fetch(
+            user_submission = cursor_fetch(
                 query,
                 user_id
             )
@@ -899,51 +894,98 @@ def search():
                 exposure,
                 user_id)
 
-            for result in search_results:
+
+            # Define function to determine location match strength
+            def determine_location_match_strength(result, user_submission):
+                location_match_strength = 0
+
+                # Check if desired city destination matches in search results
+                if result['city_destination'] == 'any':
+                    location_match_strength += 1
+                if user_submission[0]['city_destination'] == result['city']:
+                    location_match_strength += 2
+                if result['city_destination'] == user_submission[0]['city']:
+                    location_match_strength += 2
+
+
+                # Check if desired municipality destination matches in search results
                 if (
-                    result['city'] == prsubmission[0]['city_destination']
-                ) and (
-                    result['municipality'] == prsubmission[0]['municipality_destination']
-                ) and (
-                    result['region'] == prsubmission[0]['region_destination']
-                ) and (
-                    result['city_destination'] == prsubmission[0]['city']
-                ) and (
-                    result['municipality_destination'] == prsubmission[0]['municipality']
-                ) and (
-                    result['region_destination'] == prsubmission[0]['region']
-                ):
-                    result['match'] = 'true_match'
-
-
-                elif (
-                    result['city'] == prsubmission[0]['city_destination']
-                ) and (
-                    result['municipality'] == prsubmission[0]['municipality_destination']
-                ) and (
-                    result['region_destination'] == 'any'
-                ):
-                    result['match'] = 'high_match'
-
-
-                elif (
-                    result['city'] == prsubmission[0]['city_destination']
-                ) and (
-                    result['municipality'] == 'any'
-                ) and (
-                    result['region_destination'] == 'any'
-                ):
-                    result['match'] = 'mid_match'
-
-
-                elif (
-                    result['city_destination'] == 'any'
-                ) and (
                     result['municipality_destination'] == 'any'
                 ) and (
-                    result['region_destination'] == 'any'
+                    result['city_destination'] == user_submission[0]['city']
                 ):
-                    result['match'] = 'low_match'
+                    location_match_strength += 1
+                if user_submission[0]['municipality_destination'] == result['municipality']:
+                    location_match_strength += 2
+                if result['municipality_destination'] == user_submission[0]['municipality']:
+                    location_match_strength += 2
+
+                # Check if desired region destination matches in search results
+                if (
+                    result['region_destination'] == 'any'
+                ) and (
+                    result['city_destination'] == user_submission[0]['city']
+                ) and (
+                    result['municipality_destination'] == user_submission[0]['municipality']
+                ):
+                    location_match_strength += 1
+                if user_submission[0]['region_destination'] == result['region']:
+                    location_match_strength += 2
+                if result['region_destination'] == user_submission[0]['region']:
+                    location_match_strength += 2
+
+                return location_match_strength
+
+            # Function to perform location matching and assign match strength
+            def perform_location_matching(user_submission, search_results):
+                for result in search_results:
+                    location_match_strength = determine_location_match_strength(result, user_submission)
+                    result['location_match'] = location_match_strength
+
+            # Call the perform_location_matching function in your route
+            perform_location_matching(user_submission, search_results)
+            i = 1
+            for result in search_results:
+                print(i, ": ", result['location_match'])
+                i += 1
+
+
+            
+
+
+
+            # Function to determine match strength based on criteria
+            def determine_match_strength(result, user_submission):
+                # # Define matching criteria ranges
+                CRITERIA_RANGES = {
+                    'square_meters': {'min': result['square_meters'] - 10, 'max': result['square_meters'] + 10},
+                    'rental': {'min': result['rental'] - 100, 'max': result['square_meters'] + 100},
+                    # Add more criteria ranges as needed
+                }
+                house_details_match_strength = 0
+
+                for criteria, ranges in CRITERIA_RANGES.items():
+                    if result[criteria][ranges]['min'] <= user_submission[0][criteria] <= result[criteria][ranges]['max']:
+                        house_details_match_strength += 10
+                    return house_details_match_strength
+
+
+
+            # Function to perform matching and assign match strength to each submission
+            def perform_house_matching(user_submission, search_results):
+                for result in search_results:
+                    # print(result['square_meters'])
+                    # pp.pprint(user_submission[0]['square_meters'])
+                    house_details_match_strength = determine_match_strength(result, user_submission)
+                    result['house_details_match'] = house_details_match_strength
+
+            # Call the perform_matching function in your route
+            perform_house_matching(user_submission, search_results)
+            i = 1
+            for result in search_results:
+                print(i, ": ", result['house_details_match'])
+                i += 1
+
 
 
 
