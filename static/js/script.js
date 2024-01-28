@@ -399,7 +399,7 @@ if (
 		'municipality',
 		'region'
 	);
-	
+
 	// Initialize location destination selectors
 	initializeLocationSelectors(
 		'cityDestination',
@@ -542,6 +542,33 @@ function loadNoUiSliders() {
 
 		// Update the hidden input field that will send the values to backend
 		document.getElementById('bathrooms').value = JSON.stringify({ min: values[0], max: values[1] })
+	});
+
+
+	// --- [4.1.2.e] Tolerance noUiSlider ---//
+	// Get tolerance slider from DOM
+	var toleranceSlider = document.getElementById('toleranceSlider');
+
+	noUiSlider.create(toleranceSlider, {
+		start: 10,
+		behaviour: 'tap',
+		step: 10,
+		range: {
+			'min': 10,
+			'max': 100
+		},
+		format: createSliderFormat()
+	});
+
+	// Get an array of the minimum and maximum values of tolerance from DOM 
+	var toleranceSnapValue = document.getElementById('toleranceOut');
+
+	// Update slider values
+	toleranceSlider.noUiSlider.on('update', function (value) {
+		toleranceSnapValue.innerHTML = value;
+
+		// Update the hidden input field that will send the values to backend
+		document.getElementById('tolerance').value = value;
 	});
 }
 

@@ -9,10 +9,14 @@
     <h1 class="mb-4 fw-bold fs-2 text-secondary">Search a House</h1>
     <form action="/search" method="post" id="...">
 
-      <!-- House characteristics sections -->
+      <!-- HOUSE CHARACTERISTICS sections -->
+      <!-- Header -->
       <hr>
       <h3 class="mb-3 fw-light fs-4 text-secondary">House characteristics filtering</h2>
+      
+      <!-- FIRST ROW: 4 columns in a row *using only the 1st column -->
       <div class="row g-4 mb-4">
+        <!-- House Type selector -->
         <div class="col-md-3 mb-2">
           <label for="houseType" class="form-label">House Type</label>
           <select class="form-select" id="houseType" name="houseType">
@@ -27,7 +31,9 @@
         </div>
       </div>
 
+      <!-- SECOND ROW: 4 columns in a row -->
       <div class="row g-4 mb-4">
+        <!-- Square Meters noUiSlider -->
         <div class="col-md-3 mb-1">
           <label for="squareMeters" class="form-label mb-3">Square Meters (m&#178;)</label>
           <div class="mb-2" id="squareMetersSlider" name="squareMetersSlider"></div>
@@ -36,7 +42,7 @@
           <input type="hidden" id="squareMeters" name="squareMeters" value="">
         </div>
         
-        
+        <!-- Rental noUiSlider -->
         <div class="col-md-3 mb-1">
           <label for="rental" class="form-label mb-3">Rental (&euro;)</label>
           <div class="mb-2" id="rentalSlider" name="rentalSlider"></div>
@@ -45,7 +51,7 @@
           <input type="hidden" id="rental" name="rental" value="">
         </div>
 
-
+        <!-- Bedrooms noUiSlider -->
         <div class="col-md-3 mb-1">
           <label for="bedrooms" class="form-label mb-3">Bedrooms</label>
           <div class="mb-2" id="bedroomsSlider" name="bedroomsSlider"></div>
@@ -54,7 +60,7 @@
           <input type="hidden" id="bedrooms" name="bedrooms" value="">
         </div>
 
-
+        <!-- Bathrooms noUiSlider -->
         <div class="col-md-3 mb-1">
           <label for="bathrooms" class="form-label mb-3">Bathrooms</label>
           <div class="mb-2" id="bathroomsSlider" name="bathroomsSlider"></div>
@@ -65,10 +71,14 @@
       </div>
 
 
-      <!-- Location filters sections -->
+      <!-- LOCATION FILTERS sections -->
+      <!-- Header -->
       <hr class="mt-5">
       <h3 class="mb-3 fw-light fs-4 text-secondary">Location filtering</h2>
+      
+      <!-- FIRST ROW: 3 columns in a row -->
       <div class="row g-3 mb-4">
+        <!-- City selector -->
         <div class="col-md-4 mb-1">
           <label for="city" class="form-label">City</label>
           <select class="form-select" id="city" name="city">
@@ -79,7 +89,7 @@
           </select>
         </div>
 
-
+        <!-- Municipality selector -->
         <div class="col-md-4 mb-1">
           <label for="municipality" class="form-label">Municipality</label>
           <select class="form-select" id="municipality" name="municipality">
@@ -88,6 +98,7 @@
           </select>
         </div>
         
+        <!-- Region selector -->
         <div class="col-md-4 mb-1">
           <label for="municipality" class="form-label">Region</label>
           <select class="form-select" id="region" name="region">
@@ -97,8 +108,16 @@
         </div>
       </div>
 
+      <!-- Tolerance Slider and Submit Button -->
+      <!-- Tolerance Slider -->
+      <div class="form-group col-md-3 mx-auto mt-5">
+        <label for="tolerance" class="form-label mb-3">Tolerance</label>
+        <div class="mb-2" id="toleranceSlider" name="toleranceSlider"></div>
+        <output id="toleranceOut">0</output><span>%</span>
+        <input type="hidden" id="tolerance" name="tolerance" value="">
+      </div>
       <!-- Submit Button -->
-      <div class="text-center mt-5">
+      <div class="text-center">
         <button type="submit" class="mb-4 btn btn-warning">Search</button>
       </div>
     </form>

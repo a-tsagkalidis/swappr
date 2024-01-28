@@ -820,6 +820,7 @@ def search():
         city = request.form.get('city')
         municipality = request.form.get('municipality')
         region = request.form.get('region')
+        tolerance = int(request.form.get('tolerance'))
         exposure = 'public'
 
         try:
@@ -894,7 +895,6 @@ def search():
                 exposure,
                 user_id)
 
-
             # Define function to determine location match strength
             def determine_location_match_strength(result, user_submission):
                 location_match_strength = 0
@@ -950,24 +950,48 @@ def search():
                 i += 1
 
 
+            TOLERANCE_MULTIPIERS = {
+                'square_meters': (tolerance / 100) + 1,
+                'rental': (tolerance / 100) + 1,
+                'bedrooms': 1 if tolerance < 50 else 2,
+                'bathrooms': 1 if tolerance < 70 else 2
+            }
             
-
-
 
             # Function to determine match strength based on criteria
             def determine_match_strength(result, user_submission):
-                # # Define matching criteria ranges
                 CRITERIA_RANGES = {
-                    'square_meters': {'min': result['square_meters'] - 10, 'max': result['square_meters'] + 10},
-                    'rental': {'min': result['rental'] - 100, 'max': result['square_meters'] + 100},
-                    # Add more criteria ranges as needed
+                    'square_meters':
+                    {
+                        'min': result['square_meters'] - ((TOLERANCE_MULTIPIERS['square_meters'] * result['square_meters']) % result['square_meters']),
+                        'max': result['square_meters'] * TOLERANCE_MULTIPIERS['square_meters']
+                    },
+                    'rental':
+                    {
+                        'min': result['rental'] - ((TOLERANCE_MULTIPIERS['rental'] * result['rental']) % result['rental']),
+                        'max': result['rental'] * TOLERANCE_MULTIPIERS['rental']
+                    },
+                    'bedrooms':
+                    {
+                        'min': result['bedrooms'] - 1,
+                        'max': result['bedrooms'] + 1
+                    },
+                    'bathrooms':
+                    {
+                        'min': result['bathrooms'] - 1,
+                        'max': result['bathrooms'] + 1
+                    }
                 }
+
+
                 house_details_match_strength = 0
 
                 for criteria, ranges in CRITERIA_RANGES.items():
-                    if result[criteria][ranges]['min'] <= user_submission[0][criteria] <= result[criteria][ranges]['max']:
+                    print(criteria)
+                    print(ranges)
+                    if ranges['min'] <= user_submission[0][criteria] <= ranges['max']:
                         house_details_match_strength += 10
-                    return house_details_match_strength
+                return house_details_match_strength
 
 
 
@@ -976,6 +1000,8 @@ def search():
                 for result in search_results:
                     # print(result['square_meters'])
                     # pp.pprint(user_submission[0]['square_meters'])
+                    # # Define matching criteria ranges
+                    
                     house_details_match_strength = determine_match_strength(result, user_submission)
                     result['house_details_match'] = house_details_match_strength
 
