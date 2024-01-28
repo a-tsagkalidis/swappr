@@ -915,10 +915,15 @@ def search():
                     result['city_destination'] == user_submission[0]['city']
                 ):
                     location_match_strength += 1
+                elif result['municipality_destination'] == user_submission[0]['municipality']:
+                    location_match_strength += 2
+                else:
+                    location_match_strength -= 10
                 if user_submission[0]['municipality_destination'] == result['municipality']:
                     location_match_strength += 2
-                if result['municipality_destination'] == user_submission[0]['municipality']:
-                    location_match_strength += 2
+                else:
+                    location_match_strength -= 5
+
 
                 # Check if desired region destination matches in search results
                 if (
@@ -929,10 +934,15 @@ def search():
                     result['municipality_destination'] == user_submission[0]['municipality']
                 ):
                     location_match_strength += 1
+                elif result['region_destination'] == user_submission[0]['region']:
+                    location_match_strength += 2
+                else:
+                    location_match_strength -= 10
                 if user_submission[0]['region_destination'] == result['region']:
                     location_match_strength += 2
-                if result['region_destination'] == user_submission[0]['region']:
-                    location_match_strength += 2
+                else:
+                    location_match_strength -= 5
+
 
                 return location_match_strength
 
@@ -944,15 +954,15 @@ def search():
 
             # Call the perform_location_matching function in your route
             perform_location_matching(user_submission, search_results)
-            i = 1
-            for result in search_results:
-                print(i, ": ", result['location_match'])
-                i += 1
+            # i = 1
+            # for result in search_results:
+            #     print(i, ": ", result['location_match'])
+            #     i += 1
 
 
             TOLERANCE_MULTIPIERS = {
-                'square_meters': (tolerance / 100) + 1,
-                'rental': (tolerance / 100) + 1,
+                'square_meters': tolerance / 100,
+                'rental': tolerance / 100,
                 'bedrooms': 1 if tolerance < 50 else 2,
                 'bathrooms': 1 if tolerance < 70 else 2
             }
@@ -963,23 +973,23 @@ def search():
                 CRITERIA_RANGES = {
                     'square_meters':
                     {
-                        'min': result['square_meters'] - ((TOLERANCE_MULTIPIERS['square_meters'] * result['square_meters']) % result['square_meters']),
-                        'max': result['square_meters'] * TOLERANCE_MULTIPIERS['square_meters']
+                        'min': int(user_submission[0]['square_meters'] * (1 - TOLERANCE_MULTIPIERS['square_meters'] * .25)),
+                        'max': int(user_submission[0]['square_meters'] * (1 + TOLERANCE_MULTIPIERS['square_meters']))
                     },
                     'rental':
                     {
-                        'min': result['rental'] - ((TOLERANCE_MULTIPIERS['rental'] * result['rental']) % result['rental']),
-                        'max': result['rental'] * TOLERANCE_MULTIPIERS['rental']
+                        'min': 0,
+                        'max': int(user_submission[0]['rental'] * (1 + TOLERANCE_MULTIPIERS['rental']))
                     },
                     'bedrooms':
                     {
-                        'min': result['bedrooms'] - 1,
-                        'max': result['bedrooms'] + 1
+                        'min': int(user_submission[0]['bedrooms']),
+                        'max': int(user_submission[0]['bedrooms'] + TOLERANCE_MULTIPIERS['bedrooms'])
                     },
                     'bathrooms':
                     {
-                        'min': result['bathrooms'] - 1,
-                        'max': result['bathrooms'] + 1
+                        'min': int(user_submission[0]['bathrooms']),
+                        'max': int(user_submission[0]['bathrooms'] + TOLERANCE_MULTIPIERS['bathrooms']),
                     }
                 }
 
@@ -987,10 +997,10 @@ def search():
                 house_details_match_strength = 0
 
                 for criteria, ranges in CRITERIA_RANGES.items():
-                    print(criteria)
-                    print(ranges)
-                    if ranges['min'] <= user_submission[0][criteria] <= ranges['max']:
-                        house_details_match_strength += 10
+                    # print(criteria)
+                    # print(ranges)
+                    if ranges['min'] <= result[criteria] <= ranges['max']:
+                        house_details_match_strength += 5
                 return house_details_match_strength
 
 
@@ -1004,23 +1014,27 @@ def search():
                     
                     house_details_match_strength = determine_match_strength(result, user_submission)
                     result['house_details_match'] = house_details_match_strength
+                    result['total_match_score'] = result['house_details_match'] + result['location_match']
+                    
 
             # Call the perform_matching function in your route
             perform_house_matching(user_submission, search_results)
-            i = 1
-            for result in search_results:
-                print(i, ": ", result['house_details_match'])
-                i += 1
+            # i = 1
+            # for result in search_results:
+            #     print(i, ": ", result['house_details_match'])
+            #     i += 1
 
+            sorted_search_results = sorted(search_results, key=lambda x: x['total_match_score'], reverse=True)
+            for result in sorted_search_results:
+                pp.pprint(result['total_match_score'])
 
-
-
+            
 
 
             return render_template(
                 '/search.html',
                 cities=cities,
-                search=search_results,
+                search=sorted_search_results,
                 comma=comma,
                 whitespace=whitespace
             )

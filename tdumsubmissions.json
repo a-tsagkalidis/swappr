@@ -47,7 +47,7 @@
 
     {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 3,
         "city": "larissa",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -85,7 +85,7 @@
     },
     {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 1,
         "city": "larissa",
         "city_destination": "any",
         "email": "arg.tsag@gmail.com",
@@ -109,7 +109,7 @@
 
     {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 1,
         "city": "larissa",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -128,7 +128,7 @@
     },
     {  
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 3,
         "city": "larissa",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -147,7 +147,7 @@
     },
     {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 1,
         "city": "thessaloniki",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -172,7 +172,7 @@
 
     {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 1,
         "city": "larissa",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -191,7 +191,7 @@
     },
     {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 1,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -209,8 +209,8 @@
     "username": "argtsag"
     },
     {
-    "bathrooms": 1,
-    "bedrooms": 2,
+    "bathrooms": 2,
+    "bedrooms": 4,
     "city": "larissa",
     "city_destination": "xanthi",
     "email": "arg.tsag@gmail.com",
@@ -234,7 +234,7 @@
 
     {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 3,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -252,8 +252,8 @@
     "username": "argtsag"
     },
     {
-    "bathrooms": 1,
-    "bedrooms": 2,
+    "bathrooms": 2,
+    "bedrooms": 4,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -313,7 +313,7 @@
     },
     {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 3,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -339,7 +339,7 @@
     
     {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 1,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -377,7 +377,7 @@
     },
     {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 3,
     "city": "larissa",
     "city_destination": "any",
     "email": "arg.tsag@gmail.com",
@@ -399,7 +399,7 @@
     
     {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 1,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -442,7 +442,7 @@
     
     {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 1,
     "city": "thessaloniki",
     "city_destination": "xanthi",
     "email": "arg.tsag@gmail.com",

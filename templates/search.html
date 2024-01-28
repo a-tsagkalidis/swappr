@@ -128,7 +128,7 @@
     <div class="container mt-2 text-break">
       <hr>
       <h1 class="mb-4 fw-bold fs-2 text-secondary">Search Matches</h1>
-        <table class="table table-borderless fs-8 fw-light">
+        <table class="table fs-8 fw-light">
           <thead>
             <tr>
               <th>House Type</th>
@@ -144,10 +144,10 @@
           </thead>
           <tbody>
             {% for match in search %}
-              <tr {% if match.match == 'perfect_match' %}class="table-success"
-              {% elif match.match == 'high_match' %}class="table-primary"
-              {% elif match.match == 'mid_match' %}class="table-warning"
-              {% elif match.match == 'low_match' %}class="table-secondary"
+              <tr {% if match.total_match_score > 25 %}class="table-success"
+              {% elif match.total_match_score <= 25 and match.total_match_score >= 20  %}class="table-primary"
+              {% elif match.total_match_score <= 19 and match.total_match_score >= 15 %}class="table-warning"
+              {% else %}class="table-danger"
               {% endif %}>
                 <td>{{ whitespace(match.house_type) }}</td>
                 <td>{{ comma(match.square_meters) }} m&sup2;</td>
