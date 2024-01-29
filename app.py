@@ -380,6 +380,7 @@ def submit():
         city_destination = request.form.get('cityDestination')
         municipality_destination = request.form.get('municipalityDestination')
         region_destination = request.form.get('regionDestination')
+        primary_submission = request.form.get('primarySubmission')
         all_field_values = list(request.form.values())
 
         # Check if all form fields are filled and valid
@@ -397,6 +398,7 @@ def submit():
                 municipality,
                 region
                 #TODO add destination location details for validation
+                #TODO add primary submission for validation
             )
 
             # Update log with WARNING msg
@@ -408,6 +410,19 @@ def submit():
                 level='SUCCESS',
                 indent=20
             )
+
+            if primary_submission:
+                # Update exposure value in the database
+                query = '''
+                        UPDATE submissions
+                        SET primary_submission = ?
+                        WHERE user_id = ?;
+                        '''
+                cursor_execute(
+                    query,
+                    False,
+                    user_id
+                )
 
             # Save submission into user database
             query = '''
@@ -424,10 +439,12 @@ def submit():
                         city_destination,
                         municipality_destination,
                         region_destination,
-                        exposure
+                        exposure,
+                        primary_submission
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                     '''
+            
             cursor_execute(
                 query,
                 user_id,
@@ -442,7 +459,8 @@ def submit():
                 city_destination,
                 municipality_destination,
                 region_destination,
-                exposure
+                exposure,
+                True if primary_submission else False
             )
 
             # Update log with INFO msg
@@ -625,6 +643,7 @@ def save_edit_submission():
     city_destination = request.form.get('cityDestination')
     municipality_destination = request.form.get('municipalityDestination')
     region_destination = request.form.get('regionDestination')
+    primary_submission = request.form.get('primarySubmission')
     all_field_values = list(request.form.values())
 
     # Save edited house or delete it
@@ -642,8 +661,9 @@ def save_edit_submission():
                 bathrooms,
                 city,
                 municipality,
-                region
+                region,
                 #TODO add destination location details for validation
+                #TODO add primary submission validation
             )
             # Update log with WARNING msg
             log(
@@ -654,6 +674,21 @@ def save_edit_submission():
                 level='WARNING',
                 indent=20
             )
+
+            if primary_submission:
+                # Update exposure value in the database
+                query = '''
+                        UPDATE submissions
+                        SET primary_submission = ?
+                        WHERE user_id = ?
+                        AND submissions.id != ?;
+                        '''
+                cursor_execute(
+                    query,
+                    False,
+                    user_id,
+                    submission_id
+                )
 
             # Update edited submission into user database
             query = '''
@@ -669,10 +704,12 @@ def save_edit_submission():
                         city_destination = ?,
                         municipality_destination = ?,
                         region_destination = ?,
-                        exposure = ?
+                        exposure = ?,
+                        primary_submission = ?
                     WHERE id = ?
                     AND user_id = ?;
                     '''
+            
             cursor_execute(
                 query,
                 house_type,
@@ -688,7 +725,8 @@ def save_edit_submission():
                 region_destination,
                 exposure,
                 submission_id,
-                user_id
+                user_id,
+                True if primary_submission else False
             )
 
             # Update log with INFO msg
@@ -837,17 +875,6 @@ def search():
                 region
             )
 
-            # Fetch desired destination according to user's submissions
-            query = '''
-                    SELECT *
-                    FROM submissions
-                    WHERE user_id = ?;
-                    '''
-            user_submission = cursor_fetch(
-                query,
-                user_id
-            )
-
             # Fetch all submissions from database according to search filters
             query = '''
                     SELECT submissions.*,
@@ -895,146 +922,47 @@ def search():
                 exposure,
                 user_id)
 
-            # Define function to determine location match strength
-            def determine_location_match_strength(result, user_submission):
-                location_match_strength = 0
+            # Fetch user's primary submission to use it for matching
+            query = '''
+                    SELECT *
+                    FROM submissions
+                    WHERE user_id = ?;
+                    '''
+            primary_submission = cursor_fetch(
+                query,
+                user_id
+            )
 
-                # Check if desired city destination matches in search results
-                if result['city_destination'] == 'any':
-                    location_match_strength += 1
-                if user_submission[0]['city_destination'] == result['city']:
-                    location_match_strength += 2
-                if result['city_destination'] == user_submission[0]['city']:
-                    location_match_strength += 2
+            # Declare tolerance factors based on user's chosen tolerance percentage
+            TOLERANCE_FACTORS = tolerance_factors(tolerance)
 
+            # Shape the ranges of every house characteristic according to TOLERANCE_FACTORS
+            CRITERIA_RANGES = criteria_ranges(primary_submission, TOLERANCE_FACTORS)
 
-                # Check if desired municipality destination matches in search results
-                if (
-                    result['municipality_destination'] == 'any'
-                ) and (
-                    result['city_destination'] == user_submission[0]['city']
-                ):
-                    location_match_strength += 1
-                elif result['municipality_destination'] == user_submission[0]['municipality']:
-                    location_match_strength += 2
-                else:
-                    location_match_strength -= 10
-                if user_submission[0]['municipality_destination'] == result['municipality']:
-                    location_match_strength += 2
-                else:
-                    location_match_strength -= 5
+            # Add location matching score for each house in search results
+            location_matching(primary_submission, search_results)
 
+            # Add house factor-based matching score for each house in search results
+            house_matching(search_results, CRITERIA_RANGES)
 
-                # Check if desired region destination matches in search results
-                if (
-                    result['region_destination'] == 'any'
-                ) and (
-                    result['city_destination'] == user_submission[0]['city']
-                ) and (
-                    result['municipality_destination'] == user_submission[0]['municipality']
-                ):
-                    location_match_strength += 1
-                elif result['region_destination'] == user_submission[0]['region']:
-                    location_match_strength += 2
-                else:
-                    location_match_strength -= 10
-                if user_submission[0]['region_destination'] == result['region']:
-                    location_match_strength += 2
-                else:
-                    location_match_strength -= 5
-
-
-                return location_match_strength
-
-            # Function to perform location matching and assign match strength
-            def perform_location_matching(user_submission, search_results):
-                for result in search_results:
-                    location_match_strength = determine_location_match_strength(result, user_submission)
-                    result['location_match'] = location_match_strength
-
-            # Call the perform_location_matching function in your route
-            perform_location_matching(user_submission, search_results)
-            # i = 1
-            # for result in search_results:
-            #     print(i, ": ", result['location_match'])
-            #     i += 1
-
-
-            TOLERANCE_MULTIPIERS = {
-                'square_meters': tolerance / 100,
-                'rental': tolerance / 100,
-                'bedrooms': 1 if tolerance < 50 else 2,
-                'bathrooms': 1 if tolerance < 70 else 2
-            }
+            # Calculate total matching score for each house in search results
+            matching_summary(search_results)
             
+            # Sort houses in search results based on total matching score; higher to lower
+            search_results = sorted(
+                search_results,
+                key=lambda result: result['total_matching_score'],
+                reverse=True
+            )
 
-            # Function to determine match strength based on criteria
-            def determine_match_strength(result, user_submission):
-                CRITERIA_RANGES = {
-                    'square_meters':
-                    {
-                        'min': int(user_submission[0]['square_meters'] * (1 - TOLERANCE_MULTIPIERS['square_meters'] * .25)),
-                        'max': int(user_submission[0]['square_meters'] * (1 + TOLERANCE_MULTIPIERS['square_meters']))
-                    },
-                    'rental':
-                    {
-                        'min': 0,
-                        'max': int(user_submission[0]['rental'] * (1 + TOLERANCE_MULTIPIERS['rental']))
-                    },
-                    'bedrooms':
-                    {
-                        'min': int(user_submission[0]['bedrooms']),
-                        'max': int(user_submission[0]['bedrooms'] + TOLERANCE_MULTIPIERS['bedrooms'])
-                    },
-                    'bathrooms':
-                    {
-                        'min': int(user_submission[0]['bathrooms']),
-                        'max': int(user_submission[0]['bathrooms'] + TOLERANCE_MULTIPIERS['bathrooms']),
-                    }
-                }
-
-
-                house_details_match_strength = 0
-
-                for criteria, ranges in CRITERIA_RANGES.items():
-                    # print(criteria)
-                    # print(ranges)
-                    if ranges['min'] <= result[criteria] <= ranges['max']:
-                        house_details_match_strength += 5
-                return house_details_match_strength
-
-
-
-            # Function to perform matching and assign match strength to each submission
-            def perform_house_matching(user_submission, search_results):
-                for result in search_results:
-                    # print(result['square_meters'])
-                    # pp.pprint(user_submission[0]['square_meters'])
-                    # # Define matching criteria ranges
-                    
-                    house_details_match_strength = determine_match_strength(result, user_submission)
-                    result['house_details_match'] = house_details_match_strength
-                    result['total_match_score'] = result['house_details_match'] + result['location_match']
-                    
-
-            # Call the perform_matching function in your route
-            perform_house_matching(user_submission, search_results)
-            # i = 1
-            # for result in search_results:
-            #     print(i, ": ", result['house_details_match'])
-            #     i += 1
-
-            sorted_search_results = sorted(search_results, key=lambda x: x['total_match_score'], reverse=True)
-            for result in sorted_search_results:
-                pp.pprint(result['total_match_score'])
-
-            
-
+            # TESTING
+            for result in search_results:
+                pp.pprint(result['total_matching_score'])
 
             return render_template(
                 '/search.html',
                 cities=cities,
-                search=sorted_search_results,
+                search=search_results,
                 comma=comma,
                 whitespace=whitespace
             )

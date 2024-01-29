@@ -36,6 +36,7 @@ def create_database_tables():
             municipality_destination TEXT NOT NULL,
             region_destination TEXT NOT NULL,
             exposure TEXT NOT NULL,
+            primary_submission BOOLEAN NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users (id)
         );
     ''')

@@ -1,6 +1,72 @@
 from fSQL import cursor_fetch
 from fhelpers import get_list_of_values, check_submitted_location
 
+def tolerance_factors(tolerance):
+    TOLERANCE_FACTORS = {
+        'square_meters': tolerance / 100,
+        'rental': tolerance / 100,
+        'bedrooms': room_tolerance_factor(tolerance, room='bedrooms'),
+        'bathrooms': room_tolerance_factor(tolerance, room='bathrooms')
+    }
+
+    return TOLERANCE_FACTORS
+
+def criteria_ranges(primary_submission, TOLERANCE_FACTORS):
+    CRITERIA_RANGES = {
+        'square_meters':
+        {
+            'min': int(
+                (
+                    primary_submission[0]['square_meters']
+                ) * (
+                    1 - TOLERANCE_FACTORS['square_meters'] * .25
+                )
+            ),
+            'max': int(
+                (
+                    primary_submission[0]['square_meters']
+                ) * (
+                    1 + TOLERANCE_FACTORS['square_meters']
+                )
+            )
+        },
+        'rental':
+        {
+            'min': 0,
+            'max': int(
+                (
+                    primary_submission[0]['rental']
+                ) * (
+                    1 + TOLERANCE_FACTORS['rental']
+                )
+            )
+        },
+        'bedrooms':
+        {
+            'min': int(primary_submission[0]['bedrooms']),
+            'max': int(
+                (
+                    primary_submission[0]['bedrooms']
+                ) + (
+                    TOLERANCE_FACTORS['bedrooms']
+                )
+            )
+        },
+        'bathrooms':
+        {
+            'min': int(primary_submission[0]['bathrooms']),
+            'max': int(
+                (
+                    primary_submission[0]['bathrooms']
+                ) + (
+                    TOLERANCE_FACTORS['bathrooms']
+                )
+            )
+        }
+    }
+
+    return CRITERIA_RANGES
+
 
 def validate_searched_digits(square_meters, rental, bedrooms, bathrooms):
     '''
@@ -185,3 +251,173 @@ def search_validation(
     validate_searched_location(city, municipality, region)
 
     return True
+
+
+def calculate_location_matching_score(result, primary_submission):
+    '''
+    Returns a matching score regarding location. The function recieves as
+    arguments one submission from the search results and the user's
+    primary submission. It then compares the locations based on city,
+    municipality, and region to increase or decrease the location mathing
+    score accordingly.
+    '''
+    # Declare a score variable for location matching
+    location_matching_score = 0
+
+    # Check if desired city destination matches in search results
+    # Αν η πόλη που ψάχνει ο user είναι ίδια με του result ή όχι
+    if primary_submission[0]['city_destination'] == result['city']:
+        location_matching_score += 2
+    else:
+        location_matching_score -= 25
+
+    # Αν η πόλη που ψάχνει το result είναι ίδια με του user ή αν το result ψάχνει οποιαδήποτε πόλη ή τίποτα από τα 2
+    if (
+        result['city_destination'] == primary_submission[0]['city']
+    ) or (
+        result['city_destination'] == 'any'
+    ):
+        if result['city_destination'] == primary_submission[0]['city']:
+            location_matching_score += 2
+        else:
+            location_matching_score += 1
+    else:
+        location_matching_score -= 25
+
+    # Check if desired municipality destination matches in search results
+    # Αν ο νομός που ψάχνει ο user είναι ίδιος με του result ή όχι
+    if primary_submission[0]['municipality_destination'] == result['municipality']:
+        location_matching_score += 4
+    else:
+        location_matching_score -= 15
+
+    # Αν ο νομός που ψάχνει το result είναι ίδιος με του user ή αν το result ψάχνει για οποιοδήποτε νομό στην πόλη του user ή τίποτα από τα 2
+    if (
+        result['municipality_destination'] == primary_submission[0]['municipality']
+    ) or (
+        (
+            result['municipality_destination'] == 'any'
+        ) and (
+            result['city_destination'] == primary_submission[0]['city']
+        )
+    ):
+        if result['municipality_destination'] == primary_submission[0]['municipality']:
+            location_matching_score += 4
+        else:
+            location_matching_score += 2
+    else:
+        location_matching_score -= 15
+
+    # Check if desired region destination matches in search results
+    # Αν η περιοχή που ψάχνει ο user είναι ίδια με του result ή όχι
+    if primary_submission[0]['region_destination'] == result['region']:
+        location_matching_score += 6
+    else:
+        location_matching_score -= 5   
+
+    # Αν η περιοχή που ψάχνει το result είναι ίδια με του user ή αν το result ψάχνει για οποιαδήποτε περιοχή στην πόλη του user ή τίποτα από τα 2
+    if (
+        result['region_destination'] == primary_submission[0]['region']
+    ) or (
+        (
+            result['region_destination'] == 'any'
+        ) and (
+            (
+                result['municipality_destination'] == primary_submission[0]['municipality']
+            ) or (
+                result['municipality_destination'] == 'any'
+            )
+        ) and (
+            result['city_destination'] == primary_submission[0]['city']
+        )
+    ):
+        if result['region_destination'] == primary_submission[0]['region']:
+            location_matching_score += 6
+        else:
+            location_matching_score += 3
+    else:
+        location_matching_score -= 5
+
+    return location_matching_score
+
+
+def location_matching(primary_submission, search_results):
+    '''
+    Iterates all search results and passes them into
+    calculate_location_matching_score to compare them with the user's
+    primary submission. Eventually the function adds a key/value pair
+    into the searched result, that indicates the location matching score.
+    '''
+    for result in search_results:
+        location_matching_score = calculate_location_matching_score(result, primary_submission)
+        result['location_matching_score'] = location_matching_score
+
+
+def calculate_house_matching_score(result, CRITERIA_RANGES):
+    '''
+    Returns a matching score regarding house characteristics. The
+    function recieves as arguments one submission from the search results 
+    and the user's primary submission. It then compares the house
+    characteristics based on square_meters, rental, bedrooms, and
+    bathrooms to increase or not the house matching score accordingly.
+    '''
+    # Declare a score variable for house matching
+    house_matching_score = 0
+    
+    for criteria, ranges in CRITERIA_RANGES.items():
+        if ranges['min'] <= result[criteria] <= ranges['max']:
+            house_matching_score += 5
+        else:
+            house_matching_score -= 5
+
+    return house_matching_score
+
+
+def house_matching(search_results, CRITERIA_RANGES):
+    '''
+    Iterates all search results and passes them into
+    calculate_house_matching_score to compare them with the user's
+    primary submission.
+    
+    Each characteristic's value to be compared is stored in
+    CRITERIA_RANGES with a min and max value that is shaped according
+    to user's tolerance value from the form.
+    
+    Eventually the function adds a key/value pair
+    into the searched result, that indicates the houses characteristics
+    matching score.
+    '''
+    for result in search_results:        
+        house_matching_score = calculate_house_matching_score(result, CRITERIA_RANGES)
+        result['house_matching_score'] = house_matching_score
+
+
+def matching_summary(search_results):
+    '''
+    Iterates all search results and adds all the matching scores to
+    eventually create a new key/value pair into every searched result
+    that indicates the total matching score.
+    '''
+    for result in search_results:
+        result['total_matching_score'] = (result['location_matching_score'] + result['house_matching_score'])
+
+
+def room_tolerance_factor(tolerance, room):
+    '''
+    Regarding rooms, the function will return the tolerance factor that
+    adjusts the maximum value of the CRITERIA_RANGES
+    '''
+    if room == 'bedrooms':
+        if tolerance < 30:
+            return 0
+        elif tolerance < 70:
+            return 1
+        else:
+            return 2
+    elif room == 'bathrooms':
+        if tolerance < 70:
+            return 0
+        else:
+            return 1
+    else:
+        return 0
