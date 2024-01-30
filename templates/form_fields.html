@@ -139,7 +139,7 @@
 <!-- Exposure radio buttons 1-row -->
 <div class="form-group">
   <div class="form-check form-check-inline mb-4">
-    <input type="checkbox" class="form-check-input" id="primarySubmission" name="primarySubmission" value="True" {% if not user_submissions or submission.primary_submission == 1 %}checked disabled{% endif %}>
+    <input type="checkbox" class="form-check-input" id="primarySubmission" name="primarySubmission" value="True" {% if not user_submissions_exist or submission.primary_submission == 1 %}checked disabled{% endif %}>
     <label class="form-check-label" for="primarySubmission">Primary Submission</label>
   </div>
 </div>

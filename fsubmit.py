@@ -1,4 +1,4 @@
-from fhelpers import cursor_fetch, get_list_of_values, check_submitted_location
+from fhelpers import cursor_execute, cursor_fetch, get_list_of_values, check_submitted_location
 
 
 def validate_submitted_digits(square_meters, rental, bedrooms, bathrooms):
@@ -171,18 +171,41 @@ def submission_validation(
 
 
 
-def ensure_user_submissions(user_id):
+def user_submissions_exist(user_id):
     query = '''
             SELECT * FROM submissions
             WHERE user_id = ?;
             '''
-    user_submissions = len(
-        cursor_fetch(
-            query,
-            user_id
-        )
+    user_submissions = cursor_fetch(
+        query,
+        user_id
     )
-    if user_submissions < 1:
+    
+    if len(user_submissions) < 1:
         return False
     else:
+        for submission in user_submissions:
+            if submission['primary_submission'] == 1:
+                yield True
+            else:
+                yield False
+
+
+def determine_primary_submission_status(primary_submission, user_id):
+    if not user_submissions_exist(user_id):
         return True
+    elif primary_submission:
+        # Reset primary_submission for all submission into
+        query = '''
+                UPDATE submissions
+                SET primary_submission = ?
+                AND user_id = ?
+                '''
+        cursor_execute(
+            query,
+            False,
+            user_id
+        )
+        return True
+    else:
+        return False

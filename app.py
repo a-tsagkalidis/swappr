@@ -410,47 +410,7 @@ def submit():
 
     # Get user data
     user_id = session['user_id']
-
-
-
-
-
-    # query = '''
-    #         SELECT * FROM submissions
-    #         WHERE user_id = ?;
-    #         '''
-    # user_submissions = len(
-    #     cursor_fetch(
-    #         query,
-    #         user_id
-    #     )
-    # )
-    # if user_submissions < 1:
-    #     user_submissions = False
     
-    user_submissions = ensure_user_submissions(user_id)
-
-
-    query = '''
-            SELECT primary_submission FROM submissions
-            WHERE user_id = ?;
-            '''
-    primary_submissions = cursor_fetch(
-        query,
-        user_id
-    )
-    for submission in primary_submissions:
-        print(submission)
-        if submission['primary_submission'] == 1:
-            primary_submission_found = True
-        else:
-            primary_submission_found = False
-            
-    if not primary_submission_found:
-        user_submissions = False
-
-
-
     if request.method == 'POST':
         # Get user submitted form data
         exposure = request.form.get('exposure')
@@ -467,10 +427,6 @@ def submit():
         region_destination = request.form.get('regionDestination')
         primary_submission = request.form.get('primarySubmission')
         all_field_values = list(request.form.values())
-
-
-        print(">>>>>>>>", primary_submission)
-
 
         # Check if all form fields are filled and valid
         try:
@@ -499,31 +455,11 @@ def submit():
                 indent=20
             )
 
-
-
-            if not user_submissions:
-                primary_submission = True
-            elif primary_submission:
-                primary_submission = True
-
-                # Update exposure value in the database
-                query = '''
-                        UPDATE submissions
-                        SET primary_submission = ?
-                        AND user_id = ?
-                        '''
-                cursor_execute(
-                    query,
-                    False,
-                    user_id
-                )
-
-            else:
-                primary_submission = False
-
-            print(">>>>>>>>", primary_submission)
-
-
+            # Determine True or False for primary_submission status
+            primary_submission = determine_primary_submission_status(
+                primary_submission,
+                user_id
+            )
 
             # Save submission into user database
             query = '''
@@ -613,7 +549,7 @@ def submit():
             '/submit.html',
             cities=cities,
             submission=None,
-            user_submissions=user_submissions,
+            user_submissions_exist=user_submissions_exist(user_id),
             whitespace=whitespace
         )
 
@@ -676,7 +612,7 @@ def edit_submission():
                 '/edit_submission.html',
                 cities=cities,
                 submission=submission_data[0],
-                user_submissions=user_submissions,
+                user_submissions_exist=user_submissions_exist(user_id),
                 whitespace=whitespace,
             )
         
@@ -895,6 +831,13 @@ def save_edit_submission():
         ) and (
             user_submissions > 1
         ):
+            # Delete edited submission from database
+            query = '''
+                    DELETE FROM submissions
+                    WHERE id = ?
+                    AND user_id = ?;
+                    '''
+            cursor_execute(query, submission_id, user_id)
             query = '''
                     SELECT * FROM submissions
                     WHERE user_id = ?;
