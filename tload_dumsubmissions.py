@@ -21,9 +21,10 @@ with open('tdumsubmissions.json', 'r') as json_file:
                 city_destination,
                 municipality_destination,
                 region_destination,
-                exposure
+                exposure,
+                primary_submission
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             '''
 
     for submission in submissions:
@@ -41,5 +42,6 @@ with open('tdumsubmissions.json', 'r') as json_file:
             submission['city_destination'],
             submission['municipality_destination'],
             submission['region_destination'],
-            submission['exposure']
+            submission['exposure'],
+            submission['primary_submission']
         )

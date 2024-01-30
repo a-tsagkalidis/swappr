@@ -168,3 +168,21 @@ def submission_validation(
     validate_submitted_location(city, municipality, region)
 
     return True
+
+
+
+def ensure_user_submissions(user_id):
+    query = '''
+            SELECT * FROM submissions
+            WHERE user_id = ?;
+            '''
+    user_submissions = len(
+        cursor_fetch(
+            query,
+            user_id
+        )
+    )
+    if user_submissions < 1:
+        return False
+    else:
+        return True
