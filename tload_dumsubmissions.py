@@ -1,5 +1,8 @@
 import json
 from fhelpers import cursor_execute
+from fSQL import create_database_tables
+
+create_database_tables()
 
 with open('tdumsubmissions.json', 'r') as json_file:
     submissions = json.load(json_file)
@@ -18,10 +21,9 @@ with open('tdumsubmissions.json', 'r') as json_file:
                 city_destination,
                 municipality_destination,
                 region_destination,
-                exposure,
-                primary_submission
+                exposure
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             '''
 
     for submission in submissions:
@@ -39,6 +41,5 @@ with open('tdumsubmissions.json', 'r') as json_file:
             submission['city_destination'],
             submission['municipality_destination'],
             submission['region_destination'],
-            submission['exposure'],
-            submission['primary_submission']
+            submission['exposure']
         )

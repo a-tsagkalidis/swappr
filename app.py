@@ -135,12 +135,56 @@ def index():
         USER[{session['username']}]: NAVIGATION: @index.html
         '''
     )
+
     return render_template(
         'index.html',
         submissions=submissions_data,
         comma=comma,
         whitespace=whitespace
     )
+
+
+# |----- UPDATE EXPOSURE POST BUTTON ROUTE ----|
+@app.route('/update_exposure', methods=['POST'])
+@limiter.limit(f"{UPDATE_EXPOSURE_LIMIT}" if args.limiter else None)
+@login_required
+def update_exposure():
+    # Get user data
+    user_id = session['user_id']
+
+    # Retrieve data from the form
+    submission_id = request.form.get('submission_id')
+    new_exposure = request.form.get('new_exposure')
+
+    # Update exposure value in the database
+    query = '''
+            UPDATE submissions
+            SET exposure = ?
+            WHERE id = ?
+            AND user_id = ?;
+            '''
+    cursor_execute(
+        query,
+        new_exposure,
+        submission_id,
+        user_id
+    )
+
+    # Update log with INFO msg
+    log(
+        f'''
+        {session['ip']}
+        USER[{session['username']}]: SUCCESS: Submission id {submission_id} changed exposure -> '{new_exposure}'
+        '''
+    )
+
+    # Inform user for successful exposure update
+    message = {
+        'success': 'Exposure updated successfully!'
+    }
+    flash(message)
+
+    return redirect(url_for('index'))
 
 
 # |----- SIGN IN HTML AND POST BUTTON ROUTE ----|
@@ -261,7 +305,6 @@ def delayed_redirect():
         '''
         )
 
-    # Render the delayed redirect template with a JavaScript redirect
     return render_template('delayed_redirect.html')
 
 
@@ -335,6 +378,7 @@ def signin():
         USER[unregistered]: NAVIGATION: @signin.html
         '''
     )
+
     return render_template('/signin.html')
 
 
@@ -352,6 +396,7 @@ def signout():
 
     # Forget any user_id
     session.clear()
+
     return redirect('/')
 
 
@@ -380,7 +425,6 @@ def submit():
         city_destination = request.form.get('cityDestination')
         municipality_destination = request.form.get('municipalityDestination')
         region_destination = request.form.get('regionDestination')
-        primary_submission = request.form.get('primarySubmission')
         all_field_values = list(request.form.values())
 
         # Check if all form fields are filled and valid
@@ -398,7 +442,6 @@ def submit():
                 municipality,
                 region
                 #TODO add destination location details for validation
-                #TODO add primary submission for validation
             )
 
             # Update log with WARNING msg
@@ -410,19 +453,6 @@ def submit():
                 level='SUCCESS',
                 indent=20
             )
-
-            if primary_submission:
-                # Update exposure value in the database
-                query = '''
-                        UPDATE submissions
-                        SET primary_submission = ?
-                        WHERE user_id = ?;
-                        '''
-                cursor_execute(
-                    query,
-                    False,
-                    user_id
-                )
 
             # Save submission into user database
             query = '''
@@ -439,10 +469,9 @@ def submit():
                         city_destination,
                         municipality_destination,
                         region_destination,
-                        exposure,
-                        primary_submission
+                        exposure
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                     '''
             
             cursor_execute(
@@ -459,8 +488,7 @@ def submit():
                 city_destination,
                 municipality_destination,
                 region_destination,
-                exposure,
-                True if primary_submission else False
+                exposure
             )
 
             # Update log with INFO msg
@@ -478,6 +506,7 @@ def submit():
                 'success': 'Submission saved successfully!'
             }
             flash(message)
+
             return redirect('/')
 
         except ValueError as err:
@@ -513,48 +542,6 @@ def submit():
             submission=None,
             whitespace=whitespace
         )
-
-
-# |----- UPDATE EXPOSURE POST BUTTON ROUTE ----|
-@app.route('/update_exposure', methods=['POST'])
-@limiter.limit(f"{UPDATE_EXPOSURE_LIMIT}" if args.limiter else None)
-@login_required
-def update_exposure():
-    # Get user data
-    user_id = session['user_id']
-
-    # Retrieve data from the form
-    submission_id = request.form.get('submission_id')
-    new_exposure = request.form.get('new_exposure')
-
-    # Update exposure value in the database
-    query = '''
-            UPDATE submissions
-            SET exposure = ?
-            WHERE id = ?
-            AND user_id = ?;
-            '''
-    cursor_execute(
-        query,
-        new_exposure,
-        submission_id,
-        user_id
-    )
-
-    # Update log with INFO msg
-    log(
-        f'''
-        {session['ip']}
-        USER[{session['username']}]: SUCCESS: Submission id {submission_id} changed exposure -> '{new_exposure}'
-        '''
-    )
-
-    # Inform user for successful exposure update
-    message = {
-        'success': 'Exposure updated successfully!'
-    }
-    flash(message)
-    return redirect(url_for('index'))
 
 
 # |----- EDIT SUBMISSION HTML AND POST BUTTON ROUTE ----|
@@ -615,6 +602,7 @@ def edit_submission():
             'error': 'Submission not found.'
         }
         flash(message)
+        
         return redirect(url_for('index'))
 
 
@@ -643,7 +631,6 @@ def save_edit_submission():
     city_destination = request.form.get('cityDestination')
     municipality_destination = request.form.get('municipalityDestination')
     region_destination = request.form.get('regionDestination')
-    primary_submission = request.form.get('primarySubmission')
     all_field_values = list(request.form.values())
 
     # Save edited house or delete it
@@ -661,10 +648,10 @@ def save_edit_submission():
                 bathrooms,
                 city,
                 municipality,
-                region,
+                region
                 #TODO add destination location details for validation
-                #TODO add primary submission validation
             )
+
             # Update log with WARNING msg
             log(
                 f'''
@@ -674,21 +661,6 @@ def save_edit_submission():
                 level='WARNING',
                 indent=20
             )
-
-            if primary_submission:
-                # Update exposure value in the database
-                query = '''
-                        UPDATE submissions
-                        SET primary_submission = ?
-                        WHERE user_id = ?
-                        AND submissions.id != ?;
-                        '''
-                cursor_execute(
-                    query,
-                    False,
-                    user_id,
-                    submission_id
-                )
 
             # Update edited submission into user database
             query = '''
@@ -704,8 +676,7 @@ def save_edit_submission():
                         city_destination = ?,
                         municipality_destination = ?,
                         region_destination = ?,
-                        exposure = ?,
-                        primary_submission = ?
+                        exposure = ?
                     WHERE id = ?
                     AND user_id = ?;
                     '''
@@ -725,8 +696,7 @@ def save_edit_submission():
                 region_destination,
                 exposure,
                 submission_id,
-                user_id,
-                True if primary_submission else False
+                user_id
             )
 
             # Update log with INFO msg
@@ -743,6 +713,7 @@ def save_edit_submission():
                 'success': 'Submission updated successfully!'
             }
             flash(message)
+            
             return redirect(url_for('index'))
 
         except ValueError as err:
@@ -763,6 +734,7 @@ def save_edit_submission():
                     AND user_id = ?;
                     '''
             submission_data = cursor_fetch(query, submission_id, user_id)
+            
             return render_template(
                 '/edit_submission.html',
                 cities=cities,
@@ -794,6 +766,7 @@ def save_edit_submission():
             'success': 'Submission deleted successfully!'
         }
         flash(message)
+
         return redirect(url_for('index'))
 
 
@@ -814,6 +787,7 @@ def get_municipalities():
             WHERE city_id = ?;
             '''
     municipalities = cursor_fetch(query, city_id)
+
     return municipalities
 
 
@@ -834,6 +808,7 @@ def get_regions():
             WHERE municipality_id = ?;
             '''
     regions = cursor_fetch(query, municipality_id)
+
     return regions
 
 
@@ -966,6 +941,7 @@ def search():
                 comma=comma,
                 whitespace=whitespace
             )
+        
         except ValueError as err:
             # Update log with ERROR msg
             log(
@@ -1016,6 +992,7 @@ def account():
         USER[{session['username']}]: NAVIGATION: @account.html
         '''
     )
+
     return render_template('/account.html')
 
 
@@ -1089,6 +1066,7 @@ def password_reset():
         'success': 'Password successfully changed!'
     }
     flash(message)
+
     return render_template('/account.html')
 
 
@@ -1154,6 +1132,7 @@ def update_username():
         'success': 'Username successfully changed!'
     }
     flash(message)
+    
     return render_template('/account.html')
 
 
@@ -1224,6 +1203,7 @@ def delete_account():
         'success': 'Your account and data has been erased. Thanks for using our app!'
     }
     flash(message)
+
     return render_template('/signup.html')
 
 
@@ -1231,6 +1211,7 @@ def delete_account():
 @app.route('/about')
 @login_required
 def about():
+
     return render_template('/about.html')
 
 
