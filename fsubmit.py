@@ -199,7 +199,7 @@ def determine_primary_submission_status(primary_submission, user_id):
         query = '''
                 UPDATE submissions
                 SET primary_submission = ?
-                AND user_id = ?
+                AND user_id = ?;
                 '''
         cursor_execute(
             query,

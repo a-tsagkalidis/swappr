@@ -568,22 +568,6 @@ def edit_submission():
     # Retrieve data from the form
     submission_id = request.form.get('submission_id')
 
-
-    # Check if user has any submissions in database
-    query = '''
-            SELECT * FROM submissions
-            WHERE user_id = ?;
-            '''
-    user_submissions = len(
-        cursor_fetch(
-            query,
-            user_id
-        )
-    )
-    if user_submissions < 1:
-        user_submissions = False
-
-
     try:
         # Ensure submission existance
         query = '''
@@ -604,9 +588,6 @@ def edit_submission():
                 ''',
                 indent=20
             )
-
-            print(">>>>>>>>>>", submission_data[0]['primary_submission'])
-            print(">>>>>>>>>>", type(submission_data[0]['primary_submission']))
 
             return render_template(
                 '/edit_submission.html',
@@ -646,22 +627,6 @@ def save_edit_submission():
 
     # Get user data
     user_id = session['user_id']
-
-
-    # Check if user has any submissions in database
-    query = '''
-            SELECT * FROM submissions
-            WHERE user_id = ?;
-            '''
-    user_submissions = len(
-        cursor_fetch(
-            query,
-            user_id
-        )
-    )
-    if user_submissions < 1:
-        user_submissions = False
-
 
     # Retrieve data from the form
     submission_id = request.form.get('submission_id')
@@ -710,27 +675,11 @@ def save_edit_submission():
             )
 
 
-            if not user_submissions:
-                primary_submission = True
-            elif primary_submission:
-                primary_submission = True
-
-                # Update exposure value in the database
-                query = '''
-                        UPDATE submissions
-                        SET primary_submission = ?
-                        AND user_id = ?
-                        '''
-                cursor_execute(
-                    query,
-                    False,
-                    user_id
-                )
-
-            else:
-                primary_submission = False
-
-            print(">>>>>>>>", primary_submission)
+            # Determine True or False for primary_submission status
+            primary_submission = determine_primary_submission_status(
+                primary_submission,
+                user_id
+            )
 
 
             # Update edited submission into user database
@@ -818,18 +767,33 @@ def save_edit_submission():
         
     if 'delete' in request.form:
 
-
+        # Fetch primary submission status of submission to be deleted
         query = '''
                 SELECT primary_submission FROM submissions
                 WHERE id = ?
                 AND user_id = ?;
                 '''
-        primary_submission_data = cursor_fetch(query, submission_id, user_id)
-        pp.pprint(primary_submission_data)
+        primary_submission_data = cursor_fetch(
+            query,
+            submission_id,
+            user_id
+        )
+
+        # Fetch all the user's submissions
+        query = '''
+                SELECT * FROM submissions
+                WHERE user_id = ?;
+                '''
+        user_submissions = cursor_fetch(
+            query,
+            user_id
+        )
+
+        # Check if submission to be deleted isn't sole and if is primary
         if (
             primary_submission_data[0]['primary_submission'] == 1
         ) and (
-            user_submissions > 1
+            len(user_submissions) > 1
         ):
             # Delete edited submission from database
             query = '''
@@ -837,7 +801,13 @@ def save_edit_submission():
                     WHERE id = ?
                     AND user_id = ?;
                     '''
-            cursor_execute(query, submission_id, user_id)
+            cursor_execute(
+                query,
+                submission_id,
+                user_id
+            )
+
+            # Refetch all the user's submissions from updated database
             query = '''
                     SELECT * FROM submissions
                     WHERE user_id = ?;
@@ -846,8 +816,8 @@ def save_edit_submission():
                 query,
                 user_id
             )
-            pp.pprint(user_submissions[0])
 
+            # Set the oldest submission as primary
             query = '''
                     UPDATE submissions SET
                         primary_submission = ?
@@ -860,15 +830,18 @@ def save_edit_submission():
                 user_submissions[0]['id'],
                 user_id
             )
-
-
-        # Delete edited submission from database
-        query = '''
-                DELETE FROM submissions
-                WHERE id = ?
-                AND user_id = ?;
-                '''
-        cursor_execute(query, submission_id, user_id)
+        else:
+            # Delete edited submission from database
+            query = '''
+                    DELETE FROM submissions
+                    WHERE id = ?
+                    AND user_id = ?;
+                    '''
+            cursor_execute(
+                query,
+                submission_id,
+                user_id
+            )
 
         # Update log with INFO msg
         log(
