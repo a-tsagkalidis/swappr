@@ -10,7 +10,7 @@
     <h1 class="mb-4 fw-bold fs-2 text-secondary">Your Submissions</h1>
     <hr>
     {% if submissions %}
-      <table class="table">
+      <table class="table table-borderless">
         <thead>
           <tr>
             <th>House Type</th>
@@ -27,7 +27,7 @@
         </thead>
         <tbody>
           {% for submission in submissions %}
-            <tr>
+            <tr {% if submission.primary_submission %}class="table-success"{% endif %}>
               <td>{{ whitespace(submission.house_type) }}</td>
               <td>{{ comma(submission.square_meters) }} m&sup2;</td>
               <td>€{{ comma(submission.rental) }}</td>

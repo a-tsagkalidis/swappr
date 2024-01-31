@@ -170,8 +170,16 @@ def submission_validation(
     return True
 
 
-
 def user_submissions_exist(user_id):
+    '''
+    Checks if the user has at least one submission in the database and
+    after that it looks for user's primary submission. In case it finds
+    the primary submission it returns True; otherwise False.
+
+    This returned boolean will determine the primarySubmission checkbox
+    in the html forms at @submit and @edited_submission routes
+    '''
+    # Select all the user's submissions
     query = '''
             SELECT * FROM submissions
             WHERE user_id = ?;
@@ -181,9 +189,11 @@ def user_submissions_exist(user_id):
         user_id
     )
     
+    # Check if the user has at least 1 submission
     if len(user_submissions) < 1:
         return False
     else:
+        # Look for user's primary submission
         for submission in user_submissions:
             if submission['primary_submission'] == 1:
                 yield True
@@ -192,6 +202,10 @@ def user_submissions_exist(user_id):
 
 
 def determine_primary_submission_status(primary_submission, user_id):
+    '''
+    Determines the status of the primarySubmission checkbox in html
+    forms at @submit and @edited_submission routes.
+    '''
     if not user_submissions_exist(user_id):
         return True
     elif primary_submission:
@@ -209,3 +223,85 @@ def determine_primary_submission_status(primary_submission, user_id):
         return True
     else:
         return False
+
+
+def handle_primary_submission_upon_deletion(submission_id, user_id):
+    '''
+    Handles primary submission in database upon submission deletion.
+    In case the submission to be deleted has non-primary status, the
+    function returns False and the submission is deleted instantly
+    (code in route).
+
+    In case the submission to be deleted is of primary status but the
+    user has also more than one submissions in the database, then the
+    submission is deleted and the oldest submission is set as the new
+    primary one. In that case the function returns True and the `if`
+    conditional statement in the route gets passed.
+    '''
+    # Fetch primary submission status of submission to be deleted
+    query = '''
+            SELECT primary_submission FROM submissions
+            WHERE id = ?
+            AND user_id = ?;
+            '''
+    primary_submission_data = cursor_fetch(
+        query,
+        submission_id,
+        user_id
+    )
+
+    # Fetch all the user's submissions
+    query = '''
+            SELECT * FROM submissions
+            WHERE user_id = ?;
+            '''
+    user_submissions = cursor_fetch(
+        query,
+        user_id
+    )
+
+    # Check if submission to be deleted isn't sole and if is primary
+    if (
+        primary_submission_data[0]['primary_submission'] == 1
+    ) and (
+        len(user_submissions) > 1
+    ):
+        # Delete edited submission from database
+        query = '''
+                DELETE FROM submissions
+                WHERE id = ?
+                AND user_id = ?;
+                '''
+        cursor_execute(
+            query,
+            submission_id,
+            user_id
+        )
+
+        # Refetch all the user's submissions from updated database
+        query = '''
+                SELECT * FROM submissions
+                WHERE user_id = ?;
+                '''
+        user_submissions = cursor_fetch(
+            query,
+            user_id
+        )
+
+        # Set the oldest submission as primary
+        query = '''
+                UPDATE submissions SET
+                    primary_submission = ?
+                WHERE id = ?
+                AND user_id = ?;
+                '''
+        cursor_execute(
+            query,
+            True,
+            user_submissions[0]['id'],
+            user_id
+        )
+        return True
+    else:
+        return False
+    

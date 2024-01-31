@@ -71,9 +71,6 @@ try:
                 shell=True
             )
 
-    # JSON instance to be used in log function for better readability
-    dumps = json.dumps
-
     # Declare a secret key for Flask application - it is needed for flash function
     app.secret_key = secrets.token_hex(32)
 
@@ -91,7 +88,7 @@ try:
             App initialized successfully. Database tables where created
             in case they weren't exist. JSON file with locations has been
             imported to the database - NEWLY IMPORTED LOCATIONS: 
-            {dumps(location_update, indent=8)}
+            {json.dumps(location_update, indent=8)}
             ''',
             level='WARNING',
             indent=24
@@ -674,13 +671,11 @@ def save_edit_submission():
                 indent=20
             )
 
-
             # Determine True or False for primary_submission status
             primary_submission = determine_primary_submission_status(
                 primary_submission,
                 user_id
             )
-
 
             # Update edited submission into user database
             query = '''
@@ -766,71 +761,12 @@ def save_edit_submission():
             )
         
     if 'delete' in request.form:
-
-        # Fetch primary submission status of submission to be deleted
-        query = '''
-                SELECT primary_submission FROM submissions
-                WHERE id = ?
-                AND user_id = ?;
-                '''
-        primary_submission_data = cursor_fetch(
-            query,
+        # If submission to be deleted needs special handling due to primary
+        # submission issues let the function do the job; else delete it instantly
+        if not handle_primary_submission_upon_deletion(
             submission_id,
-            user_id
-        )
-
-        # Fetch all the user's submissions
-        query = '''
-                SELECT * FROM submissions
-                WHERE user_id = ?;
-                '''
-        user_submissions = cursor_fetch(
-            query,
-            user_id
-        )
-
-        # Check if submission to be deleted isn't sole and if is primary
-        if (
-            primary_submission_data[0]['primary_submission'] == 1
-        ) and (
-            len(user_submissions) > 1
+            user_id,
         ):
-            # Delete edited submission from database
-            query = '''
-                    DELETE FROM submissions
-                    WHERE id = ?
-                    AND user_id = ?;
-                    '''
-            cursor_execute(
-                query,
-                submission_id,
-                user_id
-            )
-
-            # Refetch all the user's submissions from updated database
-            query = '''
-                    SELECT * FROM submissions
-                    WHERE user_id = ?;
-                    '''
-            user_submissions = cursor_fetch(
-                query,
-                user_id
-            )
-
-            # Set the oldest submission as primary
-            query = '''
-                    UPDATE submissions SET
-                        primary_submission = ?
-                    WHERE id = ?
-                    AND user_id = ?;
-                    '''
-            cursor_execute(
-                query,
-                True,
-                user_submissions[0]['id'],
-                user_id
-            )
-        else:
             # Delete edited submission from database
             query = '''
                     DELETE FROM submissions
@@ -992,11 +928,13 @@ def search():
             query = '''
                     SELECT *
                     FROM submissions
-                    WHERE user_id = ?;
+                    WHERE user_id = ?
+                    AND primary_submission = ?;
                     '''
             primary_submission = cursor_fetch(
                 query,
-                user_id
+                user_id,
+                True
             )
 
             # Declare tolerance factors based on user's chosen tolerance percentage
