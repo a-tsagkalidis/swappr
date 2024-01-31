@@ -196,24 +196,37 @@ def user_submissions_exist(user_id):
         # Look for user's primary submission
         for submission in user_submissions:
             if submission['primary_submission'] == 1:
-                yield True
-            else:
-                yield False
+                return True
+        return False
 
 
-def determine_primary_submission_status(primary_submission, user_id):
+def determine_primary_submission_status(
+        primary_submission,
+        primary_submission_locked,
+        user_id
+    ):
     '''
     Determines the status of the primarySubmission checkbox in html
     forms at @submit and @edited_submission routes.
+
+    Returns True (checked checkbox) in case the user has no submissions.
+
+    Returns True in case the user saves an already primary submission or
+    in case he sets a new submission or an edited submission as the new
+    primary. In that case it also set all other submissions to
+    non-primary statuses.
+
+    Otherwise returns False (unchecked checkbox).
     '''
+    # Check if the user has at least one submission that is primary
     if not user_submissions_exist(user_id):
         return True
-    elif primary_submission:
-        # Reset primary_submission for all submission into
+    elif primary_submission_locked or primary_submission:
+        # Set primary_submission status to False for all user's submissions
         query = '''
-                UPDATE submissions
-                SET primary_submission = ?
-                AND user_id = ?;
+                UPDATE submissions SET
+                    primary_submission = ?
+                WHERE user_id = ?;
                 '''
         cursor_execute(
             query,

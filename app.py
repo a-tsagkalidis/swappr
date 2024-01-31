@@ -423,6 +423,7 @@ def submit():
         municipality_destination = request.form.get('municipalityDestination')
         region_destination = request.form.get('regionDestination')
         primary_submission = request.form.get('primarySubmission')
+        primary_submission_locked = request.form.get('primarySubmissionLocked')
         all_field_values = list(request.form.values())
 
         # Check if all form fields are filled and valid
@@ -439,7 +440,8 @@ def submit():
                 city,
                 municipality,
                 region
-                #TODO add destination location details for validation
+                # TODO add destination location details validation
+                # TODO add primary_submission (and locked) validation
             )
 
             # Update log with WARNING msg
@@ -455,6 +457,7 @@ def submit():
             # Determine True or False for primary_submission status
             primary_submission = determine_primary_submission_status(
                 primary_submission,
+                primary_submission_locked,
                 user_id
             )
 
@@ -640,6 +643,7 @@ def save_edit_submission():
     municipality_destination = request.form.get('municipalityDestination')
     region_destination = request.form.get('regionDestination')
     primary_submission = request.form.get('primarySubmission')
+    primary_submission_locked = request.form.get('primarySubmissionLocked')
     all_field_values = list(request.form.values())
 
     # Save edited house or delete it
@@ -658,7 +662,8 @@ def save_edit_submission():
                 city,
                 municipality,
                 region
-                #TODO add destination location details for validation
+                # TODO add destination location details validation
+                # TODO add primary submission (and locked) validation
             )
 
             # Update log with WARNING msg
@@ -674,6 +679,7 @@ def save_edit_submission():
             # Determine True or False for primary_submission status
             primary_submission = determine_primary_submission_status(
                 primary_submission,
+                primary_submission_locked,
                 user_id
             )
 
