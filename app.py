@@ -942,6 +942,8 @@ def search():
                 user_id,
                 True
             )
+            pp.pprint(primary_submission)
+            print()
 
             # Declare tolerance factors based on user's chosen tolerance percentage
             TOLERANCE_FACTORS = tolerance_factors(tolerance)

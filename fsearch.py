@@ -263,16 +263,36 @@ def calculate_location_matching_score(result, primary_submission):
     '''
     # Declare a score variable for location matching
     location_matching_score = 0
+    import pprint as pp
+    print(">>>>>>> MATCHING HOUSE...")
+    pp.pprint(result)
+    print()    
 
     # Check if desired city destination matches in search results
-    # Αν η πόλη που ψάχνει ο user είναι ίδια με του result ή όχι
-    if primary_submission[0]['city_destination'] == result['city']:
-        location_matching_score += 2
+    # Αν η πόλη που ψάχνει ο user είναι ίδια με του result ή
+    # αν ο user ψάχνει για οποιαδήποτε πόλη ή
+    # τίποτα από τα 2
+    print("CITY MATCHING")
+    print(primary_submission[0]['city_destination'], "<<<>>>", result['city'])
+    if (
+        primary_submission[0]['city_destination'] == result['city']
+    ) or (
+        primary_submission[0]['city_destination'] == 'any'
+    ):
+        if primary_submission[0]['city_destination'] == result['city']:
+            location_matching_score += 2
+            print(">>>>>>>user +2", "\n")
+        else:
+            print(">>>>>>>user +1", "\n")
+            location_matching_score += 1
     else:
+        print(">>>>>>>user -25", "\n")
         location_matching_score -= 25
 
     # Αν η πόλη που ψάχνει το result είναι ίδια με του user ή
-    # αν το result ψάχνει οποιαδήποτε πόλη ή τίποτα από τα 2
+    # αν το result ψάχνει οποιαδήποτε πόλη ή
+    # τίποτα από τα 2
+    print(result['city_destination'], "<<<>>>", primary_submission[0]['city'])
     if (
         result['city_destination'] == primary_submission[0]['city']
     ) or (
@@ -280,47 +300,111 @@ def calculate_location_matching_score(result, primary_submission):
     ):
         if result['city_destination'] == primary_submission[0]['city']:
             location_matching_score += 2
+            print(">>>>>>>result +2", "\n")
         else:
             location_matching_score += 1
+            print(">>>>>>>result +1", "\n")
     else:
         location_matching_score -= 25
+        print(">>>>>>>result -25", "\n")
 
     # Check if desired municipality destination matches in search results
-    # Αν ο νομός που ψάχνει ο user είναι ίδιος με του result ή όχι
-    if primary_submission[0]['municipality_destination'] == result['municipality']:
-        location_matching_score += 4
+    # Αν ο νομός που ψάχνει ο user είναι ίδιος με του result ή
+    # αν ο user ψάχνει για οποιοδήποτε νομό στην πόλη του user ή
+    # τίποτα από τα 2
+    print("MUNICIPALITY MATCHING")
+    print(primary_submission[0]['municipality_destination'], "<<<>>>", result['municipality'])
+    if (
+        primary_submission[0]['municipality_destination'] == result['municipality']
+    ) or (
+        (
+            primary_submission[0]['municipality_destination'] == 'any'
+        ) and (
+            (
+                primary_submission[0]['city_destination'] == result['city']
+            ) or (
+                primary_submission[0]['city_destination'] == 'any'
+            ) 
+        )
+    ):
+        if primary_submission[0]['municipality_destination'] == result['municipality']:
+            location_matching_score += 4
+            print(">>>>>>>user +4", "\n")
+        else:
+            location_matching_score += 2
+            print(">>>>>>>user +2", "\n")
     else:
         location_matching_score -= 15
+        print(">>>>>>>user -15", "\n")
 
     # Αν ο νομός που ψάχνει το result είναι ίδιος με του user ή
     # αν το result ψάχνει για οποιοδήποτε νομό στην πόλη του user ή
     # τίποτα από τα 2
+    print(result['municipality_destination'], "<<<>>>", primary_submission[0]['municipality'])
     if (
         result['municipality_destination'] == primary_submission[0]['municipality']
     ) or (
         (
             result['municipality_destination'] == 'any'
         ) and (
-            result['city_destination'] == primary_submission[0]['city']
+            (
+                result['city_destination'] == primary_submission[0]['city']
+            ) or (
+                result['city_destination'] == 'any'
+            )
         )
     ):
         if result['municipality_destination'] == primary_submission[0]['municipality']:
             location_matching_score += 4
+            print(">>>>>>>result +4", "\n")
         else:
             location_matching_score += 2
+            print(">>>>>>>result +2", "\n")
     else:
         location_matching_score -= 15
+        print(">>>>>>>result -15", "\n")
 
     # Check if desired region destination matches in search results
-    # Αν η περιοχή που ψάχνει ο user είναι ίδια με του result ή όχι
-    if primary_submission[0]['region_destination'] == result['region']:
-        location_matching_score += 6
+    # Αν η περιοχή που ψάχνει ο user είναι ίδια με του result ή
+    # αν ο user ψάχνει για οποιαδήποτε περιοχή στην πόλη/νομό του user ή
+    # τίποτα από τα 2
+    print("REGION MATCHING")
+    print(primary_submission[0]['region_destination'], "<<<>>>", result['region'])
+    if (
+        primary_submission[0]['region_destination'] == result['region']
+    ) or (
+        (
+            primary_submission[0]['region_destination'] == 'any'
+        ) and (
+            (
+                primary_submission[0]['municipality_destination'] == result['municipality']
+            ) or (
+                (
+                    primary_submission[0]['municipality_destination'] == 'any'
+                ) and (
+                    (
+                        primary_submission[0]['city_destination'] == result['city']
+                    ) or (
+                        primary_submission[0]['city_destination'] == 'any'
+                    ) 
+                ) 
+            )
+        )
+    ):
+        if primary_submission[0]['region_destination'] == result['region']:
+            location_matching_score += 6
+            print(">>>>>>>user +6", "\n")
+        else:
+            location_matching_score += 3
+            print(">>>>>>>user +3", "\n")
     else:
-        location_matching_score -= 5   
+        location_matching_score -= 5
+        print(">>>>>>>user -5", "\n") 
 
     # Αν η περιοχή που ψάχνει το result είναι ίδια με του user ή
-    # αν το result ψάχνει για οποιαδήποτε περιοχή στην πόλη του user ή
+    # αν το result ψάχνει για οποιαδήποτε περιοχή στην πόλη/νομό του user ή
     # τίποτα από τα 2
+    print(result['region_destination'], "<<<>>>", primary_submission[0]['region'])
     if (
         result['region_destination'] == primary_submission[0]['region']
     ) or (
@@ -330,18 +414,27 @@ def calculate_location_matching_score(result, primary_submission):
             (
                 result['municipality_destination'] == primary_submission[0]['municipality']
             ) or (
-                result['municipality_destination'] == 'any'
+                (
+                    result['municipality_destination'] == 'any'
+                ) and (
+                    (
+                        result['city_destination'] == primary_submission[0]['city']
+                    ) or (
+                        result['city_destination'] == 'any'
+                    )
+                )
             )
-        ) and (
-            result['city_destination'] == primary_submission[0]['city']
         )
     ):
         if result['region_destination'] == primary_submission[0]['region']:
             location_matching_score += 6
+            print(">>>>>>>result +6", "\n")
         else:
             location_matching_score += 3
+            print(">>>>>>>result +3", "\n")
     else:
         location_matching_score -= 5
+        print(">>>>>>>result -5", "\n")
 
     return location_matching_score
 
