@@ -856,6 +856,19 @@ def search():
     # Get user data
     user_id = session['user_id']
 
+    # Fetch user's primary submission to use it in the matching algorithm
+    query = '''
+            SELECT *
+            FROM submissions
+            WHERE user_id = ?
+            AND primary_submission = ?;
+            '''
+    primary_submission = cursor_fetch(
+        query,
+        user_id,
+        True
+    )
+
     if request.method == 'POST':
         # Get user submitted form data
         house_type = request.form.get('houseType')
@@ -930,20 +943,7 @@ def search():
                 exposure,
                 user_id)
 
-            # Fetch user's primary submission to use it for matching
-            query = '''
-                    SELECT *
-                    FROM submissions
-                    WHERE user_id = ?
-                    AND primary_submission = ?;
-                    '''
-            primary_submission = cursor_fetch(
-                query,
-                user_id,
-                True
-            )
-
-            # Use matching logic in case the user has a primary submission
+            # Use matching algorithm in case the user has a primary submission
             if len(primary_submission) > 0:
 
                 # Declare tolerance factors based on user's chosen tolerance percentage
@@ -976,6 +976,7 @@ def search():
                 '/search.html',
                 cities=cities,
                 search=search_results,
+                primary_submission=primary_submission,
                 comma=comma,
                 whitespace=whitespace
             )
@@ -997,6 +998,7 @@ def search():
                 cities=cities,
                 search_initial_page_load = True,
                 search=None,
+                primary_submission=primary_submission,
                 error=err,
                 whitespace=whitespace
             )
@@ -1015,6 +1017,7 @@ def search():
             cities=cities,
             search_initial_page_load = True,
             search=None,
+            primary_submission=primary_submission,
             whitespace=whitespace
         )
 

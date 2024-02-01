@@ -1,0 +1,85 @@
+<!-- Index Info-->
+{% if info == "index" %}
+<div class="card card-body text-warning bg-dark">
+	<p class="mb-1">
+		This is the dashboard where all your submitted houses are shown. if you don't have a submitted house yet,
+		you should <a href="/submit" class="fw-bold">submit</a> one.
+	</p>
+	<p class="mb-1">
+		The <span class="text-success fw-bold">green</span> colored row indicates your primary submission,
+		which is used for smart matching when you <a href="/search" class="fw-bold">search</a> for a house.
+	</p>
+	<p class="mb-1">
+		To select a different house as your primary submission, edit a non-primary submission and change its status.
+	</p>
+</div>
+{% endif %}
+
+<!-- Search Info-->
+{% if info == "search" %}
+<div class="card card-body text-warning bg-dark">
+	<p class="mb-1">
+		The search tool can filter out all the Swappr houses that are publicly exposed. Matching is done based on your
+		primary submitted house characteristics.
+	</p>
+	<p class="mb-1">
+		Use <span class=fw-bold>House Characteristics</span> and <span class=fw-bold>Location</span> filtering
+		mechanisms to narrow down the search results as desired.
+	</p>
+	<p class="mb-1">
+		Use <span class=fw-bold>Matching Tolerance</span> slider to extend the ranges of the matching algorithm.
+	</p>
+</div>
+{% endif %}
+
+<!-- House Characteristics Filtering Info-->
+{% if info == "house_characteristics_filtering" %}
+<div class="card card-body text-warning bg-dark">
+	<p class="mb-1">
+		Select desired house options to narrow down search results.
+	</p>
+</div>
+{% endif %}
+
+<!-- Location Filtering Info-->
+{% if info == "location_filtering" %}
+<div class="card card-body text-warning bg-dark">
+	<p class="mb-1">
+		Select location options to narrow down search results.
+	</p>
+</div>
+{% endif %}
+
+<!-- Tolerance Info-->
+{% if info == "tolerance" %}
+<div class="card card-body text-warning bg-dark text-start mb-3">
+	<h5 class="fw-bold text-secondary">Tolerance explanation</h5>
+	<p>
+		Tolerance extends the ranges of the matching probability.
+	</p>
+	<p>
+		For instance, if your submitted house rental is &euro;500 a tolerance of 10% will consider a house match that its rental is up to &euro;550.
+
+	</p>
+	<p>
+		A 50% tolerance for the same example will match a house of &euro;750 rental.
+	</p>
+	<p>
+		Tolerance affects all <span class="fw-bold">House Characteristics Filters.</span>
+	</p>
+	<hr>
+	<h5 class="fw-bold text-secondary">Row colors meaning</h5>
+	<p>
+		<span class="fw-bold text-success">Green</span> rows are very high matches.
+	</p>
+	<p>
+		<span class="fw-bold text-primary">Blue</span> rows are average matches.
+	</p>
+	<p>
+		<span class="fw-bold text-warning">Yellow</span> rows are very low matches.
+	</p>
+	<p>
+		<span class="fw-bold text-danger">Red</span> rows do not match at all.
+	</p>
+</div>
+{% endif %}

@@ -10,27 +10,21 @@
     <div>
       <h1 class="fw-bold fs-2 text-secondary d-inline">Your Submissions</h1>
       <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoIndex" role="button" aria-expanded="false" aria-controls="infoIndex">
-        <img src="../static/images/info.svg" class="img-thumbnail" style="width: 25px;" alt="a small icon illustrates an 'i' character."> 
-        Info
+        <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
       </a>
     </div>
     <div class="collapse" id="infoIndex">
-      <div class="card card-body">
-        <p class="mb-1">This is the dashboard where all your submitted houses are shown. if you don't have a submitted house yet, you should
-        <a href="/submit" class="fw-bold">submit</a> one.</p>
-        <p class="mb-1">The <span class="text-success fw-bold">green</span> colored row indicates your primary submission,
-        which is used for smart matching when you <a href="/search" class="fw-bold">search</a> for a house.</p>
-        <p class="mb-1">To select a different house as your primary submission, edit a non-primary submission and change its status.</p>
-      </div>
+      {% set info = "index" %}
+      {% include 'info.html' %}
     </div>
     <hr>
     {% if submissions %}
       <table class="table table-borderless">
         <thead>
           <tr>
-            <th>House Type</th>
+            <th class="px-4">House Type</th>
             <th>Sqr. Meters (m&sup2;)</th>
-            <th>Rental (€)</th>
+            <th>Rental (&euro;)</th>
             <th>Bedrooms</th>
             <th>Bathrooms</th>
             <th>Location (C/M/R)</th>
@@ -43,7 +37,7 @@
         <tbody>
           {% for submission in submissions %}
             <tr {% if submission.primary_submission %}class="table-success"{% endif %}>
-              <td>{{ whitespace(submission.house_type) }}</td>
+              <td class="px-4">{{ whitespace(submission.house_type) }}</td>
               <td>{{ comma(submission.square_meters) }} m&sup2;</td>
               <td>€{{ comma(submission.rental) }}</td>
               <td>{{ submission.bedrooms }}</td>

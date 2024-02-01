@@ -5,14 +5,34 @@
 {% endblock %}
 
 {% block main %}
+
   <div class="container mt-2">
-    <h1 class="mb-4 fw-bold fs-2 text-secondary">Search a House</h1>
+    <div>
+      <!-- Main Header and Info -->
+      <h1 class="fw-bold fs-2 text-secondary d-inline">Search a House</h1>
+      <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoSearch" role="button" aria-expanded="false" aria-controls="infoSearch">
+        <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+      </a>
+    </div>
+    <div class="collapse" id="infoSearch">
+      {% set info = "search" %}
+      {% include 'info.html' %}
+    </div>
     <form action="/search" method="post" id="...">
 
       <!-- HOUSE CHARACTERISTICS sections -->
-      <!-- Header -->
+      <!-- Header and Info -->
       <hr>
-      <h3 class="mb-3 fw-light fs-4 text-secondary">House characteristics filtering</h2>
+      <div>
+        <h3 class="mb-3 fw-light fs-4 text-secondary d-inline">House characteristics filtering</h2>
+        <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoHouseCharacteristicsFiltering" role="button" aria-expanded="false" aria-controls="infoHouseCharacteristicsFiltering">
+          <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+        </a>
+      </div>
+      <div class="collapse mb-2" id="infoHouseCharacteristicsFiltering">
+        {% set info = "house_characteristics_filtering" %}
+        {% include 'info.html' %}
+      </div>
       
       <!-- FIRST ROW: 4 columns in a row *using only the 1st column -->
       <div class="row g-4 mb-4">
@@ -72,9 +92,18 @@
 
 
       <!-- LOCATION FILTERS sections -->
-      <!-- Header -->
+      <!-- Header and Info -->
       <hr class="mt-5">
-      <h3 class="mb-3 fw-light fs-4 text-secondary">Location filtering</h2>
+      <div>
+        <h3 class="mb-3 fw-light fs-4 text-secondary d-inline">Location filtering</h2>
+        <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoLocationFiltering" role="button" aria-expanded="false" aria-controls="infoLocationFiltering">
+          <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+        </a>
+      </div>
+      <div class="collapse mb-2" id="infoLocationFiltering">
+        {% set info = "location_filtering" %}
+        {% include 'info.html' %}
+      </div>
       
       <!-- FIRST ROW: 3 columns in a row -->
       <div class="row g-3 mb-4">
@@ -110,15 +139,26 @@
 
       <!-- Tolerance Slider and Submit Button -->
       <!-- Tolerance Slider -->
-      <div class="form-group col-md-3 mx-auto mt-5">
-        <label for="tolerance" class="form-label mb-3">Matching Tolerance</label>
-        <div class="mb-2" id="toleranceSlider" name="toleranceSlider"></div>
+      <div class="form-group col-md-3 mx-auto mt-5 text-center">
+        <hr>
+        <div>
+          <label for="tolerance" class="form-label mb-3">Matching Tolerance</label>
+          <a class="btn btn-link btn-reset pb-2" data-bs-toggle="collapse" href="#infoTolerance" role="button" aria-expanded="false" aria-controls="infoTolerance">
+            <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+          </a>
+        </div>
+        <div class="collapse mb-2" id="infoTolerance">
+          {% set info = "tolerance" %}
+          {% include 'info.html' %}
+        </div>
+        
+        <div class="mb-2" id="toleranceSlider" name="toleranceSlider" {% if not primary_submission %}disabled{% endif %}></div>
         <output id="toleranceOut">0</output><span>%</span>
         <input type="hidden" id="tolerance" name="tolerance" value="">
       </div>
-      <!-- Submit Button -->
+      <!-- Search Button -->
       <div class="text-center">
-        <button type="submit" class="mb-4 btn btn-warning">Search</button>
+        <button type="submit" class="m-3 btn btn-warning">Search</button>
       </div>
     </form>
   </div>

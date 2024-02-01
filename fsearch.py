@@ -2,6 +2,16 @@ from fSQL import cursor_fetch
 from fhelpers import get_list_of_values, check_submitted_location
 
 def tolerance_factors(tolerance):
+    '''
+    Returns a dictionary of varied multipliers according to the user's
+    selected amount of matching tolerance. These multipliers will be used
+    to create the criteria ranges that they will eventually be used to
+    calculate the house matching score for each searched house.
+
+    The name of the dictionaty is declared with uppercase letters just
+    to place it early in the code and access it easily if any adjustments
+    should take place.
+    '''
     TOLERANCE_FACTORS = {
         'square_meters': tolerance / 100,
         'rental': tolerance / 100,
@@ -12,6 +22,14 @@ def tolerance_factors(tolerance):
     return TOLERANCE_FACTORS
 
 def criteria_ranges(primary_submission, TOLERANCE_FACTORS):
+    '''
+    Returns a dictionary of varied ranges that they will be used to
+    calculate the house matching score for each search house.
+
+    The name of the dictionaty is declared with uppercase letters just
+    to place it early in the code and access it easily if any adjustments
+    should take place.
+    '''
     CRITERIA_RANGES = {
         'square_meters':
         {
