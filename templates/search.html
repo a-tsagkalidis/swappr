@@ -111,7 +111,7 @@
       <!-- Tolerance Slider and Submit Button -->
       <!-- Tolerance Slider -->
       <div class="form-group col-md-3 mx-auto mt-5">
-        <label for="tolerance" class="form-label mb-3">Tolerance</label>
+        <label for="tolerance" class="form-label mb-3">Matching Tolerance</label>
         <div class="mb-2" id="toleranceSlider" name="toleranceSlider"></div>
         <output id="toleranceOut">0</output><span>%</span>
         <input type="hidden" id="tolerance" name="tolerance" value="">
@@ -144,11 +144,17 @@
           </thead>
           <tbody>
             {% for match in search %}
-              <tr {% if match.total_matching_score >= 31 %}class="table-success"
-              {% elif match.total_matching_score <= 30 and match.total_matching_score >= 21  %}class="table-primary"
-              {% elif match.total_matching_score <= 20 and match.total_matching_score >= 16 %}class="table-warning"
-              {% else %}class="table-danger"
-              {% endif %}>
+              {% if match.total_matching_score %}
+                <tr{% if match.total_matching_score >= 31 %}
+                  class="table-success"
+                {% elif match.total_matching_score <= 30 and match.total_matching_score >= 21  %}
+                  class="table-primary"
+                {% elif match.total_matching_score <= 20 and match.total_matching_score >= 16 %}
+                  class="table-warning"
+                {% else %}
+                  class="table-danger"
+                {% endif %}>
+              {% endif %}
                 <td>{{ whitespace(match.house_type) }}</td>
                 <td>{{ comma(match.square_meters) }} m&sup2;</td>
                 <td>€{{ comma(match.rental) }}</td>

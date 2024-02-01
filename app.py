@@ -942,34 +942,35 @@ def search():
                 user_id,
                 True
             )
-            pp.pprint(primary_submission)
-            print()
 
-            # Declare tolerance factors based on user's chosen tolerance percentage
-            TOLERANCE_FACTORS = tolerance_factors(tolerance)
+            # Use matching logic in case the user has a primary submission
+            if len(primary_submission) > 0:
 
-            # Shape the ranges of every house characteristic according to TOLERANCE_FACTORS
-            CRITERIA_RANGES = criteria_ranges(primary_submission, TOLERANCE_FACTORS)
+                # Declare tolerance factors based on user's chosen tolerance percentage
+                TOLERANCE_FACTORS = tolerance_factors(tolerance)
 
-            # Add location matching score for each house in search results
-            location_matching(primary_submission, search_results)
+                # Shape the ranges of every house characteristic according to TOLERANCE_FACTORS
+                CRITERIA_RANGES = criteria_ranges(primary_submission, TOLERANCE_FACTORS)
 
-            # Add house factor-based matching score for each house in search results
-            house_matching(search_results, CRITERIA_RANGES)
+                # Add location matching score for each house in search results
+                location_matching(primary_submission, search_results)
 
-            # Calculate total matching score for each house in search results
-            matching_summary(search_results)
-            
-            # Sort houses in search results based on total matching score; higher to lower
-            search_results = sorted(
-                search_results,
-                key=lambda result: result['total_matching_score'],
-                reverse=True
-            )
+                # Add house factor-based matching score for each house in search results
+                house_matching(search_results, CRITERIA_RANGES)
 
-            # TESTING
-            for result in search_results:
-                pp.pprint(result['total_matching_score'])
+                # Calculate total matching score for each house in search results
+                matching_summary(search_results)
+                
+                # Sort houses in search results based on total matching score; higher to lower
+                search_results = sorted(
+                    search_results,
+                    key=lambda result: result['total_matching_score'],
+                    reverse=True
+                )
+
+                # TESTING
+                for result in search_results:
+                    pp.pprint(result['total_matching_score'])
 
             return render_template(
                 '/search.html',
