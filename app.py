@@ -971,6 +971,8 @@ def search():
                 # TESTING
                 for result in search_results:
                     pp.pprint(result['total_matching_score'])
+                    pp.pprint(result['house_matching_score'])
+                    pp.pprint(result['location_matching_score'])
 
             return render_template(
                 '/search.html',

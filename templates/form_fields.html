@@ -1,6 +1,15 @@
 <!-- File extends in both submission.html and edit_submission.html -->
 <hr>
-<h3 class="mb-3 fw-light fs-4 text-secondary">House details (required)</h2>
+<div>
+  <h3 class="mb-3 fw-light fs-4 text-secondary d-inline">House details (required)</h2>
+  <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoHouseDetails" role="button" aria-expanded="false" aria-controls="infoHouseDetails">
+    <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+  </a>
+</div>
+<div class="collapse mb-2" id="infoHouseDetails">
+  {% set info = "house_details" %}
+  {% include 'info.html' %}
+</div>
 <div class="row g-4 mb-4">
   <!-- House Type 1-row -->
   <div class="col-md-3 mb-2">
@@ -43,7 +52,16 @@
 
 <!-- Location: City, Municipality, Region 3-rows -->
 <hr class="mt-5">
-<h3 class="mb-3 fw-light fs-4 text-secondary">House location (required)</h2>
+<div>
+  <h3 class="mb-3 fw-light fs-4 text-secondary d-inline">House location (required)</h2>
+  <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoHouseLocation" role="button" aria-expanded="false" aria-controls="infoHouseLocation">
+    <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+  </a>
+</div>
+<div class="collapse mb-2" id="infoHouseLocation">
+  {% set info = "house_location" %}
+  {% include 'info.html' %}
+</div>
 <div class="row g-3 mb-4">
   <div class="col-md-4 mb-4">
     <label for="city" class="form-label">City</label>
@@ -82,7 +100,16 @@
 
 <!-- Desired Destination: City, Municipality, Region 3-rows -->
 <hr class="mt-5">
-<h3 class="mb-3 fw-light fs-4 text-secondary">Desired swap location (optional)</h2>
+<div>
+  <h3 class="mb-3 fw-light fs-4 text-secondary d-inline">Desired move location (optional)</h2>
+  <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoDesiredLocation" role="button" aria-expanded="false" aria-controls="infoDesiredLocation">
+    <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+  </a>
+</div>
+<div class="collapse mb-2" id="infoDesiredLocation">
+  {% set info = "desired_location" %}
+  {% include 'info.html' %}
+</div>
 <div class="row g-3 mb-4">
   <div class="col-md-4 mb-4">
     <label for="city" class="form-label">City</label>
@@ -120,7 +147,16 @@
 </div>
 
 <hr class="mt-5">
-<h3 class="mb-3 fw-light fs-4 text-secondary">Swappr exposure (required)</h2>
+<div>
+  <h3 class="mb-3 fw-light fs-4 text-secondary d-inline">Swappr exposure (required)</h2>
+  <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoExposure" role="button" aria-expanded="false" aria-controls="infoExposure">
+    <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+  </a>
+</div>
+<div class="collapse mb-2" id="infoExposure">
+  {% set info = "exposure" %}
+  {% include 'info.html' %}
+</div>
 <!-- Exposure radio buttons 1-row -->
 <div class="form-group">
   <div class="form-check form-check-inline mb-4">
@@ -134,16 +170,31 @@
 </div>
 
 <hr class="mt-5">
-<h3 class="mb-3 fw-light fs-4 text-secondary">Primary Submission (required)</h2>
+<div>
+  <h3 class="mb-3 fw-light fs-4 text-secondary d-inline">Primary submission</h2>
+  <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoPrimarySubmission" role="button" aria-expanded="false" aria-controls="infoPrimarySubmission">
+    <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+  </a>
+</div>
+<div class="collapse mb-2" id="infoPrimarySubmission">
+  {% set info = "primary_submission" %}
+  {% include 'info.html' %}
+</div>
 <!-- Primary submission checkbox 1-row -->
 <div class="form-group">
   <div class="form-check form-check-inline mb-4">
     {% if not user_submissions_exist or submission.primary_submission == 1 %}
       <input type="checkbox" class="form-check-input" id="primarySubmission" name="primarySubmission" checked disabled>
       <input type="hidden" id="primarySubmissionLocked" name="primarySubmissionLocked" value="True" checked>
+      <label class="form-check-label" for="primarySubmission">
+        This is your primary submitted house. To change it create
+        a new submission or edit an existing one as your new primary.
+      </label>
     {% else %}
       <input type="checkbox" class="form-check-input" id="primarySubmission" name="primarySubmission" value="True">
+      <label class="form-check-label" for="primarySubmission">
+        Check to set the submission as primary. If you do so, your current primary submission will be set as non-primary.
+      </label>
     {% endif %}
-    <label class="form-check-label" for="primarySubmission">Primary Submission</label>
   </div>
 </div>

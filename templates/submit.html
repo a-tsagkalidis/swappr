@@ -7,7 +7,17 @@
 {% block main %}
 
   <div class="container mt-2">
-    <h1 class="mb-4 fw-bold fs-2 text-secondary">House Submission Form</h1>
+    <div>
+      <!-- Main Header and Info -->
+      <h1 class="fw-bold fs-2 text-secondary d-inline">House Submission Form</h1>
+      <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoSubmit" role="button" aria-expanded="false" aria-controls="infoSubmit">
+        <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+      </a>
+    </div>
+    <div class="collapse" id="infoSubmit">
+      {% set info = "submit" %}
+      {% include 'info.html' %}
+    </div>
     <form action="/submit" method="post" id="submitForm" onsubmit="return validateSubmitForm()">
       {% include "form_fields.html" %}
       <!-- Add extra fields if needed -->

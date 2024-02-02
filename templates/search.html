@@ -167,7 +167,17 @@
   {% if search %}
     <div class="container mt-2 text-break">
       <hr>
-      <h1 class="mb-4 fw-bold fs-2 text-secondary">Search Matches</h1>
+      <div>
+        <!-- Main Header and Info -->
+        <h1 class="fw-bold fs-2 text-secondary d-inline">Search Results</h1>
+        <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoSearchResults" role="button" aria-expanded="false" aria-controls="infoSearchResults">
+          <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+        </a>
+      </div>
+      <div class="collapse" id="infoSearchResults">
+        {% set info = "search_results" %}
+        {% include 'info.html' %}
+      </div>
         <table class="table fs-8 fw-light">
           <thead>
             <tr>

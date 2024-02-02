@@ -15,6 +15,145 @@
 </div>
 {% endif %}
 
+
+<!-- Submit Info-->
+{% if info == "submit" %}
+<div class="card card-body text-warning bg-dark">
+	<p class="mb-1">
+		Submit a house in the database and let the world see what you're offering and what you're looking for.
+	</p>
+	<p class="mb-1">
+		Tailor your house characteristics for your submission by means such as the house type, its size, the rental
+		payload, and the numbers of rooms.
+	</p>
+	<p class="mb-1">
+		Describe the generic location of your house to be swapped, as well as the desired destination you would like
+		to move into.
+	</p>
+	<p class="mb-1">
+		Expose your house in public or keep it in private.
+	</p>
+</div>
+{% endif %}
+
+
+<!-- Submit/Edit Submission House Details Info-->
+{% if info == "house_details" %}
+<div class="card card-body text-warning bg-dark w-50">
+	<p class="mb-0">
+		Select your house basic details. Such information is required before submission.
+	</p>
+	<p class="mb-4">
+		<span class="text-decoration-underline">You will <span class="fw-bold text-danger">NEVER</span> be asked</span>
+		for suspicious details for security reasons!
+	</p>
+	<p class="mb-4">
+		For instance consider the following questions as a <span class="fw-bold">warning</span>:
+		<ul class="mb-0">
+			<li>Where is the main door?</li>
+			<li>Is there an implemented alarm system in your house?</li>
+		</ul>
+	</p>
+	<p class="mb-1">
+		Your information gets <span class="fw-bold">encrypted</span> before stored in the database.
+	</p>
+</div>
+{% endif %}
+
+
+<!-- Submit/Edit Submission House Location Info-->
+{% if info == "house_location" %}
+<div class="card card-body text-warning bg-dark w-50">
+	<p class="mb-0">
+		Select your house generic location. Such information is required before submission.
+	</p>
+	<p class="mb-4">
+		<span class="text-decoration-underline">You will <span class="fw-bold text-danger">NEVER</span> be asked</span>
+		for the exact house address for security reasons!
+	</p>
+	<p class="mb-4">
+		For instance consider the following questions as a <span class="fw-bold">warning</span>:
+		<ul class="mb-0">
+			<li>What is your house address?</li>
+			<li>Is there a park nearby your house?</li>
+		</ul>
+	</p>
+	<p class="mb-1">
+		Your information gets <span class="fw-bold">encrypted</span> before stored in the database.
+	</p>
+</div>
+{% endif %}
+
+
+<!-- Submit/Edit Submission Desired Move Location Info-->
+{% if info == "desired_location" %}
+<div class="card card-body text-warning bg-dark w-50">
+	<p class="mb-0">
+		Select the generic location you are searching to move into.
+	</p>
+	<p class="mb-4">
+		<span class="text-decoration-underline">You will <span class="fw-bold text-danger">NEVER</span> be asked</span>
+		for an exact address for security reasons!
+	</p>
+	<p class="mb-4">
+		For instance consider the following questions as a <span class="fw-bold">warning</span>:
+		<ul class="mb-0">
+			<li>At what address would you like to move?</li>
+			<li>Would you like a kindergarten nearby your new house?</li>
+		</ul>
+	</p>
+	<p class="mb-1">
+		Your information gets <span class="fw-bold">encrypted</span> before stored in the database.
+	</p>
+</div>
+{% endif %}
+
+
+<!-- Submit/Edit Submission Exposure Info-->
+{% if info == "exposure" %}
+<div class="card card-body text-warning bg-dark w-50">
+	<p class="mb-3">
+		Select public or private exposure for your submission.
+	</p>
+	<p class="mb-3">
+		<span class="fw-bold">PUBLIC</span> exposure means that your submission can be searched by anyone
+		using the <a href="/search" class="fw-bold">search</a> tool, giving other users enough information
+		for house matching as well as contact info.
+	</p>
+	<p class="mb-3">
+		<span class="fw-bold">PRIVATE</span> exposure means that your submission can't be searched from other
+		users. Regardless if your submission is private or not, as long as it is set as your primary one, you
+		can use the search tool to look for potential matching houses.
+	</p>
+</div>
+{% endif %}
+
+
+<!-- Submit/Edit Primary Submission Info-->
+{% if info == "primary_submission" %}
+<div class="card card-body text-warning bg-dark w-50">
+	<p class="mb-3">
+		Select your submission to behave as your primary one or not.
+	</p>
+	<p class="mb-3">
+		<span class="fw-bold">PRIMARY</span> set means that your submission can be used for smart house matching
+		when you are using the <a href="/search" class="fw-bold">search</a> tool. In addition it is subject to
+		adjust the ranges when you are using the <span class="fw-bold">Matching Tolerance</span> slider.
+	</p>
+	<p class="mb-3">
+		Every user <span class="text-decoration-underline fw-bold">must have one primary submission</span>.
+	</p>
+	<p class="mb-3">
+		By default, your first submission is set in such way.
+	</p>
+	<p class="mb-3">
+		If you wish to change your primary submission, then you should create a new submission or edit an existing one
+		and set it as primary.
+	</p>
+</div>
+{% endif %}
+
+
 <!-- Search Info-->
 {% if info == "search" %}
 <div class="card card-body text-warning bg-dark">
@@ -25,32 +164,35 @@
 	<p class="mb-1">
 		Use <span class=fw-bold>House Characteristics</span> and <span class=fw-bold>Location</span> filtering
 		mechanisms to narrow down the search results as desired.
-	</p>
-	<p class="mb-1">
+	</p class="mb-1">
+	<p>
 		Use <span class=fw-bold>Matching Tolerance</span> slider to extend the ranges of the matching algorithm.
 	</p>
 </div>
 {% endif %}
 
-<!-- House Characteristics Filtering Info-->
+
+<!-- Search House Characteristics Filtering Info-->
 {% if info == "house_characteristics_filtering" %}
-<div class="card card-body text-warning bg-dark">
+<div class="card card-body text-warning bg-dark w-50">
 	<p class="mb-1">
 		Select desired house options to narrow down search results.
 	</p>
 </div>
 {% endif %}
 
-<!-- Location Filtering Info-->
+
+<!-- Search Location Filtering Info-->
 {% if info == "location_filtering" %}
-<div class="card card-body text-warning bg-dark">
+<div class="card card-body text-warning bg-dark w-50">
 	<p class="mb-1">
 		Select location options to narrow down search results.
 	</p>
 </div>
 {% endif %}
 
-<!-- Tolerance Info-->
+
+<!-- Search Matching Tolerance Info-->
 {% if info == "tolerance" %}
 <div class="card card-body text-warning bg-dark text-start mb-3">
 	<h5 class="fw-bold text-secondary">Tolerance explanation</h5>
@@ -68,7 +210,7 @@
 		Tolerance affects all <span class="fw-bold">House Characteristics Filters.</span>
 	</p>
 	<hr>
-	<h5 class="fw-bold text-secondary">Row colors meaning</h5>
+	<h5 class="fw-bold text-secondary">Colors meaning</h5>
 	<p>
 		<span class="fw-bold text-success">Green</span> rows are very high matches.
 	</p>
@@ -79,6 +221,26 @@
 		<span class="fw-bold text-warning">Yellow</span> rows are very low matches.
 	</p>
 	<p>
+		<span class="fw-bold text-danger">Red</span> rows do not match at all.
+	</p>
+</div>
+{% endif %}
+
+
+<!-- Search Results Info-->
+{% if info == "search_results" %}
+<div class="card card-body text-warning bg-dark text-start w-25">
+	<h5 class="fw-bold text-secondary mb-3">Colors meaning</h5>
+	<p class="mb-1">
+		<span class="fw-bold text-success">Green</span> rows are very high matches.
+	</p>
+	<p class="mb-1">
+		<span class="fw-bold text-primary">Blue</span> rows are average matches.
+	</p>
+	<p class="mb-1">
+		<span class="fw-bold text-warning">Yellow</span> rows are very low matches.
+	</p>
+	<p class="mb-1">
 		<span class="fw-bold text-danger">Red</span> rows do not match at all.
 	</p>
 </div>
