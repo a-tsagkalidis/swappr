@@ -572,6 +572,35 @@ function loadNoUiSliders() {
 	});
 }
 
+/** [4.1.3]
+ * Function that makes asyncronous POST requests in @search route to get
+ * search results and load them in the html search results section
+ */
+function asynchronousSearch() {
+	// Add an event listener to the search form
+	document.getElementById('searchForm').addEventListener('submit', function(event) {
+		// Prevent the default form submission to be loaded
+		event.preventDefault();
+
+		// Get the form data
+		const formData = new FormData(this);
+
+		// Make an AJAX POST request to the backend to get search results
+		fetch('/search', {
+			method: 'POST',
+			body: formData
+		})
+		.then(response => response.text())
+		.then(data => {
+			// Load search results section with the response from backend
+			document.getElementById('searchResults').innerHTML = data;
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+	});
+}
+
 
 // ----- [4.2] EXECUTES WHEN SEARCH ROUTE LOADS -----//
 // Execute the following code only for search route
@@ -585,6 +614,11 @@ if (window.location.pathname === '/search') {
 		'municipality',
 		'region'
 	);
+
+
+	asynchronousSearch()
+
+
 
 }
 

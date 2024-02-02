@@ -1,0 +1,75 @@
+<!-- Search results section -->
+{% if search %}
+<div class="container mt-2 text-break" id="search-results">
+  <hr>
+  <div>
+    <!-- Main Header and Info -->
+    <h1 class="fw-bold fs-2 text-secondary d-inline">Search Results</h1>
+    <a class="btn btn-link btn-reset pb-3" data-bs-toggle="collapse" href="#infoSearchResults" role="button" aria-expanded="false" aria-controls="infoSearchResults">
+      <img src="../static/images/info.svg" class="img-thumbnail" style="width: 30px;" alt="a small icon illustrates an 'i' character."> 
+    </a>
+  </div>
+  <div class="collapse" id="infoSearchResults">
+    {% set info = "search_results" %}
+    {% include 'info.html' %}
+  </div>
+    <table class="table fs-8 fw-light">
+      <thead>
+        <tr>
+          <th class="px-4">House Type</th>
+          <th>Sqr. Meters (m&sup2;)</th>
+          <th>Rental (&euro;)</th>
+          <th>Bedrooms</th>
+          <th>Bathrooms</th>
+          <th>Location (C/M/R)</th>
+          <th>Looking for (C/M/R)</th>
+          <th>Contact</th>
+          <!-- Add other columns as needed -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for match in search %}
+          {% if match.total_matching_score %}
+            <tr{% if match.total_matching_score >= 31 %}
+              class="table-success"
+            {% elif match.total_matching_score <= 30 and match.total_matching_score >= 21  %}
+              class="table-primary"
+            {% elif match.total_matching_score <= 20 and match.total_matching_score >= 16 %}
+              class="table-warning"
+            {% else %}
+              class="table-danger"
+            {% endif %}>
+          {% endif %}
+            <td class="px-4">{{ whitespace(match.house_type) }}</td>
+            <td>{{ comma(match.square_meters) }} m&sup2;</td>
+            <td>€{{ comma(match.rental) }}</td>
+            <td>{{ match.bedrooms }}</td>
+            <td>{{ match.bathrooms }}</td>
+
+            {% if match.city == match.municipality %}
+              <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ match.postal_code }}" target="_blank">{{ whitespace(match.city) }},<br>{{ whitespace(match.region) }}</a></td>
+            {% else %}
+              <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ match.postal_code }}" target="_blank">{{ whitespace(match.city) }},<br>{{ whitespace(match.municipality) }},<br>{{ whitespace(match.region) }}</a></td>
+            {% endif %}
+
+            {% if match.city_destination == 'any' %}
+              <td>{{ whitespace(match.city_destination) }}</td>
+            {% elif (match.city_destination == match.municipality_destination) or (match.municipality_destination == 'any' and match.region_destination == 'any' )%}
+              <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ match.postal_code }}" target="_blank">{{ whitespace(match.city_destination) }},<br>{{ whitespace(match.region_destination) }}</a></td>
+            {% else %}
+              <td><a href="https://www.google.com/maps/search/{{ whitespace(match.city) }}, {{ match.postal_code }}" target="_blank">{{ whitespace(match.city_destination) }},<br>{{ whitespace(match.municipality_destination) }},<br>{{ whitespace(match.region_destination) }}</a></td>
+            {% endif %}
+
+            <td><a href="mailto:{{ match.email }}">{{ match.username }}</a></td>
+            <!-- Add other columns as needed -->
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% elif search_initial_page_load %}
+  <!-- Do not load any data as it is the initial page load -->
+{% else %}
+  <p class="text-center">No matching houses found.</p>
+{% endif %}

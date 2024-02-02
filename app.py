@@ -869,6 +869,7 @@ def search():
         True
     )
 
+    # POST requests are being handled with AJAX
     if request.method == 'POST':
         # Get user submitted form data
         house_type = request.form.get('houseType')
@@ -968,14 +969,12 @@ def search():
                     reverse=True
                 )
 
-                # TESTING
-                for result in search_results:
-                    pp.pprint(result['total_matching_score'])
-                    pp.pprint(result['house_matching_score'])
-                    pp.pprint(result['location_matching_score'])
-
+                # # TESTING
+                # for result in search_results:
+                #     pp.pprint(result['total_matching_score'])
+            
             return render_template(
-                '/search.html',
+                '/search_results.html',
                 cities=cities,
                 search=search_results,
                 primary_submission=primary_submission,
