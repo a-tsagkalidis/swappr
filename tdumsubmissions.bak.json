@@ -1,5 +1,5 @@
 [
-    {   // user submission
+    {
         "bathrooms": 1,
         "bedrooms": 2,
         "city": "thessaloniki",
@@ -11,19 +11,20 @@
         "municipality": "polichni",
         "municipality_destination": "larissa",
         "postal_code": "56532",
+        "primary_submission": 0,
         "region": "meteora",
         "region_destination": "nea_politeia",
-        "rental": 2,
-        "square_meters": 2,
-        "user_id": 2,
+        "rental": 300,
+        "square_meters": 80,
+        "user_id": 1,
         "username": "admin"
     },
 
 
 
 
-    // CASE: PERFECT MATCH
-    {   1// user rqrmnts='met'   ||||    submission rqrmts='met'
+
+    { 
         "bathrooms": 1,
         "bedrooms": 2,
         "city": "larissa",
@@ -35,20 +36,20 @@
         "municipality": "larissa",
         "municipality_destination": "polichni",
         "postal_code": "56532",
+        "primary_submission": 0,
         "region": "nea_politeia",
         "region_destination": "meteora",
-        "rental": 2,
-        "square_meters": 2,
+        "rental": 300,
+        "square_meters": 80,
         "user_id": 2,
         "username": "argtsag"
     },
 
 
 
-    // CASE: USER'S REQ MET CASE - SUBMISSION'S REQ MET/ANY VARIATION
-    {   2// user rqrmts='met'    ||||    submission rqrmts='met' city, 'met' municipality, 'any' region
+    {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 3,
         "city": "larissa",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -58,14 +59,15 @@
         "municipality": "larissa",
         "municipality_destination": "polichni",
         "postal_code": "56532",
+        "primary_submission": 0,
         "region": "nea_politeia",
         "region_destination": "any",
-        "rental": 2,
-        "square_meters": 2,
+        "rental": 400,
+        "square_meters": 80,
         "user_id": 2,
         "username": "argtsag"
     },
-    {   3// user rqrmts='met'    ||||    submission rqrmts='met' city, 'any' region, 'any' mucicipality
+    {
         "bathrooms": 1,
         "bedrooms": 2,
         "city": "larissa",
@@ -77,16 +79,17 @@
         "municipality": "larissa",
         "municipality_destination": "any",
         "postal_code": "56532",
+        "primary_submission": 0,
         "region": "nea_politeia",
         "region_destination": "any",
-        "rental": 2,
-        "square_meters": 2,
+        "rental": 450,
+        "square_meters": 70,
         "user_id": 2,
         "username": "argtsag"
     },
-    {   4// user rqrmts='met'    ||||    submission rqrmts='any' city, 'any' region, 'any' mucicipality
+    {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 1,
         "city": "larissa",
         "city_destination": "any",
         "email": "arg.tsag@gmail.com",
@@ -96,10 +99,11 @@
         "municipality": "larissa",
         "municipality_destination": "any",
         "postal_code": "56532",
+        "primary_submission": 0,
         "region": "nea_politeia",
         "region_destination": "any",
-        "rental": 2,
-        "square_meters": 2,
+        "rental": 420,
+        "square_meters": 67,
         "user_id": 2,
         "username": "argtsag"
     },
@@ -108,10 +112,9 @@
 
 
 
-    // CASE: USER'S REQUIREMENTS MET/NOT VARIATION - SUBMISSION'S REQ MET
-    {   5// user rqrmnts='met' city, 'met' municipality, 'not' region    ||||    submission rqrmts='met'
+    {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 1,
         "city": "larissa",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -121,35 +124,37 @@
         "municipality": "larissa",
         "municipality_destination": "polichni",
         "postal_code": "56532",
+        "primary_submission": 0,
         "region": "averof",
         "region_destination": "meteora",
-        "rental": 2,
-        "square_meters": 2,
+        "rental": 550,
+        "square_meters": 75,
         "user_id": 2,
         "username": "argtsag"
     },
-    {   6// user rqrmnts='met' city, 'not' municipality, 'not' region    ||||    submission rqrmts='met'
+    {  
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 3,
         "city": "larissa",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
         "exposure": "public",
         "house_type": "flat",
         "id": 2,
-        "municipality": "dummybap",
+        "municipality": "tyrnavos",
         "municipality_destination": "polichni",
         "postal_code": "56532",
-        "region": "dummybap",
+        "primary_submission": 0,
+        "region": "ampelonas",
         "region_destination": "meteora",
-        "rental": 2,
-        "square_meters": 2,
+        "rental": 660,
+        "square_meters": 110,
         "user_id": 2,
         "username": "argtsag"
     },
-    {   7// user rqrmnts='not' city, 'not' municipality, 'not' region    ||||    submission rqrmts='met'
+    {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 1,
         "city": "thessaloniki",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -159,10 +164,11 @@
         "municipality": "stavroupoli",
         "municipality_destination": "polichni",
         "postal_code": "56532",
+        "primary_submission": 0,
         "region": "ampelones",
         "region_destination": "meteora",
-        "rental": 2,
-        "square_meters": 2,
+        "rental": 410,
+        "square_meters": 48,
         "user_id": 2,
         "username": "argtsag"
     },
@@ -171,10 +177,10 @@
 
 
 
-    // CASE: USER'S REQUIREMENTS MET - SUBMISSION'S REQ MET/NOT VARIATION
-    {   7// user rqrmnts='met'   ||||    submission rqrmts='met' city, 'met' municipality, 'not' 'region'
+
+    {
         "bathrooms": 1,
-        "bedrooms": 2,
+        "bedrooms": 1,
         "city": "larissa",
         "city_destination": "thessaloniki",
         "email": "arg.tsag@gmail.com",
@@ -184,16 +190,17 @@
         "municipality": "larissa",
         "municipality_destination": "polichni",
         "postal_code": "56532",
+        "primary_submission": 0,
         "region": "nea_politeia",
         "region_destination": "kokkoras",
-        "rental": 2,
-        "square_meters": 2,
+        "rental": 280,
+        "square_meters": 60,
         "user_id": 2,
         "username": "argtsag"
     },
-    {   8//user rqrmnts='met'    ||||    submission rqrmts='met' city, 'not' municipality, 'not' 'region'
+    {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 1,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -203,16 +210,17 @@
     "municipality": "larissa",
     "municipality_destination": "pylaia",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "nea_politeia",
     "region_destination": "malakopi",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 250,
+    "square_meters": 38,
     "user_id": 2,
     "username": "argtsag"
     },
-    {   9// user rqrmnts='met'   ||||    submission rqrmts='not' city, 'not' municipality, 'not' 'region'
-    "bathrooms": 1,
-    "bedrooms": 2,
+    {
+    "bathrooms": 2,
+    "bedrooms": 4,
     "city": "larissa",
     "city_destination": "xanthi",
     "email": "arg.tsag@gmail.com",
@@ -222,10 +230,11 @@
     "municipality": "larissa",
     "municipality_destination": "xanthi",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "nea_politeia",
     "region_destination": "mexicana",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 800,
+    "square_meters": 115,
     "user_id": 2,
     "username": "argtsag"
     },
@@ -233,10 +242,10 @@
 
 
 
-    // CASE: USER'S REQUIREMENTS MET/NOT VARIATION - SUBMISSION'S REQ MET/NOT VARIATION
-    {   10// user rqrmnts='met' city, 'met' municipality, 'not' region    ||||    submission rqrmts='met' city, 'met' municipality, 'not' 'region'
+
+    {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 3,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -246,16 +255,17 @@
     "municipality": "larissa",
     "municipality_destination": "polichni",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "alkazar",
     "region_destination": "elpida",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 440,
+    "square_meters": 87,
     "user_id": 2,
     "username": "argtsag"
     },
-    {   11// user rqrmnts='met' city, 'met' municipality, 'not' region    ||||    submission rqrmts='met' city, 'not' municipality, 'not' 'region'
-    "bathrooms": 1,
-    "bedrooms": 2,
+    {
+    "bathrooms": 2,
+    "bedrooms": 4,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -265,14 +275,15 @@
     "municipality": "larissa",
     "municipality_destination": "panorama",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "alkazar",
     "region_destination": "ano_panorama",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 900,
+    "square_meters": 140,
     "user_id": 2,
     "username": "argtsag"
     },
-    {   12// user rqrmnts='met' city, 'met' municipality, 'not' region    ||||    submission rqrmts='not' city, 'not' municipality, 'not' 'region'
+    {
     "bathrooms": 1,
     "bedrooms": 2,
     "city": "larissa",
@@ -284,17 +295,18 @@
     "municipality": "larissa",
     "municipality_destination": "xanthi",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "alkazar",
     "region_destination": "chrysa",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 330,
+    "square_meters": 68,
     "user_id": 2,
     "username": "argtsag"
     },
 
 
-    // ---- SEP ----
-    {   13// user rqrmnts='met' city, 'not' municipality, 'not' region    ||||    submission rqrmts='met' city, 'met' municipality, 'not' 'region'
+    
+    {
     "bathrooms": 1,
     "bedrooms": 2,
     "city": "larissa",
@@ -303,32 +315,34 @@
     "exposure": "public",
     "house_type": "flat",
     "id": 2,
-    "municipality": "dummybap",
+    "municipality": "tyrnavos",
     "municipality_destination": "polichni",
     "postal_code": "56532",
-    "region": "dummybap",
+    "primary_submission": 0,
+    "region": "vriotopos",
     "region_destination": "elpida",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 370,
+    "square_meters": 78,
     "user_id": 2,
     "username": "argtsag"
     },
-    {   14// user rqrmnts='met' city, 'not' municipality, 'not' region    ||||    submission rqrmts='met' city, 'not' municipality, 'not' 'region'
+    {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 3,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
     "exposure": "public",
     "house_type": "flat",
     "id": 2,
-    "municipality": "dummybap",
+    "municipality": "tyrnavos",
     "municipality_destination": "panorama",
     "postal_code": "56532",
-    "region": "dummybap",
+    "primary_submission": 0,
+    "region": "ampelonas",
     "region_destination": "neo_panorama",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 470,
+    "square_meters": 90,
     "user_id": 2,
     "username": "argtsag"
     },
@@ -338,10 +352,10 @@
 
 
     
-    // CASE: USER'S REQUIREMENTS MET/NOT VARIATION - SUBMISSION'S REQ MET/ANY VARIATION
-    {   15// user rqrmnts='met' city, 'met' municipality, 'not' region    ||||    submission rqrmts='met' city, 'met' municipality, 'any' 'region'
+    
+    {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 1,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
@@ -351,14 +365,15 @@
     "municipality": "larissa",
     "municipality_destination": "polichni",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "alkazar",
     "region_destination": "any",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 220,
+    "square_meters": 32,
     "user_id": 2,
     "username": "argtsag"
     },
-    {   16// user rqrmnts='met' city, 'met' municipality, 'not' region    ||||    submission rqrmts='met' city, 'any' municipality, 'any' 'region'
+    {
     "bathrooms": 1,
     "bedrooms": 2,
     "city": "larissa",
@@ -370,16 +385,17 @@
     "municipality": "larissa",
     "municipality_destination": "any",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "alkazar",
     "region_destination": "any",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 540,
+    "square_meters": 55,
     "user_id": 2,
     "username": "argtsag"
     },
-    {   17// user rqrmnts='met' city, 'met' municipality, 'not' region    ||||    submission rqrmts='any' city, 'any' municipality, 'any' 'region'
+    {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 3,
     "city": "larissa",
     "city_destination": "any",
     "email": "arg.tsag@gmail.com",
@@ -389,36 +405,38 @@
     "municipality": "larissa",
     "municipality_destination": "any",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "alkazar",
     "region_destination": "any",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 590,
+    "square_meters": 80,
     "user_id": 2,
     "username": "argtsag"
     },
 
 
-    // ---- SEP ----
-    {   18// user rqrmnts='met' city, 'not' municipality, 'not' region    ||||    submission rqrmts='met' city, 'met' municipality, 'any' 'region'
+    
+    {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 1,
     "city": "larissa",
     "city_destination": "thessaloniki",
     "email": "arg.tsag@gmail.com",
     "exposure": "public",
     "house_type": "flat",
     "id": 2,
-    "municipality": "dummybap",
+    "municipality": "tyrnavos",
     "municipality_destination": "polichni",
     "postal_code": "56532",
-    "region": "dummybap",
+    "primary_submission": 0,
+    "region": "ampelonas",
     "region_destination": "any",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 350,
+    "square_meters": 66,
     "user_id": 2,
     "username": "argtsag"
     },
-    {   19// user rqrmnts='met' city, 'not' municipality, 'not' region    ||||    submission rqrmts='met' city, 'any' municipality, 'any' 'region'
+    {
     "bathrooms": 1,
     "bedrooms": 2,
     "city": "larissa",
@@ -427,13 +445,14 @@
     "exposure": "public",
     "house_type": "flat",
     "id": 2,
-    "municipality": "dummybap",
+    "municipality": "tyrnavos",
     "municipality_destination": "any",
     "postal_code": "56532",
-    "region": "dummybap",
+    "primary_submission": 0,
+    "region": "vriotopos",
     "region_destination": "any",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 300,
+    "square_meters": 84,
     "user_id": 2,
     "username": "argtsag"
     },
@@ -441,10 +460,10 @@
 
 
 
-    // CASE: NOT MATCH AT ALL
-    {   20// user rqrmnts='not'   ||||    submission rqrmts='not'
+    
+    {
     "bathrooms": 1,
-    "bedrooms": 2,
+    "bedrooms": 1,
     "city": "thessaloniki",
     "city_destination": "xanthi",
     "email": "arg.tsag@gmail.com",
@@ -454,10 +473,11 @@
     "municipality": "panorama",
     "municipality_destination": "xanthi",
     "postal_code": "56532",
+    "primary_submission": 0,
     "region": "plateia_mpakogianni",
     "region_destination": "chrysa",
-    "rental": 2,
-    "square_meters": 2,
+    "rental": 400,
+    "square_meters": 50,
     "user_id": 2,
     "username": "argtsag"
     }
