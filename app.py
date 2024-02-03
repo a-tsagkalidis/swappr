@@ -12,9 +12,6 @@ from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
-
 # Configure loguru
 try:
     logger.remove(0)
@@ -968,10 +965,6 @@ def search():
                     key=lambda result: result['total_matching_score'],
                     reverse=True
                 )
-
-                # # TESTING
-                # for result in search_results:
-                #     pp.pprint(result['total_matching_score'])
             
             return render_template(
                 '/search_results.html',
