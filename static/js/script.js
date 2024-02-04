@@ -3,7 +3,7 @@
 /** [0.1.1]
  * A function that scrolls the webpage at the top. It is called whenever the
  * button `Back to top` us pressed (onclick). This button is present in every
- * route, because it is implemented in `layout.html`
+ * route, because it is implemented in `layout.html`.
  */
 function topFunction() {
 	document.body.scrollTop = 0;
@@ -13,17 +13,27 @@ function topFunction() {
 // Asign a variable with the top-button id from `layout.html`
 let topButton = document.getElementById("top-button");
 
+/** [0.1.2]
+ * A function that dismisses any Flask flash message from the UI after 3 seconds.
+ * This function is called in every route. I is useful because the flash messages
+ * are implemented in `layout.html` and can occur in every other route.
+ */
+function dismissFlashMessage(timeout) {
+	// Select the flash message element
+	const flashMessage = document.getElementById('flashMessage');
 
-// Select the flash message element
-const flashMessage = document.getElementById('flash-message');
-
-// Check if the flash message element exists
-if (flashMessage) {
-	// Set a timeout to remove the flash message after 3 seconds
-	setTimeout(() => {
-		flashMessage.remove();
-	}, 4000);
+	// Check if the flash message element exists
+	if (flashMessage) {
+		// Set a timeout to remove the flash message after 3 seconds
+		setTimeout(() => {
+			flashMessage.remove();
+		}, timeout);
+	}
 }
+
+// Call the function that dismisses Flask flash messages after given time 
+dismissFlashMessage(2000)
+
 
 
 /** ||||| [1.0] @signup ROUTE ||||| */
@@ -706,10 +716,7 @@ function applyExposureFormListener() {
                 submission_id: submissionId,
                 new_exposure: newExposure
             },
-            success: function(response) {
-                // Inform user with success message
-                alert(response.success);
-                
+            success: function() {
                 // Update button appearance
                 var button = form.find('button[type="submit"]');
                 if (newExposure === 'private') {

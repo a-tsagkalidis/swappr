@@ -47,17 +47,15 @@
   <!-- Main Content -->
   <main class="container-fluid pt-5 text-center">
 
-    {% block main %}{% endblock %}
-    
     <div class="pt-4">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           
             {% for message in messages %}
               {% if message.success %}
-                <div id="flash-message" class="success" role="alert">{{ message.success }}</div>
+                <div id="flashMessage" class="success" role="alert">{{ message.success }}</div>
               {% elif message.error %}
-                <div id="flash-message" class="error" role="alert">{{ message.error }}</div>
+                <div id="flashMessage" class="error" role="alert">{{ message.error }}</div>
               {% endif %}
             {% endfor %}
           
@@ -65,16 +63,18 @@
       {% endwith %}
 
       {% if error %}
-        <div id="flash-message" class="error" role="alert">{{ error }}</div>
+        <div id="flashMessage" class="error" role="alert">{{ error }}</div>
       {% endif %}
       {% if warning %}
-        <div id="flash-message" class="warning" role="alert">{{ warning }}</div>
+        <div id="flashMessage" class="warning" role="alert">{{ warning }}</div>
       {% endif %}
       {% if success %}
-        <div id="flash-message" class="success" role="alert">{{ success }}</div>
+        <div id="flashMessage" class="success" role="alert">{{ success }}</div>
       {% endif %}
     </div>
 
+    {% block main %}{% endblock %}
+    
   </main>
 
   <!-- Footer -->
