@@ -14,6 +14,17 @@ function topFunction() {
 let topButton = document.getElementById("top-button");
 
 
+// Select the flash message element
+const flashMessage = document.getElementById('flash-message');
+
+// Check if the flash message element exists
+if (flashMessage) {
+	// Set a timeout to remove the flash message after 3 seconds
+	setTimeout(() => {
+		flashMessage.remove();
+	}, 4000);
+}
+
 
 /** ||||| [1.0] @signup ROUTE ||||| */
 // ----- [1.1] SIGN UP FORM VALIDATION ----- //
@@ -615,11 +626,7 @@ if (window.location.pathname === '/search') {
 		'region'
 	);
 
-
 	asynchronousSearch()
-
-
-
 }
 
 
@@ -678,6 +685,12 @@ function cursorFocus(button) {
 }
 
 
+
+/** ||||| [6.0] @index ROUTE ||||| */
+// ----- [6.1] UPDATE EXPOSURE -----//
+/** [6.1.1]
+ * A function that changes the exposure setting with asynchronous logic.
+ */
 function applyExposureFormListener() {
     $('.exposure-form').off('click').on('click', function(event) {
         event.preventDefault(); // Prevent form submission
@@ -694,20 +707,20 @@ function applyExposureFormListener() {
                 new_exposure: newExposure
             },
             success: function(response) {
-                // Update UI with success message
-                // alert(response.success);
+                // Inform user with success message
+                alert(response.success);
                 
                 // Update button appearance
                 var button = form.find('button[type="submit"]');
                 if (newExposure === 'private') {
                     button.removeClass('btn-success').addClass('btn-primary').text('Private');
-                    form.data('new-exposure', 'public'); // Update data-new-exposure attribute
+                    form.data('new-exposure', 'public');
                 } else {
                     button.removeClass('btn-primary').addClass('btn-success').text('Public');
-                    form.data('new-exposure', 'private'); // Update data-new-exposure attribute
+                    form.data('new-exposure', 'private');
                 }
 
-                // Reapply the event listener
+                // Recall the function to be ready if the user clicks the button again
                 applyExposureFormListener();
             },
             error: function(error) {
@@ -719,7 +732,15 @@ function applyExposureFormListener() {
     });
 }
 
+
+// ----- [6.2] EXECUTES WHEN INDEX ROUTE LOADS -----//
+// Execute the following code only for index route
 if (window.location.pathname === '/') {
-	// Initial application of the event listener
+	// Get exposure button ready to be clicked
 	applyExposureFormListener();
 }
+
+
+
+
+

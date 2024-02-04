@@ -55,9 +55,9 @@
           
             {% for message in messages %}
               {% if message.success %}
-                <div class="success" role="alert">{{ message.success }}</div>
+                <div id="flash-message" class="success" role="alert">{{ message.success }}</div>
               {% elif message.error %}
-                <div class="error" role="alert">{{ message.error }}</div>
+                <div id="flash-message" class="error" role="alert">{{ message.error }}</div>
               {% endif %}
             {% endfor %}
           
@@ -65,13 +65,13 @@
       {% endwith %}
 
       {% if error %}
-        <div class="error" role="alert">{{ error }}</div>
+        <div id="flash-message" class="error" role="alert">{{ error }}</div>
       {% endif %}
       {% if warning %}
-        <div class="warning" role="alert">{{ warning }}</div>
+        <div id="flash-message" class="warning" role="alert">{{ warning }}</div>
       {% endif %}
       {% if success %}
-        <div class="success" role="alert">{{ success }}</div>
+        <div id="flash-message" class="success" role="alert">{{ success }}</div>
       {% endif %}
     </div>
 
