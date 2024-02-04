@@ -676,3 +676,50 @@ function cursorFocus(button) {
 		document.getElementById(inputFieldId).focus();
 	});
 }
+
+
+function applyExposureFormListener() {
+    $('.exposure-form').off('click').on('click', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        var form = $(this);
+        var submissionId = form.data('submission-id');
+        var newExposure = form.data('new-exposure');
+
+        $.ajax({
+            type: 'POST',
+            url: '/update_exposure',
+            data: {
+                submission_id: submissionId,
+                new_exposure: newExposure
+            },
+            success: function(response) {
+                // Update UI with success message
+                // alert(response.success);
+                
+                // Update button appearance
+                var button = form.find('button[type="submit"]');
+                if (newExposure === 'private') {
+                    button.removeClass('btn-success').addClass('btn-primary').text('Private');
+                    form.data('new-exposure', 'public'); // Update data-new-exposure attribute
+                } else {
+                    button.removeClass('btn-primary').addClass('btn-success').text('Public');
+                    form.data('new-exposure', 'private'); // Update data-new-exposure attribute
+                }
+
+                // Reapply the event listener
+                applyExposureFormListener();
+            },
+            error: function(error) {
+                // Handle errors if any
+                console.error('Error:', error);
+                // You can display error messages to the user
+            }
+        });
+    });
+}
+
+if (window.location.pathname === '/') {
+	// Initial application of the event listener
+	applyExposureFormListener();
+}

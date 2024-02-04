@@ -59,19 +59,16 @@
 
               <td>
                 {% if submission.exposure == 'public' %}
-                  <form method="post" action="/update_exposure">
-                    <input type="hidden" name="submission_id" value="{{ submission.id }}">
-                    <input type="hidden" name="new_exposure" value="private">
+                  <form class="exposure-form" data-submission-id="{{ submission.id }}" data-new-exposure="private">
                     <button type="submit" class="btn btn-success">Public</button>
                   </form>
                 {% else %}
-                  <form method="post" action="/update_exposure">
-                    <input type="hidden" name="submission_id" value="{{ submission.id }}">
-                    <input type="hidden" name="new_exposure" value="public">
+                  <form class="exposure-form" data-submission-id="{{ submission.id }}" data-new-exposure="public">
                     <button type="submit" class="btn btn-primary">Private</button>
                   </form>
                 {% endif %}
               </td>
+              
               <td>
                 <form method="post" action="/edit_submission">
                   <input type="hidden" name="submission_id" value="{{ submission.id }}">

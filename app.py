@@ -10,7 +10,7 @@ from datetime import datetime
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash
-from flask import Flask, render_template, request, session, redirect, url_for, flash
+from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
 
 # Configure loguru
 try:
@@ -173,12 +173,9 @@ def update_exposure():
     )
 
     # Inform user for successful exposure update
-    message = {
-        'success': 'Exposure updated successfully!'
-    }
-    flash(message)
+    message = 'Exposure updated successfully!'
+    return jsonify({'success': message})
 
-    return redirect(url_for('index'))
 
 
 # |----- SIGN IN HTML AND POST BUTTON ROUTE ----|
