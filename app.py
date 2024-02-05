@@ -53,26 +53,14 @@ try:
         os.system('bash fbak.sh')
         initialize_logger()
 
-    # Obfuscate script.js into script.min.js
-    if args.obfuscate:
-        subprocess.run(
-            [
-                "powershell",
-                "node_modules/.bin/uglifyjs.ps1",
-                "static/js/script.js",
-                '-o',
-                'static/js/script.min.js',
-                '-m',
-                '-c',
-            ],
-                shell=True
-            )
-
-    # Declare a secret key for Flask application - it is needed for flash function
+    # Declare a secret key for Flask application; needed for Flask flash
     app.secret_key = secrets.token_hex(32)
 
     # Initialize the database and tables
     create_database_tables()
+
+    # Check users and submissions tables if empty else fill with mockups
+    insert_mockups()
 
     # Import location data from locations.json file into proper database tables
     location_update, flag = import_locations()
