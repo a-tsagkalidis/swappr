@@ -58,7 +58,12 @@ try:
     create_database_tables()
 
     # Check users and submissions tables if empty else fill with mockups
-    insert_mockups()
+    if args.mockup:
+        GENERATED_USERS, GENERATED_SUBMISSIONS = args.mockup
+        insert_mockups(
+            GENERATED_USERS,
+            GENERATED_SUBMISSIONS
+        )
 
     # Import location data from locations.json file into proper database tables
     location_update, flag = import_locations()

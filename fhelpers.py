@@ -155,26 +155,3 @@ def whitespace(text):
     capital ones
     '''
     return text.replace('_', ' ').title()
-
-
-def insert_mockups():
-    '''
-    Runs tload_mockusers.py and tload_mocksubmissions.py in case the
-    database corresponding tables are empty. The scripts are loading
-    mockups that are stored in tmockusers.json and tmocksubmisssions.json
-    respectively.
-    '''
-    tables_checklist = [
-        'users',
-        'submissions'
-    ]
-    counts = []
-    for table in tables_checklist:
-        query = f'''
-                SELECT COUNT(*) FROM {table};
-                '''
-        counts.append(cursor_fetch(query)[0]['COUNT(*)'])
-    
-    if counts[0] == 0 and counts[1] == 0:
-        import tload_mockusers
-        import tload_mocksubmissions

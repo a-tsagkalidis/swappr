@@ -38,3 +38,4 @@ Thumbs.db
 # Backup files
 /baklogs
 /bakdb
+/json.bak

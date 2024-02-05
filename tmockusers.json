@@ -1,107 +1,252 @@
 [
     {
         "user_id": 1,
-        "username": "camila",
-        "email": "camila@swappr.com"
+        "username": "admin",
+        "email": "admin@swappr.com"
     },
     {
         "user_id": 2,
-        "username": "edward",
-        "email": "edward@swappr.com"
+        "username": "jacksoncrawford",
+        "email": "jackson.crawford@swappr.com"
     },
     {
         "user_id": 3,
-        "username": "noah",
-        "email": "noah@swappr.com"
+        "username": "mateoconner",
+        "email": "mateo.conner@swappr.com"
     },
     {
         "user_id": 4,
-        "username": "lucas",
-        "email": "lucas@swappr.com"
+        "username": "mayaolson",
+        "email": "maya.olson@swappr.com"
     },
     {
         "user_id": 5,
-        "username": "caroline",
-        "email": "caroline@swappr.com"
+        "username": "avaholt",
+        "email": "ava.holt@swappr.com"
     },
     {
         "user_id": 6,
-        "username": "aurora",
-        "email": "aurora@swappr.com"
+        "username": "mayahodges",
+        "email": "maya.hodges@swappr.com"
     },
     {
         "user_id": 7,
-        "username": "ethan",
-        "email": "ethan@swappr.com"
+        "username": "davidwaters",
+        "email": "david.waters@swappr.com"
     },
     {
         "user_id": 8,
-        "username": "oliver",
-        "email": "oliver@swappr.com"
+        "username": "josephrichards",
+        "email": "joseph.richards@swappr.com"
     },
     {
         "user_id": 9,
-        "username": "miles",
-        "email": "miles@swappr.com"
+        "username": "jacksonferguson",
+        "email": "jackson.ferguson@swappr.com"
     },
     {
         "user_id": 10,
-        "username": "ruby",
-        "email": "ruby@swappr.com"
+        "username": "elijahneal",
+        "email": "elijah.neal@swappr.com"
     },
     {
         "user_id": 11,
-        "username": "jacob",
-        "email": "jacob@swappr.com"
+        "username": "olivermarsh",
+        "email": "oliver.marsh@swappr.com"
     },
     {
         "user_id": 12,
-        "username": "hazel",
-        "email": "hazel@swappr.com"
+        "username": "reaganthompson",
+        "email": "reagan.thompson@swappr.com"
     },
     {
         "user_id": 13,
-        "username": "claire",
-        "email": "claire@swappr.com"
+        "username": "jordanrice",
+        "email": "jordan.rice@swappr.com"
     },
     {
         "user_id": 14,
-        "username": "milesjr",
-        "email": "milesjr@swappr.com"
+        "username": "williamballard",
+        "email": "william.ballard@swappr.com"
     },
     {
         "user_id": 15,
-        "username": "nova",
-        "email": "nova@swappr.com"
+        "username": "evahughes",
+        "email": "eva.hughes@swappr.com"
     },
     {
         "user_id": 16,
-        "username": "lincoln",
-        "email": "lincoln@swappr.com"
+        "username": "elianabryant",
+        "email": "eliana.bryant@swappr.com"
     },
     {
         "user_id": 17,
-        "username": "ethanlor",
-        "email": "ethanlor@swappr.com"
+        "username": "daviddaniels",
+        "email": "david.daniels@swappr.com"
     },
     {
         "user_id": 18,
-        "username": "aria",
-        "email": "aria@swappr.com"
+        "username": "lucasbush",
+        "email": "lucas.bush@swappr.com"
     },
     {
         "user_id": 19,
-        "username": "nora",
-        "email": "nora@swappr.com"
+        "username": "quinnlambert",
+        "email": "quinn.lambert@swappr.com"
     },
     {
         "user_id": 20,
-        "username": "noramay",
-        "email": "noramay@swappr.com"
+        "username": "hannahwalters",
+        "email": "hannah.walters@swappr.com"
     },
     {
         "user_id": 21,
-        "username": "admin",
-        "email": "admin@swappr.com"
+        "username": "mateohale",
+        "email": "mateo.hale@swappr.com"
+    },
+    {
+        "user_id": 22,
+        "username": "laylamassey",
+        "email": "layla.massey@swappr.com"
+    },
+    {
+        "user_id": 23,
+        "username": "ezragriffith",
+        "email": "ezra.griffith@swappr.com"
+    },
+    {
+        "user_id": 24,
+        "username": "hunterklein",
+        "email": "hunter.klein@swappr.com"
+    },
+    {
+        "user_id": 25,
+        "username": "quinnjenkins",
+        "email": "quinn.jenkins@swappr.com"
+    },
+    {
+        "user_id": 26,
+        "username": "coleruiz",
+        "email": "cole.ruiz@swappr.com"
+    },
+    {
+        "user_id": 27,
+        "username": "bellamurray",
+        "email": "bella.murray@swappr.com"
+    },
+    {
+        "user_id": 28,
+        "username": "jacoblucas",
+        "email": "jacob.lucas@swappr.com"
+    },
+    {
+        "user_id": 29,
+        "username": "giannahines",
+        "email": "gianna.hines@swappr.com"
+    },
+    {
+        "user_id": 30,
+        "username": "gabrielhubbard",
+        "email": "gabriel.hubbard@swappr.com"
+    },
+    {
+        "user_id": 31,
+        "username": "dylanfox",
+        "email": "dylan.fox@swappr.com"
+    },
+    {
+        "user_id": 32,
+        "username": "miarose",
+        "email": "mia.rose@swappr.com"
+    },
+    {
+        "user_id": 33,
+        "username": "lucasgutierrez",
+        "email": "lucas.gutierrez@swappr.com"
+    },
+    {
+        "user_id": 34,
+        "username": "milessherman",
+        "email": "miles.sherman@swappr.com"
+    },
+    {
+        "user_id": 35,
+        "username": "calebhanson",
+        "email": "caleb.hanson@swappr.com"
+    },
+    {
+        "user_id": 36,
+        "username": "jaxonramsey",
+        "email": "jaxon.ramsey@swappr.com"
+    },
+    {
+        "user_id": 37,
+        "username": "kinsleymullins",
+        "email": "kinsley.mullins@swappr.com"
+    },
+    {
+        "user_id": 38,
+        "username": "carolinehiggins",
+        "email": "caroline.higgins@swappr.com"
+    },
+    {
+        "user_id": 39,
+        "username": "charlesgoodman",
+        "email": "charles.goodman@swappr.com"
+    },
+    {
+        "user_id": 40,
+        "username": "micahbishop",
+        "email": "micah.bishop@swappr.com"
+    },
+    {
+        "user_id": 41,
+        "username": "jackbeard",
+        "email": "jack.beard@swappr.com"
+    },
+    {
+        "user_id": 42,
+        "username": "isaacreed",
+        "email": "isaac.reed@swappr.com"
+    },
+    {
+        "user_id": 43,
+        "username": "graysonpearson",
+        "email": "grayson.pearson@swappr.com"
+    },
+    {
+        "user_id": 44,
+        "username": "averysalazar",
+        "email": "avery.salazar@swappr.com"
+    },
+    {
+        "user_id": 45,
+        "username": "nolanbriggs",
+        "email": "nolan.briggs@swappr.com"
+    },
+    {
+        "user_id": 46,
+        "username": "gabriellastevenson",
+        "email": "gabriella.stevenson@swappr.com"
+    },
+    {
+        "user_id": 47,
+        "username": "liambass",
+        "email": "liam.bass@swappr.com"
+    },
+    {
+        "user_id": 48,
+        "username": "bellareese",
+        "email": "bella.reese@swappr.com"
+    },
+    {
+        "user_id": 49,
+        "username": "aaronmccormick",
+        "email": "aaron.mccormick@swappr.com"
+    },
+    {
+        "user_id": 50,
+        "username": "alicehanson",
+        "email": "alice.hanson@swappr.com"
     }
 ]
