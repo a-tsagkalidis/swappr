@@ -6,7 +6,7 @@
 
 {% block main %}
 
-	<form action="/signup" method="post" id="signupForm" onsubmit="return validateSignUpForm()">
+	<form action="/signup" method="post" class="mb-5" id="signupForm" onsubmit="return validateSignUpForm()">
 		<div class="mb-3">
 			<input autocomplete="off" autofocus type="email" class="form-control mx-auto w-auto" name="email" placeholder="Email" required>
 		</div>
@@ -23,5 +23,9 @@
 			<input type="submit" class="form-control mx-auto w-auto"value="Sign Up">
 		</div>
 	</form>
+
+	<div class="pt-4">
+		<img class="svg-img" src="../static/images/house_02.svg">
+</div>
 
 {% endblock %}

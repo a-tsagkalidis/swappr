@@ -717,6 +717,9 @@ function applyExposureFormListener() {
                 new_exposure: newExposure
             },
             success: function() {
+				// Inform user about the updated exposure
+				alert('Exposure updated successfully!')
+
                 // Update button appearance
                 var button = form.find('button[type="submit"]');
                 if (newExposure === 'private') {
