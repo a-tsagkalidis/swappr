@@ -105,11 +105,11 @@ function validateSignUpForm() {
 	}
 
 	// // Ensure password is strong
-	// var passwordRegexStipulations = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[\w!@#$%^&*()_+]{8,}$/;
-	// if (!passwordRegexStipulations.test(password)) {
-	//     alert("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.");
-	//     return false;
-	// }
+	var passwordRegexStipulations = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[\w!@#$%^&*()_+]{8,}$/;
+	if (!passwordRegexStipulations.test(password)) {
+		alert("Password must be at least 8 characters long, including at least 1 uppercase letter, 1 lowercase letter, a decimal number, and a punctuation character.");
+		return false;
+	}
 
 	// Validation successfully passed
 	return true;
@@ -749,8 +749,3 @@ if (window.location.pathname === '/') {
 	// Get exposure button ready to be clicked
 	applyExposureFormListener();
 }
-
-
-
-
-

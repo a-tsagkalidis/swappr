@@ -32,14 +32,14 @@ def password_reset_validation(
         )
 
     # Ensure new password is strong
-    # if not strong_password(new_password):
-    #     raise ValueError(
-    #         '''
-    #         Password must be at least 8 characters long, including at least 1
-    #         uppercase letter, 1 lowercase letter, a decimal number, and a
-    #         punctuation character.
-    #         '''
-    #     )
+    if not strong_password(new_password):
+        raise ValueError(
+            '''
+            Password must be at least 8 characters long, including at least 1
+            uppercase letter, 1 lowercase letter, a decimal number, and a
+            punctuation character.
+            '''
+        )
 
     # Validation successfully passed
     return True

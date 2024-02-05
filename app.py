@@ -1,8 +1,9 @@
 import os
 import json
 import secrets
+import subprocess
 from loguru import logger
-from argparser import args
+from argparser import argparser
 from swapprfunctions import *
 from datetime import datetime
 from flask_limiter import Limiter
@@ -46,7 +47,7 @@ try:
     )
 
     # Run system file backup script - back ups database and logs
-    if args.backup:
+    if argparser.backup:
         logger.remove()
         os.system('bash fbak.sh')
         initialize_logger()
@@ -57,13 +58,13 @@ try:
     # Initialize the database and tables
     create_database_tables()
 
-    # Check users and submissions tables if empty else fill with mockups
-    if args.mockup:
-        GENERATED_USERS, GENERATED_SUBMISSIONS = args.mockup
-        insert_mockups(
-            GENERATED_USERS,
-            GENERATED_SUBMISSIONS
-        )
+    # Delete database and create/load mockup users and submissions for random testing
+    if argparser.mockupsgen and not argparser.premademockups:
+        insert_mockups(*argparser.mockupsgen)
+    
+    # Delete database and load premade mockup users and submissions for solid testing
+    if argparser.premademockups and not argparser.mockupsgen:
+        insert_mockups()
 
     # Import location data from locations.json file into proper database tables
     location_update, flag = import_locations()
@@ -131,7 +132,7 @@ def index():
 
 # |----- UPDATE EXPOSURE POST BUTTON ROUTE ----|
 @app.route('/update_exposure', methods=['POST'])
-@limiter.limit(f"{UPDATE_EXPOSURE_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{UPDATE_EXPOSURE_LIMIT}" if argparser.limiter else None)
 @login_required
 def update_exposure():
     # Get user data
@@ -171,7 +172,7 @@ def update_exposure():
 
 # |----- SIGN IN HTML AND POST BUTTON ROUTE ----|
 @app.route('/signup', methods=['GET', 'POST'])
-@limiter.limit(f"{SIGNUP_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{SIGNUP_LIMIT}" if argparser.limiter else None)
 def signup():
     if request.method == 'POST':
         # Get user submitted form data
@@ -292,7 +293,7 @@ def delayed_redirect():
 
 # |----- SIGNIN HTML AND POST BUTTON ROUTE ----|
 @app.route("/signin", methods=['GET', 'POST'])
-@limiter.limit(f"{SIGNIN_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{SIGNIN_LIMIT}" if argparser.limiter else None)
 def signin():
     # Forget any user_id
     session.clear()
@@ -384,7 +385,7 @@ def signout():
 
 # |----- SUBMIT HTML AND POST BUTTON ROUTE ----|
 @app.route('/submit', methods=['GET', 'POST'])
-@limiter.limit(f"{SUBMIT_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{SUBMIT_LIMIT}" if argparser.limiter else None)
 @login_required
 def submit():
     # Fetch cities for the initial rendering of the form
@@ -541,7 +542,7 @@ def submit():
 
 # |----- EDIT SUBMISSION HTML AND POST BUTTON ROUTE ----|
 @app.route('/edit_submission', methods=['POST'])
-@limiter.limit(f"{EDIT_SUBMISSION_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{EDIT_SUBMISSION_LIMIT}" if argparser.limiter else None)
 @login_required
 def edit_submission():
     # Fetch cities for the initial rendering of the form
@@ -604,7 +605,7 @@ def edit_submission():
 
 # |----- EDITED SUBMISSION SAVE AND DELETE POST BUTTON ROUTE ----|
 @app.route('/edited_submission', methods=['POST'])
-@limiter.limit(f"{EDIT_SUBMISSION_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{EDIT_SUBMISSION_LIMIT}" if argparser.limiter else None)
 @login_required
 def save_edit_submission():
     # Fetch cities for the initial rendering of the form
@@ -832,7 +833,7 @@ def get_regions():
 
 # |----- SEARCH HTML ROUTE ----|
 @app.route('/search', methods=['GET', 'POST'])
-@limiter.limit(f"{SEARCH_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{SEARCH_LIMIT}" if argparser.limiter else None)
 @login_required
 def search():
     # Fetch cities for the initial rendering of the form
@@ -1021,7 +1022,7 @@ def account():
 
 # |----- PASSWORD RESET POST BUTTON ROUTE ----|
 @app.route('/password_reset', methods=['POST'])
-@limiter.limit(f"{PASSWORD_RESET_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{PASSWORD_RESET_LIMIT}" if argparser.limiter else None)
 @login_required
 def password_reset():
     # Get user data
@@ -1095,7 +1096,7 @@ def password_reset():
 
 # |----- UPDATE USERNAME POST BUTTON ROUTE ----|
 @app.route('/update_username', methods=['POST'])
-@limiter.limit(f"{UPDATE_USERNAME_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{UPDATE_USERNAME_LIMIT}" if argparser.limiter else None)
 @login_required
 def update_username():
     # Get user data
@@ -1161,7 +1162,7 @@ def update_username():
 
 # |----- DELETE ACCOUNT POST BUTTON ROUTE ----|
 @app.route('/delete_account', methods=['POST'])
-@limiter.limit(f"{DELETE_ACCOUNT_LIMIT}" if args.limiter else None)
+@limiter.limit(f"{DELETE_ACCOUNT_LIMIT}" if argparser.limiter else None)
 @login_required
 def delete_account():
     # Get user data
@@ -1239,4 +1240,4 @@ def about():
 
 
 if __name__ == '__main__':
-    app.run(debug=True if args.debug else False)
+    app.run(debug=True if argparser.debug else False)
