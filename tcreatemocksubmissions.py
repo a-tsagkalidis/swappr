@@ -59,10 +59,6 @@ def create_mockups(
     '''
     Define the number of mockup users and submissions you want to create
     '''
-
-    # Initialize fictional name generator
-    names = name_generator.generate_name
-
     # A list of valid house types, square meters, bedrooms, bathrooms,
     # exposure, and primary submission statuses to be declared in the mockup
     # submission entry
