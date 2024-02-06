@@ -75,8 +75,8 @@ def create_mockups(*args):
         'detached_house',
         'mansion'
     ]
-    square_meters = [i for i in range(30, 160)]
-    rental = [ i for i in range(300, 1200)]
+    square_meters = [i for i in range(40, 120)]
+    rental = [ i for i in range(300, 900)]
     bedrooms = [i for i in range(1, 4)]
     bathrooms = [i for i in range(1, 2)]
     exposure = 'public'
@@ -305,8 +305,8 @@ def insert_mockups(*args):
         mockup_users = 'tmockusers.json'
         mockup_submissions = 'tmocksubmissions.json'
     else:
-        mockup_users = 'json.bak/tmockusers.json.bak'
-        mockup_submissions = 'json.bak/tmocksubmissionsthess.json.bak'
+        mockup_users = 'bak.json/tmockusers.json.bak'
+        mockup_submissions = 'bak.json/tmocksubmissionsthess.json.bak'
     load_mockup_users(mockup_users)
     load_mockup_submissions(mockup_submissions)
         

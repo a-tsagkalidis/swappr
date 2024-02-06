@@ -1,5 +1,14 @@
 from fhelpers import cursor_execute, cursor_fetch, get_list_of_values, check_submitted_location
 
+SQUARE_METERS_MIN = 30
+SQUARE_METERS_MAX = 200
+RENTAL_MIN = 100
+RENTAL_MAX = 2000
+BEDROOMS_MIN = 1
+BEDROOMS_MAX = 4
+BATHROOMS_MIN = 1
+BATHROOMS_MAX = 2
+
 
 def validate_submitted_digits(square_meters, rental, bedrooms, bathrooms):
     '''
@@ -9,26 +18,26 @@ def validate_submitted_digits(square_meters, rental, bedrooms, bathrooms):
     must_be_numbers = [
         {
             "form_data": square_meters,
-            "min": 0,
-            "max": 1000,
+            "min": SQUARE_METERS_MIN,
+            "max": SQUARE_METERS_MAX,
             "field_name": "Square Meters"
         },
         {
             "form_data": rental,
-            "min": 0,
-            "max": 10000,
+            "min": RENTAL_MIN,
+            "max": RENTAL_MAX,
             "field_name": "Rental"
         },
         {
             "form_data": bedrooms,
-            "min": 0,
-            "max": 10,
+            "min": BEDROOMS_MIN,
+            "max": BEDROOMS_MAX,
             "field_name": "Bedrooms"
         },
         {
             "form_data": bathrooms,
-            "min": 0,
-            "max": 10,
+            "min": BATHROOMS_MIN,
+            "max": BATHROOMS_MAX,
             "field_name": "Bathrooms"
         },
     ]

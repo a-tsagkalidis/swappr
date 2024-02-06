@@ -53,9 +53,9 @@
           
             {% for message in messages %}
               {% if message.success %}
-                <div id="flashMessage" class="success" role="alert">{{ message.success }}</div>
+                <div id="flashMessage" class="flash-success" role="alert">{{ message.success }}</div>
               {% elif message.error %}
-                <div id="flashMessage" class="error" role="alert">{{ message.error }}</div>
+                <div id="flashMessage" class="flash-error" role="alert">{{ message.error }}</div>
               {% endif %}
             {% endfor %}
           
@@ -63,13 +63,13 @@
       {% endwith %}
 
       {% if error %}
-        <div id="flashMessage" class="error" role="alert">{{ error }}</div>
+        <div id="flashMessage" class="flash-error" role="alert">{{ error }}</div>
       {% endif %}
       {% if warning %}
-        <div id="flashMessage" class="warning" role="alert">{{ warning }}</div>
+        <div id="flashMessage" class="flash-warning" role="alert">{{ warning }}</div>
       {% endif %}
       {% if success %}
-        <div id="flashMessage" class="success" role="alert">{{ success }}</div>
+        <div id="flashMessage" class="flash-success" role="alert">{{ success }}</div>
       {% endif %}
     </div>
 
@@ -87,7 +87,8 @@
   <button onclick="topFunction()" id="top-button" title="Go to top">Back to top</button>
 
   <!-- Bootstrap JS and dependencies -->
-  <script src="../static/js/jquery.min.js"></script>
+  <script src="../static/js/jquery.js"></script>
+  <script src="../static/js/jquery.validate.js"></script>
   <script src="../static/js/popper.min.js"></script>
   <script src="../static/js/bootstrap.js"></script>
   <script src="../static/js/nouislider.js"></script>

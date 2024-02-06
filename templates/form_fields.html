@@ -31,22 +31,22 @@
 <div class="row g-4 mb-4">
   <div class="col-md-3 mb-4">
     <label for="squareMeters" class="form-label">Square Meters (m&#178;)</label>
-    <input type="number" class="form-control" id="squareMeters" name="squareMeters" min="0" max="1000" value="{{ submission.square_meters }}" placeholder="0 to 1000m&#178;" required>
+    <input type="number" class="form-control" id="squareMeters" name="squareMeters" min="30" max="200" value="{{ submission.square_meters }}" placeholder="30 to 200&#178;" required>
   </div>
 
   <div class="col-md-3 mb-4">
     <label for="rental" class="form-label">Rental (&euro;)</label>
-    <input type="number" class="form-control" id="rental" name="rental" min="0" max="10000" value="{{ submission.rental }}" placeholder="0 to &euro;10000" required>
+    <input type="number" class="form-control" id="rental" name="rental" min="100" max="2000" value="{{ submission.rental }}" placeholder="100 to &euro;2000" required>
   </div>
 
   <div class="col-md-3 mb-4">
     <label for="bedrooms" class="form-label">Bedrooms</label>
-    <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="0" max="10" value="{{ submission.bedrooms }}" placeholder="0 to 10" required>
+    <input type="number" class="form-control" id="bedrooms" name="bedrooms" min="1" max="4" value="{{ submission.bedrooms }}" placeholder="1 to 4" required>
   </div>
 
   <div class="col-md-3 mb-4">
     <label for="bathrooms" class="form-label">Bathrooms</label>
-    <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="0" max="10" value="{{ submission.bathrooms }}" placeholder="0 to 10" required>
+    <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="1" max="2" value="{{ submission.bathrooms }}" placeholder="1 to 2" required>
   </div>
 </div>
 

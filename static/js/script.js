@@ -1,3 +1,14 @@
+// Global variables for input that require numbers
+const squareMetersMin = 30;
+const squareMetersMax = 200;
+const rentalMin = 100;
+const rentalMax = 2000;
+const bedroomsMin = 1;
+const bedroomsMax = 4;
+const bathroomsMin = 1;
+const bathroomsMax = 2;
+
+
 /** ||||| [0.0] @all ROUTES COMMON HELPERS ||||| */
 // ----- [0.1] BACK-TO-TOP BUTTON ----- //
 /** [0.1.1]
@@ -228,22 +239,22 @@ function validateSubmitForm() {
 	}
 
 	// Ensure countable inputs are within limits
-	if (squareMeters < 0 || squareMeters > 1000) {
+	if (squareMeters < squareMetersMin || squareMeters > squareMetersMax) {
 		alert('Invalid square meters');
 		return false;
 	}
 
-	if (rental < 0 || rental > 10000) {
+	if (rental < rentalMin || rental > rentalMax) {
 		alert('Invalid rental value');
 		return false;
 	}
 
-	if (bedrooms < 0 || bedrooms > 10) {
+	if (bedrooms < bedroomsMin || bedrooms > bedroomsMax) {
 		alert('Invalid bedroom quantity');
 		return false;
 	}
 
-	if (bathrooms < 0 || bathrooms > 10) {
+	if (bathrooms < bathroomsMin || bathrooms > bathroomsMax) {
 		alert('Invalid bathroom quantity');
 		return false;
 	}
@@ -255,56 +266,57 @@ function validateSubmitForm() {
 
 // ----- [3.2] QUANTITY LIMITER VALIDATOR ----- //
 /** [3.2.1]
- * Function to enforce min and max values. It is called in the code later in
- * in function [3.2.3].
+ * jQuery function validates @submit and @edit_submisson forms.
+ * It is called when id #submitForm is present in the html
  */
-function enforceMinMax(input, min, max) {
-	var value = parseInt(input.value, 10);
-	if (isNaN(value) || value < min) {
-		input.value = min;
-	} else if (value > max) {
-		input.value = max;
-	}
-}
+$(
+    function validateFormNumericFields() {
+        $("#submitForm").validate(
+            {
+                rules: 
+                {
+                    squareMeters: 
+                    {
+                        range:[squareMetersMin, squareMetersMax],
+                        required: true,
+                        number: true
+                    },
+                    rental: 
+                    {
+                        range:[rentalMin, rentalMax],
+                        required: true,
+                        number: true
+                    },
+                    bedrooms: 
+                    {
+                        range:[bedroomsMin, bedroomsMax],
+                        required: true,
+                        number: true
+                    },
+                    bathrooms: 
+                    {
+                        range:[bathroomsMin, bathroomsMax],
+                        required: true,
+                        number: true
+                    },
+                    city:
+                    {
+                        required: true,
+                    },
+                    municipality:
+                    {
+                        required: true,
+                    },
+                    region:
+                    {
+                        required: true,
+                    },
+                }
+            }
+        );
+    }
+);
 
-
-/** [3.2.2]
- * Function for handling backspace key for input fields. It is called in [3.4]. 
- */
-function handleBackspace(input, minValue) {
-	input.addEventListener('keydown', function (event) {
-		if (event.key === 'Backspace' && parseInt(input.value, 10) === minValue) {
-			input.value = '';  // Clear the input
-		}
-	});
-}
-
-
-/** [3.2.3]
- * Function setting limit boundries for input fields that require digits.
- * It is called in [3.4] 
- */
-function limitFormFields() {
-	// Event listener for "squareMeters" input
-	document.getElementById('squareMeters').addEventListener('input', function () {
-		enforceMinMax(this, 0, 1000);
-	});
-
-	// Event listener for "rental" input
-	document.getElementById('rental').addEventListener('input', function () {
-		enforceMinMax(this, 0, 10000);
-	});
-
-	// Event listener for "bedrooms" input
-	document.getElementById('bedrooms').addEventListener('input', function () {
-		enforceMinMax(this, 0, 10);
-	});
-
-	// Event listener for "bathrooms" input
-	document.getElementById('bathrooms').addEventListener('input', function () {
-		enforceMinMax(this, 0, 10);
-	});
-}
 
 
 // ----- [3.3] DYNAMIC SELECT OPTIONS -----//
@@ -399,21 +411,13 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 }
 
 
+
 // ----- [3.4] EXECUTES WHEN SUBMIT OR EDIT_SUBMISSION ROUTES LOAD -----//
 // Execute the following code only for submit and edit_submission routes
 if (
 	window.location.pathname === '/submit' ||
 	window.location.pathname === '/edit_submission'
 ) {
-	// Ensure input fields are within limits
-	limitFormFields()
-
-	// Ensure backspace for the input fields that will work properly
-	handleBackspace(document.getElementById('bedrooms'), 0);
-	handleBackspace(document.getElementById('bathrooms'), 0);
-	handleBackspace(document.getElementById('squareMeters'), 0);
-	handleBackspace(document.getElementById('rental'), 0);
-
 	// Initialize location selectors
 	initializeLocationSelectors(
 		'city',
@@ -460,8 +464,8 @@ function loadNoUiSliders() {
 
 	// Create dual slider for square meters
 	noUiSlider.create(squareMetersSlider, {
-		start: ['0', '1000'],
-		range: { min: 0, max: 1000 },
+		start: [squareMetersMin, squareMetersMax],
+		range: { min: squareMetersMin, max: squareMetersMax },
 		step: 5,
 		tooltips: false,
 		format: createSliderFormat()
@@ -488,8 +492,8 @@ function loadNoUiSliders() {
 
 	// Create dual slider for rental
 	noUiSlider.create(rentalSlider, {
-		start: ['0', '10000'],
-		range: { min: 0, max: 10000 },
+		start: [rentalMin, rentalMax],
+		range: { min: rentalMin, max: rentalMax },
 		step: 50,
 		tooltips: false,
 		format: createSliderFormat()
@@ -516,8 +520,8 @@ function loadNoUiSliders() {
 
 	// Create dual slider for bedrooms
 	noUiSlider.create(bedroomsSlider, {
-		start: ['0', '10'],
-		range: { min: 0, max: 10 },
+		start: [bedroomsMin, bedroomsMax],
+		range: { min: bedroomsMin, max: bedroomsMax },
 		step: 1,
 		tooltips: false,
 		format: createSliderFormat()
@@ -544,8 +548,8 @@ function loadNoUiSliders() {
 
 	// Create dual slider for bathrooms
 	noUiSlider.create(bathroomsSlider, {
-		start: ['0', '10'],
-		range: { min: 0, max: 10 },
+		start: [bathroomsMin, bathroomsMax],
+		range: { min: bathroomsMin, max: bathroomsMax },
 		step: 1,
 		tooltips: false,
 		format: createSliderFormat()
@@ -636,6 +640,7 @@ if (window.location.pathname === '/search') {
 		'region'
 	);
 
+    // Call function for AJAX search result to operate
 	asynchronousSearch()
 }
 

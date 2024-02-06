@@ -71,50 +71,54 @@ ol li {
 
 
 
-
 /* Custom messages */
-.info,
-.success,
-.warning,
-.error,
-.validation {
+.flash-info,
+.flash-success,
+.flash-warning,
+.flash-error,
+.flash-validation {
 	border-radius: 13px;
 	margin: auto;
 	width: max-content;
 	padding: 15px 10px 15px 3rem;
 	background-repeat: no-repeat;
 	background-position: 10px center;
-	background-size: 30px;
+	background-size: 2rem;
 }
 
-.info {
+.flash-info {
 	color: #00529B;
 	background-color: #BDE5F8;
 	background-image: url('https://i.imgur.com/ilgqWuX.png');
 }
 
-.success {
+.flash-success {
 	color: #4F8A10;
 	background-color: #DFF2BF;
 	background-image: url(../images/success.svg);
 }
 
-.warning {
+.flash-warning {
 	color: #9F6000;
 	background-color: #FEEFB3;
 	background-image: url(../images/warning.svg);
 }
 
-.error {
+.flash-error {
 	color: #D8000C;
 	background-color: #FFBABA;
 	background-image: url(../images/error.svg);
 }
 
-.validation {
+.flash-validation {
 	color: #D63301;
 	background-color: #FFCCBA;
 	background-image: url('https://i.imgur.com/GnyDvKN.png');
+}
+
+.error
+{
+	color: #D8000C;
 }
 
 
@@ -230,6 +234,9 @@ td {
 	padding: 0;
 }
 
+
+
+/* Custom svg image */
 .svg-img {
 	width: 15em;
 }

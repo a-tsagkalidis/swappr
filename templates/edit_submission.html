@@ -19,8 +19,8 @@
     </div>
     <form action="/edited_submission" method="post" id="submitForm" onsubmit="return validateSubmitForm()">
       <input type="hidden" name="submission_id" value="{{ submission.id }}">
+      
       {% include "form_fields.html" %}
-      <!-- Add extra fields if needed -->
 
       <!-- Two buttons for either save the edited submission or delete it -->
       <div class="form-group">
