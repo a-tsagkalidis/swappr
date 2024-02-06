@@ -1,4 +1,3 @@
-import os
 import json
 import secrets
 import subprocess
@@ -49,7 +48,7 @@ try:
     # Run system file backup script - back ups database and logs
     if argparser.backup:
         logger.remove()
-        os.system('bash fbak.sh')
+        subprocess.run(['bash', 'fbak.sh'])
         initialize_logger()
 
     # Declare a secret key for Flask application; needed for Flask flash

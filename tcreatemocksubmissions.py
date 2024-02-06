@@ -306,7 +306,7 @@ def insert_mockups(*args):
         mockup_submissions = 'tmocksubmissions.json'
     else:
         mockup_users = 'json.bak/tmockusers.json.bak'
-        mockup_submissions = 'json.bak/tmocksubmissions.json.bak'
+        mockup_submissions = 'json.bak/tmocksubmissionsthess.json.bak'
     load_mockup_users(mockup_users)
     load_mockup_submissions(mockup_submissions)
         

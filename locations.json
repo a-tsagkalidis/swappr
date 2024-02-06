@@ -26,7 +26,7 @@
 			"dioikitirio": "54631",
 			"ekklisiastiki_scholi": "54250",
 			"eptapyrgio": "54634",
-			"ergatikes_katikoies_xirokrinis": "54629",
+			"ergatikes_katoikies_xirokrinis": "54629",
 			"evzonon_-_gallikos_institouto": "54639",
 			"eukleidis": "54639",
 			"ippokrateio": "54642",
@@ -152,7 +152,7 @@
 			"votsi": "55134",
 			"vyzantio": "55133",
 			"derkon": "55132",
-			"ergatikes_katikoies_foinika": "55135",
+			"ergatikes_katoikies_foinika": "55135",
 			"karampournaki": "55131",
 			"katirli": "55132",
 			"kentro": "55133",
@@ -315,7 +315,7 @@
 			"anthoupoli": "41335",
 			"emporiko_parko_ag._marinas": "41336",
 			"exi dromoi": "41222",
-			"ergatikes_katikoies_neapolis": "41334",
+			"ergatikes_katoikies_neapolis": "41334",
 			"ipeirotika": "41335",
 			"ippokratis": "41447",
 			"kazantzidika": "41222",
@@ -338,22 +338,31 @@
 	},
 	{
 		"id": 19,
-		"city": "larissa",
-		"municipality": "tyrnavos",
-		"region": {
-			"ampelonas": "41335",
-			"vriotopos": "41336"
-		}
-	},
-	{
-		"id": 20,
 		"city": "xanthi",
 		"municipality": "xanthi",
 		"region": {
-			"mexicana": "41335",
-			"plateia": "41336",
-			"chrysa": "41334",
-			"ektenopol": "41221"
+			"agios_vlasios": "67132",
+			"agios_georgios_-_kapnemporoi": "67132",
+			"agios_nikolaos": "67131",
+			"asa_-_parko_megalou_aleksandrou_-_kaskanes": "67131",
+			"astikos_synoikismos": "67133",
+			"gymnastirio": "67132",
+			"dodeka_apostoloi": "67131",
+			"kapnapothikes_-_KTEL": "67131",
+			"kentro": "67132",
+			"kypseli": "67133",
+			"lachanokipoi_-_petrelaioapothikes": "67131",
+			"mexicana": "67133",
+			"palia_astynomia": "67133",
+			"palia_poli": "67132",
+			"palies_viotechnies_-_kapnomagaza": "67131",
+			"palies_ergatikes_katoikies": "67131",
+			"panorama_-_ydragogeio": "67132",
+			"periastiko_alsos": "67132",
+			"remvi": "67131",
+			"samakov": "67132",
+			"stathmos": "67131",
+			"chrysa": "67133"
 		}
 	}
 ]
