@@ -48,7 +48,7 @@ dismissFlashMessage(2000)
 
 
 /** ||||| [1.0] @signup ROUTE ||||| */
-// ----- [1.1] SIGN UP FORM VALIDATION ----- //
+// ----- [1.1] SIGNUP FORM VALIDATION ----- //
 /** [1.1.1]
  * A function that fetches all the user input from the filled input fields and
  * ensures they are of proper and valid values.
@@ -127,9 +127,100 @@ function validateSignUpForm() {
 }
 
 
+/** [1.1.2]
+ * A jQuery function that validates realtime the signup route form
+ */
+function jQueryValidateSignUpForm() {
+	$(
+		function()
+		{
+			jQuery.validator.addMethod(
+				"password",
+				function(value, element)
+				{
+					var passwordRegexStipulations = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[\w!@#$%^&*()_+]{8,}$/;
+					var result = this.optional(element) ||
+					value.length >= 8 && 
+					passwordRegexStipulations.test(value);
+					return result;
+				},
+				`Password must be at least 8 characters long containing at least
+				an uppercase, a lowercase, a symbol, and a number.`
+			);
+
+			jQuery.validator.addMethod(
+				"text",
+				function(value, element)
+				{
+					var invalidCharactersRegex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\s]/;
+					var result = this.optional(element) ||
+					value.length >= 3 && 
+					!invalidCharactersRegex.test(value);
+					return result;
+				},
+				`Username must be at least 3 characters long and cannot contain
+				punctuation characters or whitespaces.`
+			);
+			
+			$("form").validate({
+				rules: 
+				{
+					email:
+					{
+						required: true
+					},
+					username:
+					{
+						required: true
+					},
+					password:
+					{
+						required: true
+					},
+					confirmPassword:
+					{
+						required: true,
+						equalTo: "#password"
+					}
+				},
+				messages:
+				{
+					email: {
+						required: "This field is required",
+						email: "Please enter a valid email address, example: you@yourdomain.com"
+					},
+					username:
+					{
+						required: "This field is required",
+					},
+					password:
+					{
+						required: "This field is required",
+					},
+					confirmPassword: {
+						required: "This field is required",
+						equalTo: "Please enter the same password as above"
+					}
+				},
+			});
+		}
+	);
+}
+
+
+// ----- [1.2] EXECUTES WHEN SIGNUP ROUTE LOADS -----//
+// Execute the following code only for signup route
+if (
+	window.location.pathname === '/signup'
+) {
+	jQueryValidateSignUpForm()
+}
+
+
+
 
 /** ||||| [2.0] @signin ROUTE ||||| */
-// ----- [2.1] SIGN IN FORM VALIDATION ----- //
+// ----- [2.1] SIGNIN FORM VALIDATION ----- //
 /** [2.1.1]
  * A function that fetches all the user input from the filled input fields and
  * ensures they are of proper and valid values.
@@ -140,19 +231,19 @@ function validateSignInForm() {
 	var username = signinForm.elements["username"].value;
 	var password = signinForm.elements["password"].value;
 
-	// Ensure fields are not blank
+	// Ensure email and username fields are not blank
 	if (username === "" && password === "") {
 		alert("Please fill in your username and password.");
 		return false;
 	}
 
-	// Ensure fields are not blank
+	// Ensure email field is not blank
 	if (username === "") {
 		alert("Please fill in your username.");
 		return false;
 	}
 
-	// Ensure fields are not blank
+	// Ensure username field is not blank
 	if (password === "") {
 		alert("Please fill in your password.");
 		return false;
@@ -167,6 +258,65 @@ function validateSignInForm() {
 
 	// Validation successufully passed
 	return true;
+}
+
+
+/** [2.1.2]
+ * A jQuery function that validates realtime the signin route form
+ */
+function jQueryValidateSignInForm() {
+	$(
+		function()
+		{
+			jQuery.validator.addMethod(
+				"text",
+				function(value, element)
+				{
+					var invalidCharactersRegex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\s]/;
+					var result = this.optional(element) ||
+					value.length >= 3 && 
+					!invalidCharactersRegex.test(value);
+					return result;
+				},
+				`Your username is at least 3 characters long and does not contain
+				punctuation characters or whitespaces.`
+			);
+			
+			$("form").validate({
+				rules: 
+				{
+					username:
+					{
+						required: true
+					},
+					password:
+					{
+						required: true
+					}
+				},
+				messages: 
+				{
+					username:
+					{
+						required: "This field is required",
+					},
+					password:
+					{
+						required: "This field is required",
+					}
+				},
+			});
+		}
+	);
+}
+
+
+// ----- [2.2] EXECUTES WHEN SIGNIN ROUTE LOADS -----//
+// Execute the following code only for signin route
+if (
+	window.location.pathname === '/signin'
+) {
+	jQueryValidateSignInForm()
 }
 
 
