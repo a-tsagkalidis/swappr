@@ -126,6 +126,8 @@ def check_submitted_location(submitted_value, valid_values, error_message):
     '''
     if submitted_value not in valid_values:
         raise ValueError(error_message)
+    else:
+        return True
 
 
 # |----- ROUTING HELPING FUNCTIONS ----| 

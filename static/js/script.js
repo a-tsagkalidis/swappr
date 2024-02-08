@@ -1,4 +1,4 @@
-// Global variables for input that require numbers
+// Constant variables for inputs that require numbers
 const squareMetersMin = 30;
 const squareMetersMax = 200;
 const rentalMin = 100;
