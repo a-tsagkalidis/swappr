@@ -160,11 +160,11 @@
 <!-- Exposure radio buttons 1-row -->
 <div class="form-group">
   <div class="form-check form-check-inline mb-4">
-    <input type="radio" class="form-check-input" id="publicExposure" name="exposure" value="public" {% if submission.exposure == 'public' %}checked{% endif %} checked>
+    <input type="radio" class="form-check-input" id="publicExposure" name="exposure" value="public" required {% if submission.exposure == 'public' %}checked{% endif %} checked>
     <label class="form-check-label" for="publicExposure">Public</label>
   </div>
   <div class="form-check form-check-inline">
-    <input type="radio" class="form-check-input" id="privateExposure" name="exposure" value="private" {% if submission.exposure == 'private' %}checked{% endif %}>
+    <input type="radio" class="form-check-input" id="privateExposure" name="exposure" value="private" required {% if submission.exposure == 'private' %}checked{% endif %}>
     <label class="form-check-label" for="privateExposure">Private</label>
   </div>
 </div>
@@ -185,7 +185,7 @@
   <div class="form-check form-check-inline mb-4">
     {% if not user_submissions_exist or submission.primary_submission == 1 %}
       <input type="checkbox" class="form-check-input" id="primarySubmission" name="primarySubmission" checked disabled>
-      <input type="hidden" id="primarySubmissionLocked" name="primarySubmissionLocked" value="True" checked>
+      <input type="hidden" id="primarySubmissionLocked" name="primarySubmissionLocked" value="True" checked required>
       <label class="form-check-label" for="primarySubmission">
         This is your primary submitted house. To change it create
         a new submission or edit an existing one as your new primary.

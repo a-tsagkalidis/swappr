@@ -424,8 +424,10 @@ def submit():
                 bathrooms,
                 city,
                 municipality,
-                region
-                # TODO add destination location details validation
+                region,
+                city_destination,
+                municipality_destination,
+                region_destination
                 # TODO add primary_submission (and locked) validation
             )
 
@@ -646,8 +648,11 @@ def save_edit_submission():
                 bathrooms,
                 city,
                 municipality,
-                region
-                # TODO add destination location details validation
+                region,
+                city_destination,
+                municipality_destination,
+                region_destination
+                # TODO add primary_su
                 # TODO add primary submission (and locked) validation
             )
 

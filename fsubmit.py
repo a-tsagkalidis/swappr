@@ -85,7 +85,12 @@ def validate_submitted_digits(square_meters, rental, bedrooms, bathrooms):
             )
 
 
-def validate_submitted_location(city, municipality, region):
+def validate_submitted_location_or_destination(
+        city,
+        municipality,
+        region,
+        destination=False,
+    ):
     '''
     Regarding location data, this function checks if the select
     option values are actually valid by comparing them with the
@@ -107,7 +112,12 @@ def validate_submitted_location(city, municipality, region):
     municipalities = get_list_of_values(municipalities_json, 'municipality')
     regions = get_list_of_values(regions_json, 'region')
 
-    # Validate submitted location values
+    if destination:
+        cities.append('any')
+        municipalities.append('any')
+        regions.append('any')
+
+    # Validate submitted location or destination values
     check_submitted_location(
         city,
         cities,
@@ -136,6 +146,9 @@ def submission_validation(
         city,
         municipality,
         region,
+        city_destination,
+        municipality_destination,
+        region_destination
     ):
     '''
     Checks for valid input form in submit/edited_submission routes.
@@ -171,10 +184,27 @@ def submission_validation(
         raise ValueError('Invalid exposure and/or house type.')
 
     # Ensure submitted digit-required values or value ranges are valid
-    validate_submitted_digits(square_meters, rental, bedrooms, bathrooms)
+    validate_submitted_digits(
+        square_meters,
+        rental,
+        bedrooms,
+        bathrooms
+    )
 
     # Ensure submitted location values are valid
-    validate_submitted_location(city, municipality, region)
+    validate_submitted_location_or_destination(
+        city,
+        municipality,
+        region
+    )
+
+    # Ensure submitted destination values are valid
+    validate_submitted_location_or_destination(
+        city_destination,
+        municipality_destination,
+        region_destination,
+        destination=True
+    )
 
     return True
 

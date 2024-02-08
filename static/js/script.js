@@ -43,7 +43,7 @@ function dismissFlashMessage(timeout) {
 }
 
 // Call the function that dismisses Flask flash messages after given time 
-dismissFlashMessage(2000)
+dismissFlashMessage(4000)
 
 
 
@@ -162,12 +162,13 @@ function jQueryValidateSignUpForm() {
 				punctuation characters or whitespaces.`
 			);
 			
-			$("form").validate({
+			$("#signupForm").validate({
 				rules: 
 				{
 					email:
 					{
-						required: true
+						required: true,
+						email: true
 					},
 					username:
 					{
@@ -201,7 +202,7 @@ function jQueryValidateSignUpForm() {
 						required: "This field is required",
 						equalTo: "Please enter the same password as above"
 					}
-				},
+				}
 			});
 		}
 	);
@@ -210,12 +211,21 @@ function jQueryValidateSignUpForm() {
 
 // ----- [1.2] EXECUTES WHEN SIGNUP ROUTE LOADS -----//
 // Execute the following code only for signup route
-if (
-	window.location.pathname === '/signup'
-) {
-	jQueryValidateSignUpForm()
-}
+$(document).ready(function() {
+	if (
+		window.location.pathname === '/signup'
+	) {
+		jQueryValidateSignUpForm()
+	}
 
+	// Re-execute validation if form is submitted or changed
+	$("#signupForm").on("submit", function() {
+		jQueryValidateSignUpForm();
+	});
+	$("#signupForm").on("change", function() {
+		jQueryValidateSignUpForm();
+	});
+});
 
 
 
@@ -282,7 +292,7 @@ function jQueryValidateSignInForm() {
 				punctuation characters or whitespaces.`
 			);
 			
-			$("form").validate({
+			$("#signinForm").validate({
 				rules: 
 				{
 					username:
@@ -304,7 +314,7 @@ function jQueryValidateSignInForm() {
 					{
 						required: "This field is required",
 					}
-				},
+				}
 			});
 		}
 	);
@@ -313,11 +323,22 @@ function jQueryValidateSignInForm() {
 
 // ----- [2.2] EXECUTES WHEN SIGNIN ROUTE LOADS -----//
 // Execute the following code only for signin route
-if (
-	window.location.pathname === '/signin'
-) {
-	jQueryValidateSignInForm()
-}
+$(document).ready(function() {
+	if (
+		window.location.pathname === '/signin'
+	) {
+		jQueryValidateSignInForm()
+	}
+
+	// Re-execute validation if form is submitted or changed
+	$("#signinForm").on("submit", function() {
+		jQueryValidateSignInForm();
+	});
+	$("#signinForm").on("change", function() {
+		jQueryValidateSignInForm();
+	});
+});
+
 
 
 
@@ -419,53 +440,138 @@ function validateSubmitForm() {
  * jQuery function validates @submit and @edit_submisson forms.
  * It is called when id #submitForm is present in the html
  */
-$(
-    function validateFormNumericFields() {
-        $("#submitForm").validate(
-            {
-                rules: 
-                {
-                    squareMeters: 
-                    {
-                        range:[squareMetersMin, squareMetersMax],
-                        required: true,
-                        number: true
-                    },
-                    rental: 
-                    {
-                        range:[rentalMin, rentalMax],
-                        required: true,
-                        number: true
-                    },
-                    bedrooms: 
-                    {
-                        range:[bedroomsMin, bedroomsMax],
-                        required: true,
-                        number: true
-                    },
-                    bathrooms: 
-                    {
-                        range:[bathroomsMin, bathroomsMax],
-                        required: true,
-                        number: true
-                    },
-                    city:
-                    {
-                        required: true,
-                    },
-                    municipality:
-                    {
-                        required: true,
-                    },
-                    region:
-                    {
-                        required: true,
-                    },
-                }
-            }
-        );
-    }
-);
+function jQueryValidateSubmitForm() {
+	$(
+		function() {
+			$("#submitForm").validate(
+				{
+					rules: 
+					{
+						squareMeters: 
+						{
+							range:[squareMetersMin, squareMetersMax],
+							required: true,
+							number: true
+						},
+						rental: 
+						{
+							range:[rentalMin, rentalMax],
+							required: true,
+							number: true
+						},
+						bedrooms: 
+						{
+							range:[bedroomsMin, bedroomsMax],
+							required: true,
+							number: true
+						},
+						bathrooms: 
+						{
+							range:[bathroomsMin, bathroomsMax],
+							required: true,
+							number: true
+						},
+						city:
+						{
+							required: true,
+						},
+						municipality:
+						{
+							required: true,
+						},
+						region:
+						{
+							required: true,
+						},
+						cityDestination:
+						{
+							required: true,
+						},
+						municipalityDestination:
+						{
+							required: true,
+						},
+						regionDestination:
+						{
+							required: true,
+						},
+						exposure:
+						{
+							required: true
+						},
+						primarySubmissionLocked:
+						{
+							required: true
+						}
+					},
+					messages:
+					{
+						squareMeters:
+						{
+							required: "This field is required",
+							min: `Should be greater than or equal to ${squareMetersMin}`,
+							max: `Should be less than or equal to ${squareMetersMax}`,
+							number: `Choose between ${squareMetersMin} and ${squareMetersMax}`
+						},
+						rental:
+						{
+							required: "This field is required",
+							min: `Should be greater than or equal to ${rentalMin}`,
+							max: `Should be less than or equal to ${rentalMax}`,
+							number: `Choose between ${rentalMin} and ${rentalMax}`
+						},
+						bedrooms:
+						{
+							required: "This field is required",
+							min: `Should be greater than or equal to ${bedroomsMin}`,
+							max: `Should be less than or equal to ${bedroomsMax}`,
+							number: `Choose between ${bedroomsMin} and ${bedroomsMax}`
+						},
+						bathrooms:
+						{
+							required: "This field is required",
+							min: `Should be greater than or equal to ${bathroomsMin}`,
+							max: `Should be less than or equal to ${bathroomsMax}`,
+							number: `Choose between ${bathroomsMin} and ${bathroomsMax}`
+						},
+						city:
+						{
+							required: "This field is required"
+						},
+						municipality:
+						{
+							required: "This field is required"
+						},
+						region:
+						{
+							required: "This field is required"
+						},
+						cityDestination:
+						{
+							required: "This field is required"
+						},
+						municipalityDestination:
+						{
+							required: "This field is required"
+						},
+						regionDestination:
+						{
+							required: "This field is required"
+						},
+						exposure:
+						{
+							required: "This field is required"
+						},
+						primarySubmissionLocked:
+						{
+							required: "This field is required"
+						}
+					}
+				}
+			);
+		}
+	);
+}
 
 
 
@@ -561,27 +667,39 @@ function initializeLocationSelectors(cityId, municipalityId, regionId) {
 }
 
 
-
 // ----- [3.4] EXECUTES WHEN SUBMIT OR EDIT_SUBMISSION ROUTES LOAD -----//
 // Execute the following code only for submit and edit_submission routes
-if (
-	window.location.pathname === '/submit' ||
-	window.location.pathname === '/edit_submission'
-) {
-	// Initialize location selectors
-	initializeLocationSelectors(
-		'city',
-		'municipality',
-		'region'
-	);
+$(document).ready(function() {
+	if (
+		window.location.pathname === '/submit' ||
+		window.location.pathname === '/edit_submission'
+	) {
+		// Initialize location selectors
+		initializeLocationSelectors(
+			'city',
+			'municipality',
+			'region'
+		);
 
-	// Initialize location destination selectors
-	initializeLocationSelectors(
-		'cityDestination',
-		'municipalityDestination',
-		'regionDestination'
-	);
-}
+		// Initialize location destination selectors
+		initializeLocationSelectors(
+			'cityDestination',
+			'municipalityDestination',
+			'regionDestination'
+		);
+		
+		jQueryValidateSubmitForm()
+	}
+
+	// Re-execute validation if form is submitted or changed
+	$("#submitForm").on("submit", function() {
+		jQueryValidateSubmitForm();
+	});
+	$("#submitForm").on("change", function() {
+		jQueryValidateSubmitForm();
+	});
+});
+
 
 
 
@@ -779,20 +897,22 @@ function asynchronousSearch() {
 
 // ----- [4.2] EXECUTES WHEN SEARCH ROUTE LOADS -----//
 // Execute the following code only for search route
-if (window.location.pathname === '/search') {
-	// Load noUiSliders
-	loadNoUiSliders()
+$(document).ready(function() {
+	if (window.location.pathname === '/search') {
+		// Load noUiSliders
+		loadNoUiSliders()
 
-	// Initialize location selectors
-	initializeLocationSelectors(
-		'city',
-		'municipality',
-		'region'
-	);
+		// Initialize location selectors
+		initializeLocationSelectors(
+			'city',
+			'municipality',
+			'region'
+		);
 
-    // Call function for AJAX search result to operate
-	asynchronousSearch()
-}
+		// Call function for AJAX search result to operate
+		asynchronousSearch()
+	}
+});
 
 
 
@@ -850,6 +970,125 @@ function cursorFocus(button) {
 }
 
 
+/** [5.1.5]
+ * A jQuery function that validates realtime the account route form
+ */
+function jQueryValidateUpdateAccount() {
+    jQuery.validator.addMethod(
+        "text",
+        function(value, element) {
+            var invalidCharactersRegex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\s]/;
+            var result = this.optional(element) ||
+                (value.length >= 3 && !invalidCharactersRegex.test(value));
+            return result;
+        },
+        "Username must be at least 3 characters long and cannot contain punctuation characters or whitespaces."
+    );
+
+    $("#updateUsernameForm").validate(
+		{
+        rules:
+		{
+            newUsername:
+			{
+                required: true,
+				text: true
+            }
+        },
+        messages:
+		{
+            newUsername:
+			{
+                required: "This field is required",
+            },
+        }
+    });
+	
+	$("#passwordResetForm").validate(
+		{
+        rules:
+		{
+            oldPassword:
+			{
+                required: true
+            },
+			newPassword:
+			{
+				required: true
+			},
+			confirmNewPassword:
+			{
+				required: true,
+				equalTo: "#newPassword"
+			}
+        },
+        messages:
+		{
+			oldPassword:
+			{
+				required: "This field is required",
+			},
+			newPassword:
+			{
+				required: "This field is required",
+			},
+			confirmNewPassword: {
+				required: "This field is required",
+				equalTo: "Please enter the same password as above"
+			}
+        }
+    });
+
+	$("#deleteAccountForm").validate(
+		{
+        rules:
+		{
+            deleteAccountConfirmation:
+			{
+                required: true,
+				email: true,
+				text: false
+            }
+        },
+        messages:
+		{
+            deleteAccountConfirmation:
+			{
+				required: "This field is required",
+				email: "Please enter a valid email address"
+            },
+        }
+    });
+}
+
+
+// ----- [5.2] EXECUTES WHEN ACCOUNT ROUTE LOADS -----//
+// Execute the following code only for account route
+$(document).ready(function() {
+    var formIds = [
+		"#updateUsernameForm",
+		"#passwordResetForm",
+		"#deleteAccountForm"
+];
+
+    // Re-execute validation if any of the account route forms is submitted or changed
+    formIds.forEach(function(formId) {
+        $(formId).on("submit", function() {
+            jQueryValidateUpdateAccount();
+        });
+        $(formId).on("change", function() {
+            jQueryValidateUpdateAccount();
+        });
+    });
+
+    // Initial validation when the page loads
+    if (window.location.pathname === '/account') {
+        jQueryValidateUpdateAccount();
+    }
+});
+
+
+
 
 /** ||||| [6.0] @index ROUTE ||||| */
 // ----- [6.1] UPDATE EXPOSURE -----//
@@ -900,7 +1139,9 @@ function applyExposureFormListener() {
 
 // ----- [6.2] EXECUTES WHEN INDEX ROUTE LOADS -----//
 // Execute the following code only for index route
-if (window.location.pathname === '/') {
-	// Get exposure button ready to be clicked
-	applyExposureFormListener();
-}
+$(document).ready(function() {
+	if (window.location.pathname === '/') {
+		// Get exposure button ready to be clicked
+		applyExposureFormListener();
+	}
+});
