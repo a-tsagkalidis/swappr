@@ -1,4 +1,3 @@
-import pprint as pp
 from fhelpers import cursor_execute, cursor_fetch, get_list_of_values, check_submitted_location
 
 # Constant variables for inputs that require numbers
@@ -87,70 +86,23 @@ def validate_submitted_digits(square_meters, rental, bedrooms, bathrooms):
             )
 
 
-# def validate_submitted_location_or_destination(
-#         city,
-#         municipality,
-#         region,
-#         destination=False,
-#     ):
-#     '''
-#     Regarding location data, this function checks if the select
-#     option values are actually valid by comparing them with the
-#     valid values that are stored in the database
-#     '''
-#     # Fetch location data from the database
-#     cities_json = cursor_fetch(
-#         'SELECT DISTINCT city FROM cities'
-#     )
-#     municipalities_json = cursor_fetch(
-#         'SELECT DISTINCT municipality FROM municipalities'
-#     )
-#     regions_json = cursor_fetch(
-#         'SELECT DISTINCT region FROM regions'
-#     )
-
-#     # Extract location values into lists
-#     cities = get_list_of_values(cities_json, 'city')
-#     municipalities = get_list_of_values(municipalities_json, 'municipality')
-#     regions = get_list_of_values(regions_json, 'region')
-
-#     if destination:
-#         cities.append('any')
-#         municipalities.append('any')
-#         regions.append('any')
-
-#     # Validate submitted location or destination values
-#     check_submitted_location(
-#         city,
-#         cities,
-#         'Invalid city value. Not found in the database'
-#     )
-#     check_submitted_location(
-#         municipality,
-#         municipalities,
-#         'Invalid municipality value. Not found in the database'
-#     )
-#     check_submitted_location(
-#         region,
-#         regions,
-#         'Invalid region value. Not found in the database'
-#     )
-
-
-
-
-
-
 def validate_submitted_location(
         city,
         municipality,
         region,
     ):
     '''
-    Regarding location data, this function checks if the select
-    option values are actually valid by comparing them with the
-    valid values that are stored in the database
+    Checks if the selected location values are valid by comparing them
+    with those that are stored in the database.
+
+    The function respects the dependencies between location, so that
+    specific cities will come along with specific municipalities and
+    regions as well.
+    
+    It also handles the situation where the user has selected 'any' as
+    his desired move location (aka destination).
     '''
+    # City validation
     # Fetch all valid cities from the database
     query = '''
             SELECT DISTINCT city FROM cities;
@@ -160,6 +112,7 @@ def validate_submitted_location(
     # Extract city values into lists
     cities = get_list_of_values(cities_json, 'city')
 
+    # Append 'any' as valid value if user has selected that option
     if city == 'any':
         cities.append(city)
 
@@ -170,8 +123,8 @@ def validate_submitted_location(
         'Invalid city value. Not found in the database'
     )
 
-    # Fetch id of selected city to use it for valid municipality fetch
     if city in cities and city != 'any':
+        # Fetch id of selected city to use it for valid municipality fetch
         query = '''
                 SELECT id FROM cities
                 WHERE city = ?;
@@ -180,15 +133,15 @@ def validate_submitted_location(
             query,
             city
         )
-        pp.pprint(cities)
-        pp.pprint(city_id)
     elif city == 'any':
         pass
     else:
-        raise ValueError('Invalid city value. Not found in the database')
+        raise ValueError(
+            'Invalid city value. Not found in the database'
+        )
     
-
-
+    # Municipality validation
+    # Declare an empty list that may be needed even empty in region check
     municipalities=[]
     if city in cities and city != 'any' and municipality != 'any':
         # Fetch all valid municipalities from the database
@@ -203,6 +156,10 @@ def validate_submitted_location(
 
         # Extract municipality values into lists
         municipalities = get_list_of_values(municipalities_json, 'municipality')
+
+        # Append 'any' as valid value if user has selected that option
+        if municipality == 'any':
+            municipalities.append(municipality)
 
         # Validate submitted municipality location or destination value
         check_submitted_location(
@@ -220,16 +177,23 @@ def validate_submitted_location(
             query,
             municipality
         )
-        pp.pprint(municipalities)
-        pp.pprint(municipality_id[0]['id'])
     elif municipality == 'any':
         pass
     else:
-        raise ValueError('Invalid municipality value. Not found in the database')
+        raise ValueError(
+            'Invalid municipality value. Not found in the database'
+            )
 
-    
-    regions=[]
-    if (city in cities and city != 'any' and municipality in municipalities and municipality != 'any' and region != 'any'):
+    # Region validation
+    if (
+        (
+            city in cities and city != 'any'
+        ) and (
+            municipality in municipalities and municipality != 'any'
+        ) and (
+            region != 'any'
+        )
+    ):
         # Fetch all valid regions from the database
         query = '''
                 SELECT DISTINCT region FROM regions
@@ -253,16 +217,12 @@ def validate_submitted_location(
             regions,
             'Invalid region value. Not found in the database'
         )
-        pp.pprint(regions)
     elif region == 'any':
         pass
     else:
-        raise ValueError('Invalid region value. Not found in the database')
-
-
-
-
-
+        raise ValueError(
+            'Invalid region value. Not found in the database'
+        )
 
 
 def submission_validation(

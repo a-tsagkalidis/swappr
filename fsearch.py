@@ -1,6 +1,50 @@
 from fSQL import cursor_fetch
 from fhelpers import get_list_of_values, check_submitted_location
 
+# Constant variables for inputs that require numbers
+SQUARE_METERS_MIN = 30
+SQUARE_METERS_MAX = 200
+RENTAL_MIN = 100
+RENTAL_MAX = 2000
+BEDROOMS_MIN = 1
+BEDROOMS_MAX = 4
+BATHROOMS_MIN = 1
+BATHROOMS_MAX = 2
+
+# Constant variables for handling rooms-related tolerance factors
+ROOMS_TOLERANCE_MIN = 30
+ROOMS_TOLERANCE_MAX = 70
+BEDROOMS_RTN_MIN = 0
+BEDROOMS_RTN_MID = 1
+BEDROOMS_RTN_MAX = 2
+BATHROOMS_RTN_MIN = 0
+BATHROOMS_RTN_MID = 0
+BATHROOMS_RTN_MAX = 1
+
+
+def room_tolerance_factor(tolerance, room):
+    '''
+    Regarding rooms, the function will return the tolerance factor that
+    adjusts the maximum value of the CRITERIA_RANGES
+    '''
+    if room == 'bedrooms':
+        if tolerance < ROOMS_TOLERANCE_MIN:
+            return BEDROOMS_RTN_MIN
+        elif tolerance < ROOMS_TOLERANCE_MAX:
+            return BEDROOMS_RTN_MID
+        else:
+            return BEDROOMS_RTN_MAX
+    elif room == 'bathrooms':
+        if tolerance < ROOMS_TOLERANCE_MIN:
+            return BATHROOMS_RTN_MIN
+        elif tolerance < ROOMS_TOLERANCE_MAX:
+            return BATHROOMS_RTN_MID
+        else:
+            return BATHROOMS_RTN_MAX
+    else:
+        return 0
+
+
 def tolerance_factors(tolerance):
     '''
     Returns a dictionary of varied multipliers according to the user's
@@ -20,6 +64,7 @@ def tolerance_factors(tolerance):
     }
 
     return TOLERANCE_FACTORS
+
 
 def criteria_ranges(primary_submission, TOLERANCE_FACTORS):
     '''
@@ -94,26 +139,26 @@ def validate_searched_digits(square_meters, rental, bedrooms, bathrooms):
     must_be_numbers = [
         {
             "form_data": square_meters,
-            "min": 0,
-            "max": 1000,
+            "min": SQUARE_METERS_MIN,
+            "max": SQUARE_METERS_MAX,
             "field_name": "Square Meters"
         },
         {
             "form_data": rental,
-            "min": 0,
-            "max": 10000,
+            "min": RENTAL_MIN,
+            "max": RENTAL_MAX,
             "field_name": "Rental"
         },
         {
             "form_data": bedrooms,
-            "min": 0,
-            "max": 10,
+            "min": BEDROOMS_MIN,
+            "max": BEDROOMS_MAX,
             "field_name": "Bedrooms"
         },
         {
             "form_data": bathrooms,
-            "min": 0,
-            "max": 10,
+            "min": BATHROOMS_MIN,
+            "max": BATHROOMS_MAX,
             "field_name": "Bathrooms"
         },
     ]
@@ -175,22 +220,29 @@ def validate_searched_digits(square_meters, rental, bedrooms, bathrooms):
             )
 
     
-def validate_searched_location(city, municipality, region):
+def validate_searched_location(
+        city,
+        municipality,
+        region
+    ):
     '''
     Regarding location data, this function checks if the select
     option values are actually valid by comparing them with the
     valid values that are stored in the database
     '''
     # Fetch location data from the database
-    cities_json = cursor_fetch(
-        'SELECT DISTINCT city FROM cities'
-    )
-    municipalities_json = cursor_fetch(
-        'SELECT DISTINCT municipality FROM municipalities'
-    )
-    regions_json = cursor_fetch(
-        'SELECT DISTINCT region FROM regions'
-    )
+    query = '''
+            SELECT DISTINCT city FROM cities;
+            '''
+    cities_json = cursor_fetch(query)
+    query = '''
+            SELECT DISTINCT municipality FROM municipalities;
+            '''
+    municipalities_json = cursor_fetch(query)
+    query = '''
+            SELECT DISTINCT region FROM regions
+            '''
+    regions_json = cursor_fetch(query)
 
     # Extract location values into lists
     cities = get_list_of_values(cities_json, 'city')
@@ -486,23 +538,3 @@ def matching_summary(search_results):
     for result in search_results:
         result['total_matching_score'] = (result['location_matching_score'] + result['house_matching_score'])
 
-
-def room_tolerance_factor(tolerance, room):
-    '''
-    Regarding rooms, the function will return the tolerance factor that
-    adjusts the maximum value of the CRITERIA_RANGES
-    '''
-    if room == 'bedrooms':
-        if tolerance < 30:
-            return 0
-        elif tolerance < 70:
-            return 1
-        else:
-            return 2
-    elif room == 'bathrooms':
-        if tolerance < 70:
-            return 0
-        else:
-            return 1
-    else:
-        return 0
