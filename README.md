@@ -15,14 +15,14 @@ The users create an account, uploads their rented house's specifications, and ex
 The app uses an intelligent algorithm that suggests compatible house swap options, ensuring that the user's preferences align with potential matches. The algorithm uses a matching score based on house characteristics, house location, and desired move destination.
 
 ## Running the app
-Swappr repo comes with no **.db** and **.log** files. These necessities will be created on program initialization. To initiate swappr run:
+Swappr repo comes with no **.db** or **.log** files. These necessities will be created on program initialization. To initiate swappr run:
 ```sh
 python app.py
 ```
-But before running the program for the first time, Make sure that you have created a virtual environment and have installed all Python dependencies.
+But before you run the program for the first time, make sure that you have created a virtual environment and have installed all Python dependencies.
 
-### Create a virtual invornment
-To run swappr it is recommended to create a virtual environment where all Python dependencies will be installed.
+### Create a virtual environment
+Before you run Swappr it is recommended to create a virtual environment where all Python dependencies will be installed.
 While in working directory run:
 ```sh
 python -m venv .venv
@@ -36,17 +36,17 @@ pip install -r requirements.txt
 ``` 
 
 ### Argument parser
-Swappr comes with an embedded argument parser and developers can check their options using `python app.py -h`. Some of these options are:
+Swappr comes with an embedded argument parser and developers can check its options using `python app.py -h`. Optinal arguments are:
 
 - `-d` or `--debug` enables Flask's embedded debug mode for testing purposes
 - `-b` or `--backup` runs automated backup routines for the database and log files
 - `-l` or `--limiter` enables a request limiter to protect the backend from spam
-- `-p` or `--premademockups` inserts a premade JSON of mockup users and submitted houses into the database. The premade mockups are tailored in such way so the developer could test the matching algorithm for every probable house **location/desired move location** between two Swappr users
-- `-m [INTEGER INTEGER]` or `--mockup [INTEGER INTEGER]` creates mockup users and submitted houses to test matching algorithm. First integer is the number of users to be created, while the second is the number of the submitted houses. Submitted houses can't exceed the number of the mockup users - if so the program will limit submitted houses to be equal to users. As greater the numbers of the generated mockups, as greater the chance to catch a matching house while testing. *3000+ mockups are recommended*
+- `-p` or `--premademockups` inserts a premade JSON of mockup users and submitted houses into the database. The premade mockups are tailored in such way so that developers can test the matching algorithm for every probable **location/desired move location** scenario
+- `-m INTEGER INTEGER` or `--mockupsgen INTEGER INTEGER` creates mockup users and submitted houses to test the matching algorithm. First integer is the number of users to be created, while the second is the number of the submitted houses. Submitted houses can't exceed the number of the mockup users - if so the program will limit submitted houses equal to users. The higher the number of mockups created, the higher the chance of catching a matching house during the test. *Recommended 3000+ Mockups*
 
 
 ## Developing tools
-To create this app the following programming languages, frameworks, and dev tools were used:
+Swappr uses the following programming languages, frameworks, and dev tools:
 
 - **Python3** and **Flask** mini framework package for the backend
 - **HTML**/**CSS Bootstrap 5.2**/**JavaScript** for the frontend
@@ -60,7 +60,7 @@ To create this app the following programming languages, frameworks, and dev tool
 
 Backend convention relies on splitted .py files where the proper code for every related section is contained. Python files are described as follows:
 
-- app.py: This is the main file where the initialization of the program takes place and routes are created for every web app section. Most routes have their corresponding .py file where their dependent functions are present. For instance <b>/search</b> route calls some functions that are imported from <b>fsubmit.py</b>, while <b>/signup</b> route draws functions from <b>fsignup.py</b>, and so on...
+- app.py: This is the main file where the initialization of the program takes place and routes get created for every web app section. Most routes have their corresponding .py file where their dependent functions are present. For instance **/search** route calls some functions that are imported from **fsearch.py**, while **/signup** route draws functions from **fsignup.py**, and so on...
 - argparser.py:
 
 ## Validation

@@ -1062,6 +1062,27 @@ function jQueryValidateUpdateAccount() {
 }
 
 
+/** [5.1.6]
+ * A jQuery function that resets all the modal inputs in case they are
+ * closed/hidden. It is called in [5.2].
+ */
+function resetModalInputs() {
+	$(document).ready(function(){
+		$('#passwordResetModal').on('hidden.bs.modal', function () {
+			$('#oldPassword').val('');
+			$('#newPassword').val('');
+			$('#confirmNewPassword').val('');
+		});
+	});
+
+	$(document).ready(function(){
+		$('#deleteAccountModal').on('hidden.bs.modal', function () {
+			$('#deleteAccountConfirmation').val('');
+		});
+	});
+}
+
+
 // ----- [5.2] EXECUTES WHEN ACCOUNT ROUTE LOADS -----//
 // Execute the following code only for account route
 $(document).ready(function() {
@@ -1085,6 +1106,9 @@ $(document).ready(function() {
     if (window.location.pathname === '/account') {
         jQueryValidateUpdateAccount();
     }
+
+	// Reset modal inputs if not vissible
+	resetModalInputs()
 });
 
 
