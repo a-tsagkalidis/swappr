@@ -1,5 +1,6 @@
 import json
 import subprocess
+from tqdm import tqdm
 from argparser import argparser
 from random import choice, randint
 from fSQL import create_database_tables
@@ -64,6 +65,14 @@ def create_mockups(*args):
     
     *check argparser.py
     '''
+    # Asign argparser tuple arguments to int variables - tuples are immutable
+    mockup_users = args[0]
+    mockup_submissions = args[1]
+
+    # Ensure that given mockup submissions are less or equal to mockup users
+    if mockup_submissions > mockup_users:
+        mockup_submissions = mockup_users
+
     # A list of valid house types, square meters, bedrooms, bathrooms,
     # exposure, and primary submission statuses to be declared in the mockup
     # submission entry
@@ -96,7 +105,7 @@ def create_mockups(*args):
     generated_names = set()
 
     # Append the generated mockup user entries in the users list
-    for id in range(1, args[0]):
+    for id in range(1, mockup_users):
         generated_user = generate_user(id, generated_names)
         generated_users.append(generated_user)
 
@@ -116,7 +125,7 @@ def create_mockups(*args):
     used_users = set()
 
     # Create generated submissions equals requested times
-    for i in range(args[1]):
+    for i in range(mockup_submissions):
         # Create dictionaries to map cities to their corresponding municipalities
         # and regions for both source and destination
         random_location = choice(locations)
@@ -224,7 +233,7 @@ def load_mockup_users(mockup_users):
             VALUES (?, ?, ?, ?, ?, ?);
             '''
 
-    for user in users:
+    for user in tqdm(users):
         cursor_execute(
             query,
             user['user_id'],
@@ -267,7 +276,7 @@ def load_mockup_submissions(mockup_submissions):
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             '''
 
-    for submission in submissions:
+    for submission in tqdm(submissions):
         cursor_execute(
             query,
             submission['user_id'],
@@ -309,4 +318,6 @@ def insert_mockups(*args):
         mockup_submissions = 'bak.json/tmocksubmissionsthess.json.bak'
     load_mockup_users(mockup_users)
     load_mockup_submissions(mockup_submissions)
-        
+
+    subprocess.run(['rm', '-rf', 'tmockusers.json'])
+    subprocess.run(['rm', '-rf', 'tmocksubmissions.json'])
