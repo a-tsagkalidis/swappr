@@ -14,10 +14,12 @@ The users create an account, uploads their rented house's specifications, and ex
 
 The app uses an intelligent algorithm that suggests compatible house swap options, ensuring that the user's preferences align with potential matches. The algorithm uses a matching score based on house characteristics, house location, and desired move destination.
 
-Swappr uses validation logic for whatever input data the user's may send with their request. This validation takes place in frontend using html browser validation, jQuery.validate() methods, and custom JavaScript functions, while custom python functions are protecting the backend.
-
 ## Running the app
-Swappr repo comes with no **.db** and **.log** files. These necessities will be created on program initialization. But before running the program for the first time, Make sure that you have created a virtual environment and have installed all Python dependencies.
+Swappr repo comes with no **.db** and **.log** files. These necessities will be created on program initialization. To initiate swappr run:
+```sh
+python app.py
+```
+But before running the program for the first time, Make sure that you have created a virtual environment and have installed all Python dependencies.
 
 ### Create a virtual invornment
 To run swappr it is recommended to create a virtual environment where all Python dependencies will be installed.
@@ -47,15 +49,19 @@ Swappr comes with an embedded argument parser and developers can check their opt
 To create this app the following programming languages, frameworks, and dev tools were used:
 
 - **Python3** and **Flask** mini framework package for the backend
-- **HTML**/**CSS Bootstrap 5.2**/**JavaScript**, and **jQuery.validate** package for the frontend
+- **HTML**/**CSS Bootstrap 5.2**/**JavaScript** for the frontend
 - **Jinja2** for the HTML templates
 - **AJAX** for asynchronous request logic
 - **SQLite3** for the database handling
 - **Bash** for backup functionalities
 - **noUiSlider JavaScript** package to control input values for searching filters
+- **jQuery.validate** package for extra frontend validation
 
 
 Backend convention relies on splitted .py files where the proper code for every related section is contained. Python files are described as follows:
 
 - app.py: This is the main file where the initialization of the program takes place and routes are created for every web app section. Most routes have their corresponding .py file where their dependent functions are present. For instance <b>/search</b> route calls some functions that are imported from <b>fsubmit.py</b>, while <b>/signup</b> route draws functions from <b>fsignup.py</b>, and so on...
 - argparser.py:
+
+## Validation
+Swappr uses validation logic for whatever input data the user's may send with their request. This validation takes place in frontend using html browser validation, jQuery.validate() methods, and custom JavaScript functions, while custom python functions are protecting the backend.
