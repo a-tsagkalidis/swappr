@@ -20,7 +20,7 @@ except Exception as err:
 
 # Initialize basic functionalities
 try:
-    # Declare global variables for POST request limits
+    # Declare constant variables for POST request limits
     SIGNUP_LIMIT = "60/minute"
     SIGNIN_LIMIT = "60/minute"
     SUBMIT_LIMIT = "30/minute"
@@ -31,7 +31,7 @@ try:
     UPDATE_USERNAME_LIMIT = "30/minute"
     DELETE_ACCOUNT_LIMIT = "30/minute"
 
-    # Declare global variable for datetime log format
+    # Declare constant variable for datetime log format
     DATETIME = datetime.now().strftime(f"[%d/%b/%Y %H:%M:%S]")
 
     # Flask instance to initialize the web application.

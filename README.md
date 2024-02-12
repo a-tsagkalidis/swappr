@@ -57,10 +57,23 @@ Swappr uses the following programming languages, frameworks, and dev tools:
 - **noUiSlider JavaScript** package to control input values for searching filters
 - **jQuery.validate** package for extra frontend validation
 
-
+## Backend
 Backend convention relies on splitted .py files where the proper code for every related section is contained. Python files are described as follows:
 
-- app.py: This is the main file where the initialization of the program takes place and routes get created for every web app section. Most routes have their corresponding .py file where their dependent functions are present. For instance **/search** route calls some functions that are imported from **fsearch.py**, while **/signup** route draws functions from **fsignup.py**, and so on...
+### app.py
+This is the main file where Swappr initialization takes place and the routes for all sections are created.
+
+#### Swappr initialization
+When **app.py** initiates the following functionalities take action:
+- Configures a logger using loguru library
+- Checks for given arguments such as `--backup`, `--limiter`, and/or `--premademockups`/`--mockupsgen INTEGER INTEGER` to call the corresponding functions.
+- Checks if SQL database is present or else it creates it with the proper schema in **swappr.db**
+- Checks if `locations` table in **swappr.db** matches with all the data in `locations.json` file. If new locations are present in the JSON file, then they are imported as new entries in **swappr.db** `locations` table
+
+#### Route creation
+Most routes have their corresponding .py file where their dependent functions are present. For instance **/search** route calls some functions that are imported from **fsearch.py**, while **/signup** route draws functions from **fsignup.py**, and so on...
+
+    
 - argparser.py:
 
 ## Validation
