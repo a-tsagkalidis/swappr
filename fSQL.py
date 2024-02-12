@@ -76,7 +76,7 @@ def import_locations():
     detected in the JSON file
     '''
     # Declare a variable counter for newly imported locations.
-    location_update = {
+    locations_update = {
         'cities': [],
         'municipalities': [],
         'regions': [],
@@ -103,9 +103,9 @@ def import_locations():
         ).fetchone()
 
         if not existing_city:
-            location_update['cities'].append(city)
-            location_update['cities count'] += 1
-            location_update['total new entries'] += 1
+            locations_update['cities'].append(city)
+            locations_update['cities count'] += 1
+            locations_update['total new entries'] += 1
             cursor.execute(
                 'INSERT INTO cities (city) VALUES (?)',
                 (city,)
@@ -129,9 +129,9 @@ def import_locations():
         ).fetchone()
 
         if not existing_municipality:
-            location_update['municipalities'].append(municipality)
-            location_update['municipalities count'] += 1
-            location_update['total new entries'] += 1
+            locations_update['municipalities'].append(municipality)
+            locations_update['municipalities count'] += 1
+            locations_update['total new entries'] += 1
             cursor.execute(
                 '''
                 INSERT INTO municipalities (municipality, city_id) VALUES (?, ?)
@@ -160,9 +160,9 @@ def import_locations():
             ).fetchone()
 
             if not existing_region:
-                location_update['regions'].append(region)
-                location_update['regions count'] += 1
-                location_update['total new entries'] += 1
+                locations_update['regions'].append(region)
+                locations_update['regions count'] += 1
+                locations_update['total new entries'] += 1
                 cursor.execute(
                     '''
                     INSERT INTO regions (region, postal_code, municipality_id) VALUES (?, ?, ?)
@@ -178,14 +178,14 @@ def import_locations():
     conn.commit()
     conn.close()
 
-    flag = False
+    new_locations_flag = False
     if (
-        location_update['cities']
+        locations_update['cities']
     ) and (
-        location_update['municipalities']
+        locations_update['municipalities']
     ) and (
-        location_update['regions']
+        locations_update['regions']
     ):
-        flag = True
+        new_locations_flag = True
 
-    return location_update, flag
+    return locations_update, new_locations_flag

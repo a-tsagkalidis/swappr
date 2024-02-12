@@ -1,3 +1,4 @@
+import json
 from loguru import logger
 
 
@@ -17,3 +18,29 @@ def initialize_logger():
         backtrace=True,
         diagnose=True
     )
+
+
+def log_new_locations(locations_update, new_locations_flag):
+    if new_locations_flag:
+        # Updage log with WARNING msg
+        log(
+            f'''
+            App initialized successfully. Database tables where created
+            in case they weren't exist. JSON file with locations has been
+            imported to the database - NEWLY IMPORTED LOCATIONS: 
+            {json.dumps(locations_update, indent=8)}
+            ''',
+            level='WARNING',
+            indent=24
+        )
+    else:
+        # Updage log with INFO msg
+        log(
+            f'''
+            App initialized successfully. Database tables where created
+            in case they weren't exist. JSON file with locations has been
+            imported to the database - NO NEWLY IMPORTED LOCATIONS FOUND.
+            ''',
+            indent=24
+        )
+        

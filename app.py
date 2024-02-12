@@ -2,60 +2,70 @@ import json
 import secrets
 import subprocess
 from loguru import logger
-from argparser import argparser
 from swapprfunctions import *
 from datetime import datetime
+from argparser import argparser
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
 
-# Configure loguru
-try:
-    logger.remove(0)
-    initialize_logger()
-except Exception as err:
-    print(f'Unexpected {err=}, {type(err)=}')
-    raise
+# Declare constant variables for search results; used in search route
+MATCHING_SCORES = {
+    'HIGH_MATCHING_SCORE_MIN': 31,
+    'MEDIUM_MATCHING_SCORE_MAX': 30,
+    'MEDIUM_MATCHING_SCORE_MIN': 21,
+    'LOW_MATCHING_SCORE_MAX': 20,
+    'LOW_MATCHING_SCORE_MIN': 16
+}
 
 # Initialize basic functionalities
 try:
-    # Declare constant variables for POST request limits
-    SIGNUP_LIMIT = "60/minute"
-    SIGNIN_LIMIT = "60/minute"
-    SUBMIT_LIMIT = "30/minute"
-    UPDATE_EXPOSURE_LIMIT = "30/minute"
-    EDIT_SUBMISSION_LIMIT = "60/minute"
-    SEARCH_LIMIT = "100/minute"
-    PASSWORD_RESET_LIMIT = "30/minute"
-    UPDATE_USERNAME_LIMIT = "30/minute"
-    DELETE_ACCOUNT_LIMIT = "30/minute"
-
-    # Declare constant variable for datetime log format
-    DATETIME = datetime.now().strftime(f"[%d/%b/%Y %H:%M:%S]")
+    # Configure loguru for history log files
+    logger.remove(0)
+    initialize_logger()
 
     # Flask instance to initialize the web application.
     app = Flask(__name__)
-
-    # Flask limiter instance for spam request protection
-    limiter = Limiter(
-        get_remote_address,
-        app=app,
-        default_limits=["2000 per day", "500 per hour"],
-        storage_uri="memory://",
-    )
-
-    # Run system file backup script - back ups database and logs
-    if argparser.backup:
-        logger.remove()
-        subprocess.run(['bash', 'fbak.sh'])
-        initialize_logger()
 
     # Declare a secret key for Flask application; needed for Flask flash
     app.secret_key = secrets.token_hex(32)
 
     # Initialize the database and tables
     create_database_tables()
+
+    # Import location data from locations.json file into proper database tables
+    locations_update, new_locations_flag = import_locations()
+
+    # Inform log in case of newly imported locations in the database 
+    log_new_locations(locations_update, new_locations_flag)
+
+    # Initialize Flask limiter instance for spam request protection
+    limiter = Limiter(
+        get_remote_address,
+        app=app,
+        default_limits=["2000 per day", "500 per hour"],
+        storage_uri="memory://"
+    )
+
+    # |----- ARGPARSER SECTION -----|
+    # Declare constant variables for POST request limits if limiter gets called
+    if argparser.limiter:
+        SIGNUP_LIMIT = "60/minute"
+        SIGNIN_LIMIT = "60/minute"
+        SUBMIT_LIMIT = "30/minute"
+        UPDATE_EXPOSURE_LIMIT = "30/minute"
+        EDIT_SUBMISSION_LIMIT = "60/minute"
+        SEARCH_LIMIT = "100/minute"
+        PASSWORD_RESET_LIMIT = "30/minute"
+        UPDATE_USERNAME_LIMIT = "30/minute"
+        DELETE_ACCOUNT_LIMIT = "30/minute"
+        
+    # Run system file backup script - back ups database and logs
+    if argparser.backup:
+        logger.remove()
+        subprocess.run(['bash', 'fbak.sh'])
+        initialize_logger()
 
     # Delete database and create/load mockup users and submissions for random testing
     if argparser.mockupsgen and not argparser.premademockups:
@@ -64,33 +74,6 @@ try:
     # Delete database and load premade mockup users and submissions for solid testing
     if argparser.premademockups and not argparser.mockupsgen:
         insert_mockups()
-
-    # Import location data from locations.json file into proper database tables
-    location_update, flag = import_locations()
-
-    # In case of newly imported locations in the database inform properly the log
-    if flag:
-        # Updage log with WARNING msg
-        log(
-            f'''
-            App initialized successfully. Database tables where created
-            in case they weren't exist. JSON file with locations has been
-            imported to the database - NEWLY IMPORTED LOCATIONS: 
-            {json.dumps(location_update, indent=8)}
-            ''',
-            level='WARNING',
-            indent=24
-        )
-    else:
-        # Updage log with INFO msg
-        log(
-            f'''
-            App initialized successfully. Database tables where created
-            in case they weren't exist. JSON file with locations has been
-            imported to the database - NO NEWLY IMPORTED LOCATIONS FOUND.
-            ''',
-            indent=24
-        )
 
 except Exception as err:
     log(f'Unexpected {err=}, {type(err)=}')
@@ -962,7 +945,8 @@ def search():
             return render_template(
                 '/search_results.html',
                 cities=cities,
-                search=search_results,
+                search_results=search_results,
+                MATCHING_SCORES=MATCHING_SCORES,
                 primary_submission=primary_submission,
                 comma=comma,
                 whitespace=whitespace
@@ -1215,7 +1199,7 @@ def delete_account():
         # Update log with ERROR msg
         log(
             f'''
-            {DATETIME}:{session['ip']}
+            {datetime.now().strftime(f"[%d/%b/%Y %H:%M:%S]")}:{session['ip']}
             USER[{session['username']}]: FAILED: Account deletion 'aborted': {err}
             ''',
             level='WARNING',

@@ -168,6 +168,20 @@
 	<p>
 		Use <span class=fw-bold>Matching Tolerance</span> slider to extend the ranges of the matching algorithm.
 	</p>
+	<hr>
+	<h5 class="fw-bold text-secondary mb-3">Matching colors explanation</h5>
+	<p class="mb-1">
+		<span class="fw-bold text-success">Green</span> rows are very high matches.
+	</p>
+	<p class="mb-1">
+		<span class="fw-bold text-primary">Blue</span> rows are average matches.
+	</p>
+	<p class="mb-1">
+		<span class="fw-bold text-warning">Yellow</span> rows are very low matches.
+	</p>
+	<p class="mb-1">
+		<span class="fw-bold text-danger">Red</span> rows do not match at all.
+	</p>
 </div>
 {% endif %}
 
@@ -201,7 +215,6 @@
 	</p>
 	<p>
 		For instance, if your submitted house rental is &euro;500 a tolerance of 10% will consider a house match that its rental is up to &euro;550.
-
 	</p>
 	<p>
 		A 50% tolerance for the same example will match a house of &euro;750 rental.
@@ -221,26 +234,6 @@
 		<span class="fw-bold text-warning">Yellow</span> rows are very low matches.
 	</p>
 	<p>
-		<span class="fw-bold text-danger">Red</span> rows do not match at all.
-	</p>
-</div>
-{% endif %}
-
-
-<!-- Search Results Info-->
-{% if info == "search_results" %}
-<div class="card card-body text-warning bg-dark text-start w-25">
-	<h5 class="fw-bold text-secondary mb-3">Colors meaning</h5>
-	<p class="mb-1">
-		<span class="fw-bold text-success">Green</span> rows are very high matches.
-	</p>
-	<p class="mb-1">
-		<span class="fw-bold text-primary">Blue</span> rows are average matches.
-	</p>
-	<p class="mb-1">
-		<span class="fw-bold text-warning">Yellow</span> rows are very low matches.
-	</p>
-	<p class="mb-1">
 		<span class="fw-bold text-danger">Red</span> rows do not match at all.
 	</p>
 </div>
