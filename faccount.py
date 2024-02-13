@@ -103,7 +103,7 @@ def update_username_validation(new_username, user_id):
 
 def delete_account_validation(delete_account_confirmation, email):
     '''
-    Checks password reset input validity in account route.
+    Checks email input validity for account deletion.
     '''
     # Ensure email is valid for username and submissions deletion
     if delete_account_confirmation != email[0]['email']:
