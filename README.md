@@ -75,7 +75,7 @@ Most routes have their corresponding .py file where their dependent functions ar
 
     
 ### <span style="color: #c9b7a4">argparser.py</span>
-This module uses <span style="color: #68ba6a">argparse</span> Python library to create argument option instances. Added argument are stored in argparser variable, which is imported in whatever .py module is needed.
+This module uses <span style="color: #68ba6a">argparse</span> Python package to create argument option instances. Added argument are stored in argparser variable, which is imported in whatever .py module is needed.
 
 ### <span style="color: #c9b7a4">faccount.py</span>
 Contains functions needed in **/account** route. Functions are:
@@ -85,6 +85,17 @@ Contains functions needed in **/account** route. Functions are:
 
 ### <span style="color: #c9b7a4">fhelpers.py</span>
 Contains functions needed many routes. Functions are:
+| Function name | Parameters | Description | Child of | Parent of |
+| ------------- | ---------- | ----------- | -------- | --------- |
+| **`cursor_execute`** | (query, *args) | Dynamically executes SQLite3 queries | `create_database_tables` | None |
+| **`cursor_fetch`** | (query, *args) | Dynamically fetches data SQLite3 database | `create_database_tables` | tuples_to_dict |
+| **`tuples_to_dict`** | (keys_tuple, values_tuple) | Converts two tuples into one dictionary | `cursor_fetch` | None |
+| **`strong_password`** | (password) | Checks if a password is strong enough | `signup_validation`<sup>1</sup> `password_reset_validation`<sup>2</sup> | None |
+| **`email_exists`** | (email) | Checks if email already exists in the database | `signup_validation`<sup>1</sup> | None |
+| **`username_exists`** | (username, *args) | Checks if username already exists in the database | `signup_validation`<sup>1</sup> `update_username_validation`<sup>2</sup> | None |
+
+**Sources**: <sup>1</sup>fsignup.py, <sup>2</sup>faccount.py
+
 - cursor_execute(query, *args). Dynamically executes SQLite3 queries
 - cursor_fetch(query, *args). Dynamically fetches data SQLite3 database
 - tuples_to_dict(keys_tuple, values_tuple). Converts two tuples into one dictionary
@@ -93,8 +104,35 @@ Contains functions needed many routes. Functions are:
 - username_exists(username, *args). Checks if username already exists in the database. Excludes current session username in case of updating to a new username
 - get_list_of_values(json_data, column_name). Converts a json file into a list with values of the selected column
 - check_submitted_location(submitted_value, valid_values, error_message). Checks submitted location validity
-## Validation
-Swappr uses validation logic for whatever input data the user's may send with their request. This validation takes place in frontend using html browser validation, jQuery.validate() methods, and custom JavaScript functions, while custom python functions are protecting the backend.
 - login_required(f). Decorate routes to require login
 - comma(integer). Formats an integer by placing commas between thousands
 - whitespace(text). Formats a snakecase string into a readable title
+
+### <span style="color: #c9b7a4">flog.py</span>
+Contains functions needed for history logger. Functions are:
+- log(message, level='INFO', indent=28). Dynamically handles log indentations and message level
+- initialize_logger(). Initializes loguru history logger
+- log_new_locations(locations_update, new_locations_flag). Add brief log info about newly inserted location entries in the database
+
+### <span style="color: #c9b7a4">fsearch.py</span>
+Contains the algorithmic functions and constant variables needed in **/search** route
+#### Table of functions
+| Function name | Parameters | Description | Child of | Parent of |
+| ------------- | ---------- | ----------- | -------- | --------- |
+| **`room_tolerance_factor`**   | (tolerance, room) | Returns the tolerance factor that adjusts the maximum value of the criteria search ranges | `tolerance_factors` | None |
+| **`tolerance_factors`** | (tolerance) | Returns varied multipliers that affect the criteria ranges to be used in the matching score algorithm | None | `room_tolerance_factor` |
+| **`criteria_ranges`** | (primary_submission, TOLERANCE_FACTORS) | Returns varied ranges to be used in the calculation of the matching score for each search house result | None | None |
+| **`validate_searched_digits`** | (square_meters, rental, bedrooms, bathrooms) | Validates digit-required and ranged-required fields| `search_validation` | None |
+| **`validate_searched_location`** | (city, municipality, region) | Validates location input | `search_validation` | `check_submitted_location`<sup>1</sup> |
+| **`search_validation`** | (exposure, house_type, square_meters, rental, bedrooms, bathrooms, city, municipality, region) | Validates input data | None | `validate_searched_digits` `validate_searched_location` |
+| **`calculate_location_matching_score`** | (result, primary_submission) | Calculates and returns a location matching score | `location_matching` | None |
+| **`location_matching`** | (primary_submission, search_results) | Iterates all search results and adds into them the calculated location matching score | None | `calculate_location_matching_score` |
+| **`calculate_house_matching_score`** | (result, CRITERIA_RANGES) | Calculates and returns a house characteristics matching score | None | **`house_matching`** |
+| **`house_matching`** | (search_results, CRITERIA_RANGES) | Iterates all search results and adds into them the calculated house characteristics matching score | None | `calculate_house_matching_score` |
+| **`matching_summary`** | (search_results) | Iterates all search results and adds into them the summary matching score | None | None |
+
+**Source:** <sup>1</sup>fhelpers.py
+
+
+## Validation
+Swappr uses validation logic for whatever input data the user's may send with their request. This validation takes place in frontend using html browser validation, jQuery.validate() methods, and custom JavaScript functions, while custom python functions are protecting the backend.

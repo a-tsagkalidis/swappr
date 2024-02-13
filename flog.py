@@ -3,6 +3,9 @@ from loguru import logger
 
 
 def log(message, level='INFO', indent=28):
+    '''
+    Dynamically handles log indentations and message level.
+    '''
     message = '\n'.join([' ' * indent + line for line in message.splitlines()])
     logger.log(
         level,
@@ -11,6 +14,9 @@ def log(message, level='INFO', indent=28):
 
 
 def initialize_logger():
+    '''
+    Initializes loguru history logger.
+    '''
     logger.add(
         'app.log',
         format="{level}:swappr:[{time:DD/MMM/YYYY HH:mm:ss}]: {message}",
@@ -21,6 +27,9 @@ def initialize_logger():
 
 
 def log_new_locations(locations_update, new_locations_flag):
+    '''
+    Add brief log info about newly inserted location entries in the database.
+    '''
     if new_locations_flag:
         # Updage log with WARNING msg
         log(

@@ -68,8 +68,8 @@ def tolerance_factors(tolerance):
 
 def criteria_ranges(primary_submission, TOLERANCE_FACTORS):
     '''
-    Returns a dictionary of varied ranges that they will be used to
-    calculate the house matching score for each search house.
+    Returns a dictionary of varied ranges to be used in the calculation
+    of the matching score for each search house result.
 
     The name of the dictionaty is declared with uppercase letters just
     to place it early in the code and access it easily if any adjustments
@@ -131,10 +131,14 @@ def criteria_ranges(primary_submission, TOLERANCE_FACTORS):
     return CRITERIA_RANGES
 
 
-def validate_searched_digits(square_meters, rental, bedrooms, bathrooms):
+def validate_searched_digits(
+        square_meters,
+        rental,
+        bedrooms,
+        bathrooms
+    ):
     '''
-    Checks if user has input valid digits in the digit-required
-    fields or ranged fields
+    Validates digit-required and ranged-required input fields.
     '''
     must_be_numbers = [
         {
@@ -228,7 +232,7 @@ def validate_searched_location(
     '''
     Regarding location data, this function checks if the select
     option values are actually valid by comparing them with the
-    valid values that are stored in the database
+    valid values that are stored in the database.
     '''
     # Fetch location data from the database
     query = '''
@@ -281,12 +285,13 @@ def search_validation(
         bathrooms,
         city,
         municipality,
-        region,
+        region
     ):
     '''
-    Checks for valid input form in submit/edited_submission routes.
+    Checks for valid input in search route form.
+    
     If any new input form will be available in the future add here
-    conditionals for backend validation check
+    conditionals for backend validation check.
     '''
 
     # Declare a list of valid options for exposure value
