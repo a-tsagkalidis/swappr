@@ -42,7 +42,7 @@ Swappr comes with an embedded argument parser and developers can check its optio
 - `-b` or `--backup` runs automated backup routines for the database and log files
 - `-l` or `--limiter` enables a request limiter to protect the backend from spam
 - `-p` or `--premademockups` inserts a premade JSON of mockup users and submitted houses into the database. The premade mockups are tailored in such way so that developers can test the matching algorithm for every probable **location/desired move location** scenario
-- `-m INTEGER INTEGER` or `--mockupsgen INTEGER INTEGER` creates mockup users and submitted houses to test the matching algorithm. First integer is the number of users to be created, while the second is the number of the submitted houses. Submitted houses can't exceed the number of the mockup users - if so the program will limit submitted houses equal to users. The higher the number of mockups created, the higher the chance of catching a matching house during the test. *Recommended 3000+ Mockups*
+- `-m MOCKUPSGEN MOCKUPSGEN` or `--mockupsgen MOCKUPSGEN MOCKUPSGEN` creates mockup users and submitted houses to test the matching algorithm. First integer is the number of users to be created, while the second is the number of the submitted houses. Submitted houses can't exceed the number of the mockup users - if so the program will limit submitted houses equal to users. The higher the number of mockups created, the higher the chance of catching a matching house during the test. *Recommended 3000+ Mockups*
 
 
 ## <span style="color: #e8b600">Backup</span>
@@ -82,7 +82,7 @@ This is the main file where <b style="color: #eedebf">Swappr Initialization</b> 
 #### <span style="color: #eedebf">Swappr Initialization</span>
 When **app.py** initiates the following functionalities take action:
 - Configures a logger using loguru library
-- Checks for given arguments such as `--backup`, `--limiter`, and/or `--premademockups`/`--mockupsgen INTEGER INTEGER` to call corresponding functions.
+- Checks for given arguments such as `--backup`, `--limiter`, and/or `--premademockups`/`--mockupsgen MOCKUPSGEN MOCKUPSGEN` to call corresponding functions.
 - Checks if SQL database is present or else it creates it with the proper schema in **swappr.db**
 - Checks if **locations** table in **swappr.db** matches with all the data in **locations.json** file. If new locations are present in the JSON file, then they are imported as new entries in **swappr.db** **locations** table
 
@@ -110,6 +110,32 @@ Running **app.py** with `-l` or `--limiter` argument initiates flask_limiter - a
 | /update_username | 30 |
 | /delete_account | 30 |
 
+
+## <span style="color: #e8b600">Unit tests</span>
+Currently Swappr has no unit tests. In the future proper testing should be executed using <b style="color: #68ba6a">pytest</b> library.
+
+Nevertheless, a python script named **tcreatemocksubmissions.py** is designed to create mockups (that is random fake users and submitted houses), and then import them into **swappr.db** for testing purposes.
+
+To do that run:
+
+```sh
+python app.py -m MOCKUPSGEN MOCKUPSGEN
+```
+or
+```sh
+python app.py --mockupsgen MOCKUPSGEN MOCKUPSGEN
+```
+where the first MOCKUPSGEN is an integer that determines the number of mockup users, while the second one determines the number of mockup submitted houses. Submitted houses number can't exceed the number of users - if so the script handles the arguments to set them as equals.
+
+By default the only static username that is created is **admin** and developers should use it for debugging.
+
+#### Testing credentials
+| Username | Password |
+| -------- | -------- |
+|  admin   |    admin     |
+
+
+It is recommended to generated some thousands of mockups to have a chance in getting matching houses
 
 ## <span style="color: #e8b600">Python dependencies</span>
 Below are enlisted all the Python frameworks, libraries and packages needed for this application.

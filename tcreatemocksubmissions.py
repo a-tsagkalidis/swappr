@@ -6,6 +6,7 @@ from random import choice, randint
 from fSQL import create_database_tables
 from fictional_names import name_generator
 from fhelpers import cursor_execute, cursor_fetch
+from werkzeug.security import generate_password_hash
 
 
 def round_rental(number):
@@ -243,6 +244,24 @@ def load_mockup_users(mockup_users):
             '2024-02-03 09:38:41.231061',
             0
         )
+
+    # Set admin password as 'admin'
+    admin_password = generate_password_hash(
+            'admin',
+            method='scrypt',
+            salt_length=16
+        )
+    query = '''
+            UPDATE users
+            SET hash = ?
+            WHERE id = ?;
+            '''
+    cursor_execute(
+        query,
+        admin_password,
+        1
+    )
+    
 
 
 def load_mockup_submissions(mockup_submissions):
