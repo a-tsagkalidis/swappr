@@ -21,6 +21,7 @@ MATCHING_SCORES = {
 
 # Initialize basic functionalities
 try:
+    # |----- BASIC FUNCTIONALITIES INITIALIZATION -----|
     # Configure loguru for history log files
     logger.remove(0)
     initialize_logger()
@@ -34,12 +35,6 @@ try:
     # Initialize the database and tables
     create_database_tables()
 
-    # Import location data from locations.json file into proper database tables
-    locations_update, new_locations_flag = import_locations()
-
-    # Inform log in case of newly imported locations in the database 
-    log_new_locations(locations_update, new_locations_flag)
-
     # Initialize Flask limiter instance for spam request protection
     limiter = Limiter(
         get_remote_address,
@@ -48,7 +43,7 @@ try:
         storage_uri="memory://"
     )
 
-    # |----- ARGPARSER SECTION -----|
+    # |----- ARGPARSER FUNCTIONALITIES -----|
     # Declare constant variables for POST request limits if limiter gets called
     if argparser.limiter:
         SIGNUP_LIMIT = "60/minute"
@@ -74,6 +69,13 @@ try:
     # Delete database and load premade mockup users and submissions for solid testing
     if argparser.premademockups and not argparser.mockupsgen:
         insert_mockups()
+    
+    # |----- LOCATION UPDATE FUNCTIONALITIES -----|
+    # Import location data from locations.json file into proper database tables
+    locations_update, new_locations_flag = import_locations()
+
+    # Inform log in case of newly imported locations in the database 
+    log_new_locations(locations_update, new_locations_flag)
 
 except Exception as err:
     log(f'Unexpected {err=}, {type(err)=}')

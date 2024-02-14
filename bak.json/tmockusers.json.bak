@@ -1,107 +1,107 @@
 [
     {
         "user_id": 1,
+        "username": "admin",
+        "email": "admin@swappr.com"
+    },
+    {
+        "user_id": 2,
         "username": "camila",
         "email": "camila@swappr.com"
     },
     {
-        "user_id": 2,
+        "user_id": 3,
         "username": "edward",
         "email": "edward@swappr.com"
     },
     {
-        "user_id": 3,
+        "user_id": 4,
         "username": "noah",
         "email": "noah@swappr.com"
     },
     {
-        "user_id": 4,
+        "user_id": 5,
         "username": "lucas",
         "email": "lucas@swappr.com"
     },
     {
-        "user_id": 5,
+        "user_id": 6,
         "username": "caroline",
         "email": "caroline@swappr.com"
     },
     {
-        "user_id": 6,
+        "user_id": 7,
         "username": "aurora",
         "email": "aurora@swappr.com"
     },
     {
-        "user_id": 7,
+        "user_id": 8,
         "username": "ethan",
         "email": "ethan@swappr.com"
     },
     {
-        "user_id": 8,
+        "user_id": 9,
         "username": "oliver",
         "email": "oliver@swappr.com"
     },
     {
-        "user_id": 9,
+        "user_id": 10,
         "username": "miles",
         "email": "miles@swappr.com"
     },
     {
-        "user_id": 10,
+        "user_id": 11,
         "username": "ruby",
         "email": "ruby@swappr.com"
     },
     {
-        "user_id": 11,
+        "user_id": 12,
         "username": "jacob",
         "email": "jacob@swappr.com"
     },
     {
-        "user_id": 12,
+        "user_id": 13,
         "username": "hazel",
         "email": "hazel@swappr.com"
     },
     {
-        "user_id": 13,
+        "user_id": 14,
         "username": "claire",
         "email": "claire@swappr.com"
     },
     {
-        "user_id": 14,
+        "user_id": 15,
         "username": "milesjr",
         "email": "milesjr@swappr.com"
     },
     {
-        "user_id": 15,
+        "user_id": 16,
         "username": "nova",
         "email": "nova@swappr.com"
     },
     {
-        "user_id": 16,
+        "user_id": 17,
         "username": "lincoln",
         "email": "lincoln@swappr.com"
     },
     {
-        "user_id": 17,
+        "user_id": 18,
         "username": "ethanlor",
         "email": "ethanlor@swappr.com"
     },
     {
-        "user_id": 18,
+        "user_id": 19,
         "username": "aria",
         "email": "aria@swappr.com"
     },
     {
-        "user_id": 19,
+        "user_id": 20,
         "username": "nora",
         "email": "nora@swappr.com"
     },
     {
-        "user_id": 20,
+        "user_id": 21,
         "username": "noramay",
         "email": "noramay@swappr.com"
-    },
-    {
-        "user_id": 21,
-        "username": "admin",
-        "email": "admin@swappr.com"
     }
 ]
