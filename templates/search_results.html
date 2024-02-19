@@ -23,24 +23,11 @@
         {% for result in search_results %}
           {% if result.total_matching_score %}
             <tr
-            {% if (
-                result.total_matching_score >= MATCHING_SCORES.HIGH_MATCHING_SCORE_MIN
-              )
-            %}
+            {% if result.total_matching_score >= MATCHING_SCORES.HIGH_MATCHING_SCORE_MIN %}
               class="table-success"
-            {% elif (
-                result.total_matching_score <= MATCHING_SCORES.MEDIUM_MATCHING_SCORE_MAX
-              ) and (
-                result.total_matching_score >= MATCHING_SCORES.MEDIUM_MATCHING_SCORE_MIN
-              )
-            %}
+            {% elif result.total_matching_score <= MATCHING_SCORES.MEDIUM_MATCHING_SCORE_MAX and result.total_matching_score >= MATCHING_SCORES.MEDIUM_MATCHING_SCORE_MIN %}
               class="table-primary"
-            {% (
-              elif result.total_matching_score <= MATCHING_SCORES.LOW_MATCHING_SCORE_MAX
-              ) and (
-                result.total_matching_score >= MATCHING_SCORES.LOW_MATCHING_SCORE_MIN
-              )
-            %}
+            {% elif result.total_matching_score <= MATCHING_SCORES.LOW_MATCHING_SCORE_MAX and result.total_matching_score >= MATCHING_SCORES.LOW_MATCHING_SCORE_MIN %}
               class="table-warning"
             {% else %}
               class="table-danger"

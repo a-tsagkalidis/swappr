@@ -103,5 +103,10 @@
         "user_id": 21,
         "username": "noramay",
         "email": "noramay@swappr.com"
+    },
+    {
+        "user_id": 22,
+        "username": "robert",
+        "email": "robert@swappr.com"
     }
 ]
