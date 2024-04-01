@@ -944,10 +944,16 @@ def search():
                     reverse=True
                 )
             
+                # Create a list of results that match to the user's primary submission
+                filtered_results = []
+                for result in search_results:
+                    if result['total_matching_score'] > 16:
+                        filtered_results.append(result)
+
             return render_template(
                 '/search_results.html',
                 cities=cities,
-                search_results=search_results,
+                search_results=search_results if not len(primary_submission) > 0 else filtered_results,
                 MATCHING_SCORES=MATCHING_SCORES,
                 primary_submission=primary_submission,
                 comma=comma,

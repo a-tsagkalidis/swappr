@@ -2,10 +2,10 @@ import json
 import subprocess
 from tqdm import tqdm
 from argparser import argparser
-from random import choice, randint
+from fhelpers import cursor_execute
 from fSQL import create_database_tables
 from fictional_names import name_generator
-from fhelpers import cursor_execute, cursor_fetch
+from random import choice, randint, choices
 from werkzeug.security import generate_password_hash
 
 
@@ -85,9 +85,9 @@ def create_mockups(*args):
         'detached_house',
         'mansion'
     ]
-    square_meters = [i for i in range(40, 120)]
+    square_meters = [i for i in range(60, 120)]
     rental = [ i for i in range(300, 900)]
-    bedrooms = [i for i in range(1, 4)]
+    bedrooms = [i for i in range(1, 3)]
     bathrooms = [i for i in range(1, 2)]
     exposure = 'public'
     primary_submission = 1
@@ -188,7 +188,7 @@ def create_mockups(*args):
             "city_destination": city_destination,
             "email": random_user['email'],
             "exposure": exposure,
-            "house_type": choice(house_type),
+            "house_type": choices(house_type, weights=[25, 65, 3, 4, 2, 1])[0],
             "id": i + 1,
             "municipality": municipality_source,
             "municipality_destination": municipality_destination,
