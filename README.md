@@ -5,7 +5,7 @@
 
 **License**: MIT
 
-**Video Demo**:  <URL HERE>
+**Video Demo**: <a href="https://www.youtube.com/watch?v=SlrPxYH-5cI&ab_channel=ArgyriosTsagkalidis">CS50X Final Project - Swappr</a>
 
 ## <span style="color: #e8b600">Description</span>
 Swappr is a web app project that helps the users to swap their rented houses.
