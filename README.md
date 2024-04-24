@@ -3,7 +3,7 @@
 
 **Location**: Thessaloniki, Greece
 
-**License**: BSD-3-Clause
+**License**: <a href="https://github.com/a-tsagkalidis/swappr/tree/main?tab=BSD-3-Clause-1-ov-file">BSD-3-Clause</a>
 
 **Video Demo**: <a href="https://www.youtube.com/watch?v=SlrPxYH-5cI&ab_channel=ArgyriosTsagkalidis">CS50X Final Project - Swappr</a>
 
