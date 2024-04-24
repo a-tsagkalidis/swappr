@@ -3,7 +3,7 @@
 
 **Location**: Thessaloniki, Greece
 
-**License**: BSD-3-Clause license
+**License**: BSD-3-Clause
 
 **Video Demo**: <a href="https://www.youtube.com/watch?v=SlrPxYH-5cI&ab_channel=ArgyriosTsagkalidis">CS50X Final Project - Swappr</a>
 
