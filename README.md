@@ -1,7 +1,7 @@
 # <span style="color: #e8b600">Swappr</span>
-**Author**: Argyrios Tsagkalidis
+**Author**: <a href="mailto:arg.tsag@gmail.com">Argyrios Tsagkalidis</a>
 
-**Location**: Thessaloniki, Greece
+**Location**: <a href="https://www.google.com/maps/place/Thessaloniki/@40.6211851,22.9047419,13z/data=!3m1!4b1!4m6!3m5!1s0x14a838f41428e0ed:0x9bae715b8d574a9!8m2!3d40.6400629!4d22.9444191!16zL20vMGIybWM?entry=ttu">Thessaloniki, Greece</a>
 
 **License**: <a href="https://github.com/a-tsagkalidis/swappr/tree/main?tab=BSD-3-Clause-1-ov-file">BSD-3-Clause</a>
 
